@@ -1,17 +1,18 @@
 import { useState } from "react";
-import type { spending } from "../../../types/types";
+import type { Spending } from "../../../types/types";
 
 export const useContent = () => {
-  const initialSpendings: spending[] = [
+  const initialSpendings: Spending[] = [
     { id: 1, description: 'Groceries', amount: 50, date: '2026-06-13' },
     { id: 2, description: 'Gas', amount: 30, date: '2026-06-14' },
     { id: 3, description: 'Utilities', amount: 100, date: '2026-06-3' },
   ]
 
+  const [spendings, setSpendings] = useState<Spending[]>(initialSpendings);
   const [minAmount, setMinAmount] = useState<string>('');
   const [maxAmount, setMaxAmount] = useState<string>('');
-
-  const [spendings, setSpendings] = useState<spending[]>(initialSpendings);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [selectedSpendingId, setSelectedSpendingId] = useState<number | null>(null);
 
   const formatSpending = (date: string): string => {
     const today = new Date();
@@ -31,7 +32,7 @@ export const useContent = () => {
 
   const orderByDate= (): void => {
     // Create a new array to avoid mutating the original state
-    const sortedByDate = [...initialSpendings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const sortedByDate = [...spendings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     setSpendings(sortedByDate);
   }
 
@@ -65,9 +66,25 @@ export const useContent = () => {
 
   const totalAmount: number = spendings.reduce((total, spending) => total + spending.amount, 0);
 
+  const handleDelete = (id: number, openModal: () => void): void => {
+    if(editingId === id) {
+      setEditingId(null)
+    } else {
+      setSelectedSpendingId(id);
+      openModal();
+    }
+  }
+
+  const deleteSpending = (closeModal: () => void): void => {
+    setSpendings(spendings.filter((s) => s.id !== selectedSpendingId));
+    closeModal();
+  }
+
   return {
     spendings,
     formatSpending,
+    editingId,
+    setEditingId,
     orderByDate,
     orderByAmount,
     orderByDescription,
@@ -78,6 +95,8 @@ export const useContent = () => {
     setMinAmount,
     maxAmount,
     setMaxAmount,
-    totalAmount
+    totalAmount,
+    handleDelete,
+    deleteSpending
   };
 }
