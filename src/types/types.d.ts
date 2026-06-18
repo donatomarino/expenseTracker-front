@@ -38,7 +38,7 @@ export interface SpendingFiltersProps {
   orderByDescription: () => void;
 }
 
-//--------- Types for context ----------//
+//--------- Interfaces for context ----------//
 export interface LoadButtonContextType {
   loadButton: boolean;
   disabledButton: () => void;
