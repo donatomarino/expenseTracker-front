@@ -1,12 +1,19 @@
 //--------- Interfaces for components ----------//
 export interface Spending {
-  id: number;
+  id?: number;
   description: string;
   amount: number;
   date: string;
 }
 
-export interface CardProps extends ModalProps, DeleteModalProps {
+export interface BaseModalProps {
+  modalIsOpen: boolean;
+  closeModal: () => void;
+  customStyles: ReactModal.Styles;
+  context: LoadButtonContextType;
+}
+
+export interface CardProps extends BaseModalProps, DeleteModalProps {
   spendings: spending[];
   formatSpending: (date: string) => string;
   editingId: number | null;
@@ -15,14 +22,13 @@ export interface CardProps extends ModalProps, DeleteModalProps {
   openModal: () => void;
 }
 
-export interface ModalProps {
-  modalIsOpen: boolean;
-  closeModal: () => void;
-  customStyles: ReactModal.Styles;
-  context: LoadButtonContextType
+export interface ModalProps extends BaseModalProps {
+  handleSubmit: React.SubmitEventHandler<HTMLFormElement>;
+  newSpending: Spending;
+  handleChange: ChangeEvent<HTMLInputElement>;
 }
 
-export interface DeleteModalProps extends ModalProps {
+export interface DeleteModalProps extends BaseModalProps {
   deleteSpending: (closeModal: () => void) => void;
 }
 
@@ -36,6 +42,12 @@ export interface SpendingFiltersProps {
   orderByDate: () => void;
   orderByAmount: () => void;
   orderByDescription: () => void;
+  setSearch: Dispatch<SetStateAction<string>>;
+  startDate: string;
+  setStartDate: Dispatch<SetStateAction<string>>;
+  endDate: string;
+  setEndDate: Dispatch<SetStateAction<string>>;
+  filterByDateRange: () => void;
 }
 
 //--------- Interfaces for context ----------//

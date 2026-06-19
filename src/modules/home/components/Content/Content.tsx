@@ -4,25 +4,43 @@ import Card from "./Card";
 import SpendingFilters from "./SpendingFilters";
 
 const Content = () => {
-  const { spendings, orderByDate, editingId, setEditingId, formatSpending, orderByAmount, orderByDescription, setSearch, minAmount, setMinAmount, maxAmount, setMaxAmount, filterByAmount, restoreSpendings, totalAmount, handleDelete, deleteSpending } = useContent();
-  const { openDeleteModal, deleteModalIsOpen, closeDeleteModal, customStyles, context } = useModal();
+  const {
+    spendings,
+    orderByDate,
+    editingId,
+    setEditingId,
+    formatSpending,
+    orderByAmount,
+    orderByDescription,
+    setSearch,
+    minAmount,
+    setMinAmount,
+    maxAmount,
+    setMaxAmount,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    filterByDateRange,
+    filterByAmount,
+    restoreSpendings,
+    totalAmount,
+    handleDelete,
+    deleteSpending
+  } = useContent();
+
+  const {
+    openDeleteModal,
+    deleteModalIsOpen,
+    closeDeleteModal,
+    customStyles,
+    context
+  } = useModal();
 
   return (
     <main className="bg-body-tertiary d-flex flex-column p-4">
       <div className="d-flex justify-content-between align-items-center p-3 mb-4 bg-white rounded-4 shadow-sm border">
         <h2 className="m-0 fw-bold text-dark">Recent spendings</h2>
-
-        <div>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control form-control-lg me-2 border-0 shadow-sm bg-light"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </form>
-        </div>
 
         <SpendingFilters
           minAmount={minAmount}
@@ -34,6 +52,12 @@ const Content = () => {
           orderByDate={orderByDate}
           orderByAmount={orderByAmount}
           orderByDescription={orderByDescription}
+          setSearch={setSearch}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          filterByDateRange={filterByDateRange}
         />
       </div>
 

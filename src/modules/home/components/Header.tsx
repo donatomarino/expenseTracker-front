@@ -5,7 +5,16 @@ import ExpenseModal from './Modals/ExpenseModal';
 
 Modal.setAppElement('#root');
 const Header = () => {
-  const { modalIsOpen, openModal, closeModal, customStyles, context } = useModal();
+  const {
+    modalIsOpen,
+    openModal,
+    closeModal,
+    customStyles,
+    context,
+    newSpending,
+    handleChange,
+    handleSubmit,
+  } = useModal();
 
   return (
     <header className="d-flex justify-content-between align-items-center bg-white p-4 rounded-4 shadow-sm border">
@@ -27,11 +36,14 @@ const Header = () => {
         Add spending
       </button>
 
-      <ExpenseModal 
-        modalIsOpen={modalIsOpen} 
-        closeModal={closeModal} 
-        customStyles={customStyles}  
+      <ExpenseModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        customStyles={customStyles}
         context={context}
+        newSpending={newSpending}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
       />
     </header>
   );

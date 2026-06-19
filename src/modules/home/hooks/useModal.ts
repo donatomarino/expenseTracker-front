@@ -1,10 +1,16 @@
 import { useContext, useState } from "react";
 import { LoadButtonContext } from "../../../context/LoadButtonContext";
+import type { Spending } from "../../../types/types";
 
 export const useModal = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
   const context = useContext(LoadButtonContext);
+  const [newSpending, setNewSpending]= useState<Spending>({
+    description: '',
+    amount: 0,
+    date: ''
+  })
 
   if (!context) {
     throw new Error('LoadButtonContext must be used within a LoadButtonProvider');
@@ -41,5 +47,16 @@ export const useModal = () => {
   const openDeleteModal = () => { setDeleteModalIsOpen(true) }
   const closeDeleteModal = () => { setDeleteModalIsOpen(false) }
 
-  return { openModal, closeModal, openDeleteModal, closeDeleteModal, deleteModalIsOpen, modalIsOpen, setIsOpen, customStyles, context };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setNewSpending({
+      ...newSpending,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleSubmit = () => {
+    return;
+  }
+
+  return { openModal, closeModal, openDeleteModal, closeDeleteModal, deleteModalIsOpen, modalIsOpen, setIsOpen, customStyles, context, newSpending, handleChange, handleSubmit };
 }

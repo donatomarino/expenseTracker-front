@@ -2,7 +2,16 @@ import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import type { ModalProps } from '../../../../types/types';
 
-const ExpenseModal = ({ modalIsOpen, closeModal, customStyles, context }: ModalProps) => {
+const ExpenseModal = (props: ModalProps) => {
+  const {
+    modalIsOpen,
+    closeModal,
+    customStyles,
+    context,
+    newSpending,
+    handleChange,
+    handleSubmit
+  } = props;
 
   return (
     <Modal
@@ -27,14 +36,19 @@ const ExpenseModal = ({ modalIsOpen, closeModal, customStyles, context }: ModalP
         </div>
 
         <div>
-          <form className="bg-white rounded-4 p-3">
+          <form className="bg-white rounded-4 p-3" onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label fw-semibold text-secondary">Description</label>
               <input
                 type="text"
+                name="description"
                 className="form-control form-control-lg bg-light border-0 shadow-sm"
                 aria-label="Description"
                 placeholder="e.g. Groceries"
+                value={newSpending.description}
+                onChange={handleChange}
+                disabled={context.loadButton}
+                required
               />
             </div>
 
@@ -42,9 +56,14 @@ const ExpenseModal = ({ modalIsOpen, closeModal, customStyles, context }: ModalP
               <label className="form-label fw-semibold text-secondary">Amount</label>
               <input
                 type="text"
+                name="amount"
                 className="form-control form-control-lg bg-light border-0 shadow-sm"
                 aria-label="Amount"
                 placeholder="e.g. 24.99"
+                value={newSpending.amount || ''}
+                onChange={handleChange}
+                disabled={context.loadButton}
+                required
               />
             </div>
 
@@ -52,8 +71,13 @@ const ExpenseModal = ({ modalIsOpen, closeModal, customStyles, context }: ModalP
               <label className="form-label fw-semibold text-secondary">Date</label>
               <input
                 type="date"
+                name="date"
                 className="form-control form-control-lg bg-light border-0 shadow-sm"
                 aria-label="Date"
+                value={newSpending.date}
+                onChange={handleChange}
+                disabled={context.loadButton}
+                required
               />
             </div>
 

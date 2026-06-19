@@ -11,6 +11,8 @@ export const useContent = () => {
   const [spendings, setSpendings] = useState<Spending[]>(initialSpendings);
   const [minAmount, setMinAmount] = useState<string>('');
   const [maxAmount, setMaxAmount] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [selectedSpendingId, setSelectedSpendingId] = useState<number | null>(null);
 
@@ -30,9 +32,9 @@ export const useContent = () => {
     return date.split('-').reverse().join('/'); // Format as DD/MM/YYYY
   }
 
-  const orderByDate= (): void => {
+  const orderByDate = (): void => {
     // Create a new array to avoid mutating the original state
-    const sortedByDate = [...spendings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const sortedByDate = [...initialSpendings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     setSpendings(sortedByDate);
   }
 
@@ -41,13 +43,13 @@ export const useContent = () => {
     setSpendings(sortedByAmount);
   }
 
-  const orderByDescription= (): void => {
+  const orderByDescription = (): void => {
     const sortedByDescription = [...spendings].sort((a, b) => a.description.localeCompare(b.description));
     setSpendings(sortedByDescription);
   }
 
   const setSearch = (searchTerm: string): void => {
-    if(searchTerm.length > 2) {
+    if (searchTerm.length > 2) {
       const filteredSpendings = initialSpendings.filter(spending => spending.description.toLowerCase().includes(searchTerm.toLowerCase()));
       setSpendings(filteredSpendings);
     } else {
@@ -60,6 +62,19 @@ export const useContent = () => {
     setSpendings(filteredSpendings);
   }
 
+  const filterByDateRange = () => {
+    const filtered = spendings.filter((spending) => {
+      const spendingDate = new Date(spending.date);
+
+      if (startDate && spendingDate < new Date(startDate)) return false;
+      if (endDate && spendingDate > new Date(endDate)) return false;
+
+      return true;
+    });
+
+    setSpendings(filtered);
+  };
+
   const restoreSpendings = (): void => {
     setSpendings(initialSpendings);
   }
@@ -67,7 +82,7 @@ export const useContent = () => {
   const totalAmount: number = spendings.reduce((total, spending) => total + spending.amount, 0);
 
   const handleDelete = (id: number, openModal: () => void): void => {
-    if(editingId === id) {
+    if (editingId === id) {
       setEditingId(null)
     } else {
       setSelectedSpendingId(id);
@@ -90,6 +105,11 @@ export const useContent = () => {
     orderByDescription,
     setSearch,
     filterByAmount,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    filterByDateRange,
     restoreSpendings,
     minAmount,
     setMinAmount,

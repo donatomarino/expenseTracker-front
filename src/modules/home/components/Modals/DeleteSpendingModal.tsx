@@ -1,7 +1,15 @@
 import type { DeleteModalProps } from "../../../../types/types";
 import Modal from 'react-modal';
 
-const DeleteSpendingModal = ({ modalIsOpen, closeModal, customStyles, context, deleteSpending }: DeleteModalProps) => {
+const DeleteSpendingModal = (props: DeleteModalProps) => {
+  const {
+    modalIsOpen,
+    closeModal,
+    customStyles,
+    context,
+    deleteSpending
+  } = props;
+  
   return (
     <Modal
       isOpen={modalIsOpen}

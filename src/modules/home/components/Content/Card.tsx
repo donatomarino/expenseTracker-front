@@ -3,7 +3,21 @@ import type { CardProps } from "../../../../types/types";
 import DeleteSpendingModal from '../Modals/DeleteSpendingModal';
 
 Modal.setAppElement('#root');
-const Card = ({ spendings, formatSpending, editingId, setEditingId, context, handleDelete, deleteSpending, openModal, modalIsOpen, closeModal, customStyles }: CardProps) => {
+const Card = (props: CardProps) => {
+  const {
+    spendings,
+    formatSpending,
+    editingId,
+    setEditingId,
+    context,
+    handleDelete,
+    deleteSpending,
+    openModal,
+    modalIsOpen,
+    closeModal,
+    customStyles
+  } = props
+  
   return (
     <div className="d-flex flex-wrap align-items-start gap-4 mt-2">
       {spendings.map((spending) =>
