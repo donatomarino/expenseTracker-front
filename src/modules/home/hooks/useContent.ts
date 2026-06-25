@@ -5,7 +5,9 @@ export const useContent = () => {
   const initialSpendings: Spending[] = [
     { id: 1, description: 'Groceries', amount: 50, date: '2026-06-13' },
     { id: 2, description: 'Gas', amount: 30, date: '2026-06-14' },
-    { id: 3, description: 'Utilities', amount: 100, date: '2026-06-3' },
+    { id: 3, description: 'Utilities', amount: 100, date: '2026-06-16' },
+    { id: 4, description: 'Restaurant', amount: 60, date: '2026-06-10' },
+    { id: 5, description: 'Football', amount: 4.50, date: '2026-06-14' },
   ]
 
   const [spendings, setSpendings] = useState<Spending[]>(initialSpendings);

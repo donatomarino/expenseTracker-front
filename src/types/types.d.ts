@@ -59,3 +59,38 @@ export interface LoadButtonContextType {
 export interface LoadButtonProviderProps {
   children: React.ReactNode;
 }
+
+//--------- Interfaces for API ----------//
+export interface RequestParams {
+  url: string;
+  data?: object;
+  params?: Record<string, string | number | boolean>;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+  showPassword?: boolean;
+}
+
+export interface FailedLoginPayload {
+  success: boolean;
+  message: string;
+  error: boolean;
+}
+
+export interface BaseApiResponse {
+  success: boolean;
+  message: string;
+  error?: boolean;
+  user_name?: string;
+}
+
+export interface Requests<T> extends BaseApiResponse {
+  data: T;
+}
+
+export interface AuthResponse extends BaseApiResponse {
+  access_token: string;
+  token_type: string;
+}
