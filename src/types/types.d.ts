@@ -83,7 +83,6 @@ export interface BaseApiResponse {
   success: boolean;
   message: string;
   error?: boolean;
-  user_name?: string;
 }
 
 export interface Requests<T> extends BaseApiResponse {
@@ -93,4 +92,5 @@ export interface Requests<T> extends BaseApiResponse {
 export interface AuthResponse extends BaseApiResponse {
   access_token: string;
   token_type: string;
+  user_name: string;
 }

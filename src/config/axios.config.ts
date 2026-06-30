@@ -34,12 +34,16 @@ instance.interceptors.response.use(
     return response;
   },
   (error: AxiosError): Promise<never> => {
-    if(error.response?.status === 401) {
+    const status = error.response?.status;
+    const requestUrl = error.config?.url ?? "";
+
+    if(status === 401 && !requestUrl.includes("/login")) {
       // Delete expired token
       localStorage.removeItem("token");
+      localStorage.removeItem("user_name");
       window.location.href = "/login";
     }
-    
+
     return Promise.reject(error);
   }
 );

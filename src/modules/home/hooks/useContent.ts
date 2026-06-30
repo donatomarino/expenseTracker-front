@@ -1,14 +1,39 @@
-import { useState } from "react";
-import type { Spending } from "../../../types/types";
+import { useEffect, useState } from "react";
+import type { Requests, Spending } from "../../../types/types";
+import contentService from "../services/contentService";
+import { toast } from "react-toastify";
 
 export const useContent = () => {
-  const initialSpendings: Spending[] = [
-    { id: 1, description: 'Groceries', amount: 50, date: '2026-06-13' },
-    { id: 2, description: 'Gas', amount: 30, date: '2026-06-14' },
-    { id: 3, description: 'Utilities', amount: 100, date: '2026-06-16' },
-    { id: 4, description: 'Restaurant', amount: 60, date: '2026-06-10' },
-    { id: 5, description: 'Football', amount: 4.50, date: '2026-06-14' },
-  ]
+  // const initialSpendings: Spending[] = [
+  //   { id: 1, description: 'Groceries', amount: 50, date: '2026-06-13' },
+  //   { id: 2, description: 'Gas', amount: 30, date: '2026-06-14' },
+  //   { id: 3, description: 'Utilities', amount: 100, date: '2026-06-16' },
+  //   { id: 4, description: 'Restaurant', amount: 60, date: '2026-06-10' },
+  //   { id: 5, description: 'Football', amount: 4.50, date: '2026-06-14' },
+  // ]
+
+  const [initialSpendings, setInitialSpendings] = useState<Spending[]>([]);
+
+  useEffect(() => {
+    const fetchs = async () => {
+      try {
+        const res = await contentService.getSpending();
+
+        if (res.success) {
+          setInitialSpendings(res.data);
+        } else {
+          toast.error('Error when charging expenses');
+        }
+      } catch (e) {
+        console.error('The request failed: ', e);
+      }
+    }
+    fetchs();
+  }, []);
+
+  useEffect(() => {
+    setSpendings(initialSpendings)
+  }, [initialSpendings]);
 
   const [spendings, setSpendings] = useState<Spending[]>(initialSpendings);
   const [minAmount, setMinAmount] = useState<string>('');
@@ -64,7 +89,7 @@ export const useContent = () => {
     setSpendings(filteredSpendings);
   }
 
-  const filterByDateRange = () => {
+  const filterByDateRange = (): void => {
     const filtered = spendings.filter((spending) => {
       const spendingDate = new Date(spending.date);
 

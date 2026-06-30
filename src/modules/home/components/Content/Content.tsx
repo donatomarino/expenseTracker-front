@@ -38,7 +38,7 @@ const Content = () => {
   } = useModal();
 
   return (
-    <main className="bg-body-tertiary d-flex flex-column p-4">
+    <main className="bg-body-tertiary d-flex flex-column p-3">
       <div className="d-flex justify-content-between align-items-center p-3 mb-4 bg-white rounded-4 shadow-sm border">
         <h2 className="m-0 fw-bold text-dark">Recent spendings</h2>
 
@@ -76,7 +76,7 @@ const Content = () => {
       />
 
       <h2 className="mt-auto pt-4 text-end fw-bold text-primary">
-        Total amount: ${totalAmount}
+        Total amount: ${totalAmount.toFixed(2)}
       </h2>
     </main>
   )
