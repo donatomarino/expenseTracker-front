@@ -2,6 +2,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from 'react-modal';
 import { useModal } from '../hooks/useModal';
 import ExpenseModal from './Modals/ExpenseModal';
+import { useContent } from '../hooks/useContent';
 
 Modal.setAppElement('#root');
 const Header = () => {
@@ -10,11 +11,14 @@ const Header = () => {
     openModal,
     closeModal,
     customStyles,
-    context,
     newSpending,
     handleChange,
     handleSubmit,
   } = useModal();
+
+  const {
+    loadButton
+  } = useContent();
 
   return (
     <header className="d-flex justify-content-between align-items-center bg-white p-4 rounded-4 shadow-sm border">
@@ -31,6 +35,7 @@ const Header = () => {
         type="button"
         className="btn btn-primary btn-lg rounded-pill px-4 shadow-sm"
         onClick={openModal}
+        disabled={loadButton}
       >
         <i className="bi bi-file-plus me-2"></i>
         Add spending
@@ -40,7 +45,7 @@ const Header = () => {
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         customStyles={customStyles}
-        context={context}
+        loadButton={loadButton}
         newSpending={newSpending}
         handleChange={handleChange}
         handleSubmit={handleSubmit}

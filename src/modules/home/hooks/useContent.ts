@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
-import type { Requests, Spending } from "../../../types/types";
+import { useContext, useEffect, useState } from "react";
+import type { Spending, Errors } from "../../../types/types";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
+import { LoadingContext } from "../../../context/LoadingContext";
 
 export const useContent = () => {
-  // const initialSpendings: Spending[] = [
-  //   { id: 1, description: 'Groceries', amount: 50, date: '2026-06-13' },
-  //   { id: 2, description: 'Gas', amount: 30, date: '2026-06-14' },
-  //   { id: 3, description: 'Utilities', amount: 100, date: '2026-06-16' },
-  //   { id: 4, description: 'Restaurant', amount: 60, date: '2026-06-10' },
-  //   { id: 5, description: 'Football', amount: 4.50, date: '2026-06-14' },
-  // ]
-
   const [initialSpendings, setInitialSpendings] = useState<Spending[]>([]);
+  const [editSpending, setEditSpending] = useState<Spending>({
+    id: 0,
+    description: '',
+    amount: 0,
+    date: ''
+  });
+  const [errors, setErrors] = useState<Errors>({});
+  const { loadButton, disabledButton, reload, triggerReload } = useContext(LoadingContext);
 
   useEffect(() => {
     const fetchs = async () => {
@@ -24,12 +25,12 @@ export const useContent = () => {
         } else {
           toast.error('Error when charging expenses');
         }
-      } catch (e) {
+      } catch (e: any) {
         console.error('The request failed: ', e);
       }
     }
     fetchs();
-  }, []);
+  }, [reload]);
 
   useEffect(() => {
     setSpendings(initialSpendings)
@@ -109,12 +110,8 @@ export const useContent = () => {
   const totalAmount: number = spendings.reduce((total, spending) => total + spending.amount, 0);
 
   const handleDelete = (id: number, openModal: () => void): void => {
-    if (editingId === id) {
-      setEditingId(null)
-    } else {
-      setSelectedSpendingId(id);
-      openModal();
-    }
+    setSelectedSpendingId(id);
+    openModal();
   }
 
   const deleteSpending = (closeModal: () => void): void => {
@@ -122,11 +119,71 @@ export const useContent = () => {
     closeModal();
   }
 
+  const startEditing = (spending: Spending) => {
+    if (spending.id !== undefined && spending.id !== null) {
+      setEditingId(spending.id);
+      setErrors({});
+    }
+
+    setEditSpending({
+      id: spending.id,
+      description: spending.description,
+      amount: spending.amount,
+      date: spending.date
+    })
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setEditSpending({
+      ...editSpending,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleEdit = async (e: React.SubmitEvent<HTMLFormElement>, spending: Spending): Promise<void> => {
+    e.preventDefault();
+    disabledButton();
+
+    const noChanges =
+      editSpending.description === spending.description &&
+      editSpending.amount === spending.amount &&
+      editSpending.date === spending.date;
+
+    if (noChanges) {
+      toast.error('You have to modify at least one field');
+      disabledButton();
+      return;
+    }
+
+    try {
+      const res = await contentService.editSpending(editSpending);
+
+      if (res.success) {
+        toast.success('Spending updated successfully');
+        triggerReload();
+        setEditingId(null);
+      }
+    } catch (e: any) {
+      if(e.response && e.response.status === 422) {
+        const errors = e.response.data.errors;
+
+        setErrors(errors);
+      } else {
+        console.log("The request failed: ", e);
+        toast.error("Server error");
+      }
+    } finally {
+      disabledButton();
+    }
+  }
+
   return {
     spendings,
     formatSpending,
     editingId,
     setEditingId,
+    loadButton,
+    errors,
     orderByDate,
     orderByAmount,
     orderByDescription,
@@ -144,6 +201,9 @@ export const useContent = () => {
     setMaxAmount,
     totalAmount,
     handleDelete,
-    deleteSpending
+    deleteSpending,
+    startEditing,
+    handleChange,
+    handleEdit
   };
 }

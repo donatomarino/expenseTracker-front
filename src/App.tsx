@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import './App.css'
 import Home from "./modules/home/pages/Home"
-import { LoadButtonProvider } from "./context/LoadButtonContext"
+import { LoadingProvider } from "./context/LoadingContext"
 import Login from "./modules/login/pages/Login"
 import { Bounce, ToastContainer } from "react-toastify"
 
@@ -9,14 +9,14 @@ function App() {
 
   return (
     <div className="app">
-      <LoadButtonProvider>
+      <LoadingProvider>
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>
-      </LoadButtonProvider>
+      </LoadingProvider>
       <ToastContainer
         position="bottom-right"
         autoClose={5000}

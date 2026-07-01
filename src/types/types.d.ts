@@ -10,7 +10,7 @@ export interface BaseModalProps {
   modalIsOpen: boolean;
   closeModal: () => void;
   customStyles: ReactModal.Styles;
-  context: LoadButtonContextType;
+  loadButton: boolean;
 }
 
 export interface CardProps extends BaseModalProps, DeleteModalProps {
@@ -18,8 +18,13 @@ export interface CardProps extends BaseModalProps, DeleteModalProps {
   formatSpending: (date: string) => string;
   editingId: number | null;
   setEditingId: (id: number | null) => void;
+  loadButton: boolean;
+  errors: Errors;
   handleDelete: (id: number, openModal: () => void) => void;
   openModal: () => void;
+  startEditing: (spending: Spending) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleEdit: (e: React.SubmitEvent<HTMLFormElement>, spending: Spending) => Promise<void>;
 }
 
 export interface ModalProps extends BaseModalProps {
@@ -51,12 +56,14 @@ export interface SpendingFiltersProps {
 }
 
 //--------- Interfaces for context ----------//
-export interface LoadButtonContextType {
+export interface LoadingContextType {
   loadButton: boolean;
   disabledButton: () => void;
+  reload: boolean;
+  triggerReload: () => void;
 }
 
-export interface LoadButtonProviderProps {
+export interface LoadingProviderProps {
   children: React.ReactNode;
 }
 
@@ -93,4 +100,10 @@ export interface AuthResponse extends BaseApiResponse {
   access_token: string;
   token_type: string;
   user_name: string;
+}
+
+export interface Errors {
+  description?: string,
+  amount?: string,
+  date?: string;
 }

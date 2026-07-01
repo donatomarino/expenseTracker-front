@@ -6,7 +6,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
     modalIsOpen,
     closeModal,
     customStyles,
-    context,
+    loadButton,
     deleteSpending
   } = props;
   
@@ -34,7 +34,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
             type="button"
             className="btn btn-light border px-4"
             onClick={closeModal}
-            disabled={context.loadButton}
+            disabled={loadButton}
           >
             Cancel
           </button>
@@ -42,7 +42,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
           <button
             type="button"
             className="btn btn-danger px-4 fw-semibold"
-            disabled={context.loadButton}
+            disabled={loadButton}
             onClick={() => deleteSpending(closeModal)}
           >
             Delete

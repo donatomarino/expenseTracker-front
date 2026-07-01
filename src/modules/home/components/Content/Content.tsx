@@ -9,6 +9,8 @@ const Content = () => {
     orderByDate,
     editingId,
     setEditingId,
+    loadButton,
+    errors,
     formatSpending,
     orderByAmount,
     orderByDescription,
@@ -26,7 +28,10 @@ const Content = () => {
     restoreSpendings,
     totalAmount,
     handleDelete,
-    deleteSpending
+    deleteSpending,
+    startEditing,
+    handleChange,
+    handleEdit
   } = useContent();
 
   const {
@@ -34,7 +39,6 @@ const Content = () => {
     deleteModalIsOpen,
     closeDeleteModal,
     customStyles,
-    context
   } = useModal();
 
   return (
@@ -65,14 +69,18 @@ const Content = () => {
         spendings={spendings}
         formatSpending={formatSpending}
         editingId={editingId}
+        loadButton={loadButton}
+        errors={errors}
         setEditingId={setEditingId}
-        context={context}
         openModal={openDeleteModal}
         handleDelete={handleDelete}
         deleteSpending={deleteSpending}
         modalIsOpen={deleteModalIsOpen}
         closeModal={closeDeleteModal}
         customStyles={customStyles}
+        startEditing={startEditing}
+        handleChange={handleChange}
+        handleEdit={handleEdit}
       />
 
       <h2 className="mt-auto pt-4 text-end fw-bold text-primary">

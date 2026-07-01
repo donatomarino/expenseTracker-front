@@ -1,20 +1,14 @@
-import { useContext, useState } from "react";
-import { LoadButtonContext } from "../../../context/LoadButtonContext";
+import { useState } from "react";
 import type { Spending } from "../../../types/types";
 
 export const useModal = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
-  const context = useContext(LoadButtonContext);
   const [newSpending, setNewSpending]= useState<Spending>({
     description: '',
     amount: 0,
     date: ''
   })
-
-  if (!context) {
-    throw new Error('LoadButtonContext must be used within a LoadButtonProvider');
-  }
 
   const customStyles: ReactModal.Styles = {
     overlay: {
@@ -58,5 +52,5 @@ export const useModal = () => {
     return;
   }
 
-  return { openModal, closeModal, openDeleteModal, closeDeleteModal, deleteModalIsOpen, modalIsOpen, setIsOpen, customStyles, context, newSpending, handleChange, handleSubmit };
+  return { openModal, closeModal, openDeleteModal, closeDeleteModal, deleteModalIsOpen, modalIsOpen, setIsOpen, customStyles, newSpending, handleChange, handleSubmit };
 }

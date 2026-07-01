@@ -7,7 +7,7 @@ const ExpenseModal = (props: ModalProps) => {
     modalIsOpen,
     closeModal,
     customStyles,
-    context,
+    loadButton,
     newSpending,
     handleChange,
     handleSubmit
@@ -30,7 +30,7 @@ const ExpenseModal = (props: ModalProps) => {
             type="button"
             className="btn-close"
             onClick={closeModal}
-            disabled={context.loadButton}
+            disabled={loadButton}
             aria-label="Close"
           />
         </div>
@@ -47,7 +47,7 @@ const ExpenseModal = (props: ModalProps) => {
                 placeholder="e.g. Groceries"
                 value={newSpending.description}
                 onChange={handleChange}
-                disabled={context.loadButton}
+                disabled={loadButton}
                 required
               />
             </div>
@@ -62,7 +62,7 @@ const ExpenseModal = (props: ModalProps) => {
                 placeholder="e.g. 24.99"
                 value={newSpending.amount || ''}
                 onChange={handleChange}
-                disabled={context.loadButton}
+                disabled={loadButton}
                 required
               />
             </div>
@@ -76,7 +76,7 @@ const ExpenseModal = (props: ModalProps) => {
                 aria-label="Date"
                 value={newSpending.date}
                 onChange={handleChange}
-                disabled={context.loadButton}
+                disabled={loadButton}
                 required
               />
             </div>
@@ -84,7 +84,7 @@ const ExpenseModal = (props: ModalProps) => {
             <button
               type="submit"
               className="btn btn-primary fw-semibold w-100 rounded-pill py-2 shadow-sm"
-              disabled={context.loadButton}
+              disabled={loadButton}
             >
               <i className="bi bi-plus-circle me-2"></i>
               Add spending
