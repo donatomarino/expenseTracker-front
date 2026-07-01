@@ -20,6 +20,12 @@ const Header = () => {
     loadButton
   } = useContent();
 
+  const handleLogout = (): void => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user_name");
+    window.location.href = "/login";
+  }
+
   return (
     <header className="d-flex justify-content-between align-items-center bg-white p-4 rounded-4 shadow-sm border">
       <div>
@@ -31,15 +37,27 @@ const Header = () => {
         </h1>
       </div>
 
-      <button
-        type="button"
-        className="btn btn-primary btn-lg rounded-pill px-4 shadow-sm"
-        onClick={openModal}
-        disabled={loadButton}
-      >
-        <i className="bi bi-file-plus me-2"></i>
-        Add spending
-      </button>
+      <div className="d-flex align-items-center gap-3">
+        <button
+          type="button"
+          className="btn btn-primary btn-lg rounded-pill px-4 shadow-sm"
+          onClick={openModal}
+          disabled={loadButton}
+        >
+          <i className="bi bi-file-plus me-2"></i>
+          Add spending
+        </button>
+
+        <button
+          type="button"
+          className="btn btn-outline-danger rounded-pill px-4 shadow-sm"
+          onClick={() => handleLogout()}
+          disabled={loadButton}
+        >
+          <i className="bi bi-box-arrow-right me-2"></i>
+          Logout
+        </button>
+      </div>
 
       <ExpenseModal
         modalIsOpen={modalIsOpen}
