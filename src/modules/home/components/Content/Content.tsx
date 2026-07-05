@@ -7,8 +7,6 @@ const Content = () => {
   const {
     spendings,
     orderByDate,
-    editingId,
-    setEditingId,
     loadButton,
     errors,
     formatSpending,
@@ -30,6 +28,7 @@ const Content = () => {
     handleDelete,
     deleteSpending,
     startEditing,
+    selectedSpending,
     handleChange,
     handleEdit
   } = useContent();
@@ -37,6 +36,9 @@ const Content = () => {
   const {
     openDeleteModal,
     deleteModalIsOpen,
+    openEditModal,
+    editModalIsOpen,
+    closeEditModal,
     closeDeleteModal,
     customStyles,
   } = useModal();
@@ -68,17 +70,19 @@ const Content = () => {
       <Card
         spendings={spendings}
         formatSpending={formatSpending}
-        editingId={editingId}
         loadButton={loadButton}
         errors={errors}
-        setEditingId={setEditingId}
         openModal={openDeleteModal}
+        openEditModal={openEditModal}
         handleDelete={handleDelete}
         deleteSpending={deleteSpending}
         modalIsOpen={deleteModalIsOpen}
         closeModal={closeDeleteModal}
+        editModalIsOpen={editModalIsOpen}
+        closeEditModal={closeEditModal}
         customStyles={customStyles}
         startEditing={startEditing}
+        selectedSpending={selectedSpending}
         handleChange={handleChange}
         handleEdit={handleEdit}
       />

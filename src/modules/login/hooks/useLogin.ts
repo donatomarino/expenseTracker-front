@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import type { AuthResponse, BaseApiResponse, FailedLoginPayload, LoginPayload } from "../../../types/types";
+import { useContext, useEffect, useState } from "react";
+import type { AuthResponse, BaseApiResponse, LoginPayload } from "../../../types/types";
 import authService from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { LoadingContext } from "../../../context/LoadingContext";
 
 const useLogin = () => {
   useEffect(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user_name');
-  });
+  }, []);
 
   const navigate = useNavigate();
   const [formData, setFormData] = useState<LoginPayload>({
@@ -16,6 +17,8 @@ const useLogin = () => {
     password: '',
     showPassword: false
   });
+
+  const {loadButton, disabledButton} = useContext(LoadingContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFormData({
@@ -27,6 +30,7 @@ const useLogin = () => {
   const handleSubmit = async(e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     try {
+      disabledButton();
       const res: AuthResponse | BaseApiResponse = await authService.login(formData);
 
       if (res.success && 'access_token' in res) {
@@ -35,12 +39,14 @@ const useLogin = () => {
         navigate('/');
       }
 
-    } catch (e: FailedLoginPayload | any) {
+    } catch (e: any) {
       toast.error(e?.message || 'Error al iniciar sesión');
+    } finally {
+      disabledButton();
     }
   }
 
-  return { formData, setFormData, handleChange, handleSubmit }
+  return { formData, setFormData, handleChange, handleSubmit, loadButton };
 }
 
 export default useLogin;

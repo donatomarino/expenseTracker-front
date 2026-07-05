@@ -6,7 +6,8 @@ const Login = () => {
     formData, 
     setFormData, 
     handleChange, 
-    handleSubmit
+    handleSubmit,
+    loadButton
   } = useLogin();
 
   return (
@@ -83,7 +84,7 @@ const Login = () => {
               </button>
             </div> */}
 
-            <button type="submit" className="btn btn-primary w-100">
+            <button type="submit" className="btn btn-primary w-100" disabled={loadButton}>
               Sign in
             </button>
           </form>

@@ -1,4 +1,4 @@
-import type { Requests, Spending } from "../../../types/types";
+import type { BaseApiResponse, Requests, Spending } from "../../../types/types";
 import instanceAxios from '../../../api/APIUtils';
 
 const contentService = {
@@ -15,6 +15,12 @@ const contentService = {
         amount: data.amount,
         date: data.date
       }
+    })
+  },
+
+  deleteSpending(id: number): Promise<BaseApiResponse> {
+    return instanceAxios.deleteRequest({
+      url: `/delete-spending/${id}`,
     })
   }
 }

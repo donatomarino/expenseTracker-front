@@ -5,16 +5,27 @@ import { toast } from "react-toastify";
 import { LoadingContext } from "../../../context/LoadingContext";
 
 export const useContent = () => {
-  const [initialSpendings, setInitialSpendings] = useState<Spending[]>([]);
-  const [editSpending, setEditSpending] = useState<Spending>({
-    id: 0,
-    description: '',
-    amount: 0,
-    date: ''
-  });
-  const [errors, setErrors] = useState<Errors>({});
   const { loadButton, disabledButton, reload, triggerReload } = useContext(LoadingContext);
 
+  // State for spendings and initial spendings
+  const [initialSpendings, setInitialSpendings] = useState<Spending[]>([]);
+  const [spendings, setSpendings] = useState<Spending[]>([]);
+
+  // State for editing spending
+  const [editSpending, setEditSpending] = useState<Spending | null>(null);
+  const [selectedSpending, setSelectedSpending] = useState<Spending | null>(null);
+
+  // Filters
+  const [minAmount, setMinAmount] = useState<string>('');
+  const [maxAmount, setMaxAmount] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+
+  // State for selected spending ID and errors
+  const [selectedSpendingId, setSelectedSpendingId] = useState<number | null>(null);
+  const [errors, setErrors] = useState<Errors>({});
+
+  // Load spendings 
   useEffect(() => {
     const fetchs = async () => {
       try {
@@ -36,14 +47,7 @@ export const useContent = () => {
     setSpendings(initialSpendings)
   }, [initialSpendings]);
 
-  const [spendings, setSpendings] = useState<Spending[]>(initialSpendings);
-  const [minAmount, setMinAmount] = useState<string>('');
-  const [maxAmount, setMaxAmount] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [selectedSpendingId, setSelectedSpendingId] = useState<number | null>(null);
-
+  // Format spending date
   const formatSpending = (date: string): string => {
     const today = new Date();
     const spendingDate = new Date(date);
@@ -60,22 +64,26 @@ export const useContent = () => {
     return date.split('-').reverse().join('/'); // Format as DD/MM/YYYY
   }
 
+  // Order by date
   const orderByDate = (): void => {
     // Create a new array to avoid mutating the original state
     const sortedByDate = [...initialSpendings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     setSpendings(sortedByDate);
   }
 
+  // Order by amount
   const orderByAmount: () => void = () => {
-    const sortedByAmount = [...spendings].sort((a, b) => b.amount - a.amount);
+    const sortedByAmount = [...initialSpendings].sort((a, b) => b.amount - a.amount);
     setSpendings(sortedByAmount);
   }
 
+  // Order by description
   const orderByDescription = (): void => {
-    const sortedByDescription = [...spendings].sort((a, b) => a.description.localeCompare(b.description));
+    const sortedByDescription = [...initialSpendings].sort((a, b) => a.description.localeCompare(b.description));
     setSpendings(sortedByDescription);
   }
 
+  // Search spendings by description
   const setSearch = (searchTerm: string): void => {
     if (searchTerm.length > 2) {
       const filteredSpendings = initialSpendings.filter(spending => spending.description.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -85,14 +93,48 @@ export const useContent = () => {
     }
   }
 
+  // Filter by amount
   const filterByAmount = (): void => {
+    // Validate inputs
+    if(Number(maxAmount) < Number(minAmount)) {
+      toast.error("Max amount must be greater than min amount");
+      return;
+    }
+
+    // Check if both minAmount and maxAmount are empty
+    if(!minAmount && !maxAmount) {
+      toast.error("You must enter at least one amount");
+      return;
+    }
+
+    // Filter spending withouth minAmount
+    if(!minAmount) {
+      const filteredSpendings = initialSpendings.filter(spending => spending.amount <= Number(maxAmount));
+      setSpendings(filteredSpendings);
+      return;
+    }
+
+    // Filter spending withouth maxAmount
+    if(!maxAmount) {
+      const filteredSpendings = initialSpendings.filter(spending => spending.amount >= Number(minAmount));
+      setSpendings(filteredSpendings);
+      return;
+    }
+
+    // Validate that amounts are greater than 0
+    if(Number(minAmount) < 0 || Number(maxAmount) < 0) {
+      toast.error("Amounts must be greater than 0");
+      return;
+    }
+
     const filteredSpendings = initialSpendings.filter(spending => spending.amount >= Number(minAmount) && spending.amount <= Number(maxAmount));
     setSpendings(filteredSpendings);
   }
 
+  // Filter by date range
   const filterByDateRange = (): void => {
-    const filtered = spendings.filter((spending) => {
-      const spendingDate = new Date(spending.date);
+    const filtered = spendings.filter((initialSpending) => {
+      const spendingDate = new Date(initialSpending.date);
 
       if (startDate && spendingDate < new Date(startDate)) return false;
       if (endDate && spendingDate > new Date(endDate)) return false;
@@ -103,51 +145,84 @@ export const useContent = () => {
     setSpendings(filtered);
   };
 
+  // Restore the original spendings and reset filters
   const restoreSpendings = (): void => {
     setSpendings(initialSpendings);
+    setMinAmount("");
+    setMaxAmount("");
+    setStartDate("");
+    setEndDate("");
   }
 
+  // Total amount of all spending
   const totalAmount: number = spendings.reduce((total, spending) => total + spending.amount, 0);
 
+  // Delete
   const handleDelete = (id: number, openModal: () => void): void => {
     setSelectedSpendingId(id);
     openModal();
   }
 
-  const deleteSpending = (closeModal: () => void): void => {
-    setSpendings(spendings.filter((s) => s.id !== selectedSpendingId));
-    closeModal();
-  }
-
-  const startEditing = (spending: Spending) => {
-    if (spending.id !== undefined && spending.id !== null) {
-      setEditingId(spending.id);
-      setErrors({});
+  const deleteSpending = async (closeModal: () => void): Promise<void> => {
+    if (selectedSpendingId === null) {
+      toast.error("Server error");
+      return;
     }
 
-    setEditSpending({
-      id: spending.id,
-      description: spending.description,
-      amount: spending.amount,
-      date: spending.date
-    })
+    try {
+      await toast.promise(
+        contentService.deleteSpending(selectedSpendingId),
+        {
+          pending: "Deleting spending...",
+          success: "Spending deleted successfully",
+          error: "Error deleting spending",
+        }
+      );
+
+      closeModal();
+      triggerReload();
+    } catch (e) {
+      console.error('Server error', e);
+    }
+  }
+
+  // Edit
+  const startEditing = (spending: Spending, openEditModal: () => void) => {
+    if (spending.id !== undefined && spending.id !== null) {
+
+      setSelectedSpending(spending);
+      setEditSpending(spending);
+
+      setErrors({});
+      openEditModal();
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (!editSpending) return;
+
     setEditSpending({
       ...editSpending,
       [e.target.name]: e.target.value
     });
   }
 
-  const handleEdit = async (e: React.SubmitEvent<HTMLFormElement>, spending: Spending): Promise<void> => {
+  const handleEdit = async (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void): Promise<void> => {
     e.preventDefault();
     disabledButton();
 
+    if (!editSpending || !selectedSpending) {
+      toast.error("Server error");
+      disabledButton();
+      return;
+    }
+
+    console.log(editSpending.amount === selectedSpending?.amount);
+
     const noChanges =
-      editSpending.description === spending.description &&
-      editSpending.amount === spending.amount &&
-      editSpending.date === spending.date;
+      editSpending.description === selectedSpending?.description &&
+      editSpending.amount === selectedSpending?.amount &&
+      editSpending.date === selectedSpending?.date;
 
     if (noChanges) {
       toast.error('You have to modify at least one field');
@@ -160,11 +235,11 @@ export const useContent = () => {
 
       if (res.success) {
         toast.success('Spending updated successfully');
+        closeModal();
         triggerReload();
-        setEditingId(null);
       }
     } catch (e: any) {
-      if(e.response && e.response.status === 422) {
+      if (e.response && e.response.status === 422) {
         const errors = e.response.data.errors;
 
         setErrors(errors);
@@ -180,8 +255,6 @@ export const useContent = () => {
   return {
     spendings,
     formatSpending,
-    editingId,
-    setEditingId,
     loadButton,
     errors,
     orderByDate,
@@ -203,7 +276,8 @@ export const useContent = () => {
     handleDelete,
     deleteSpending,
     startEditing,
+    selectedSpending,
     handleChange,
-    handleEdit
+    handleEdit,
   };
 }

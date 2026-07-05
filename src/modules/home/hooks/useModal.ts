@@ -4,7 +4,8 @@ import type { Spending } from "../../../types/types";
 export const useModal = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
-  const [newSpending, setNewSpending]= useState<Spending>({
+  const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
+  const [newSpending, setNewSpending] = useState<Spending>({
     description: '',
     amount: 0,
     date: ''
@@ -41,6 +42,10 @@ export const useModal = () => {
   const openDeleteModal = () => { setDeleteModalIsOpen(true) }
   const closeDeleteModal = () => { setDeleteModalIsOpen(false) }
 
+  // Open and close edit spending modal
+  const openEditModal = () => { setEditModalIsOpen(true) }
+  const closeEditModal = () => { setEditModalIsOpen(false) }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setNewSpending({
       ...newSpending,
@@ -52,5 +57,5 @@ export const useModal = () => {
     return;
   }
 
-  return { openModal, closeModal, openDeleteModal, closeDeleteModal, deleteModalIsOpen, modalIsOpen, setIsOpen, customStyles, newSpending, handleChange, handleSubmit };
+  return { openModal, closeModal, openDeleteModal, closeDeleteModal, openEditModal, closeEditModal, deleteModalIsOpen, modalIsOpen, editModalIsOpen, customStyles, newSpending, handleChange, handleSubmit };
 }

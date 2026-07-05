@@ -6,25 +6,11 @@ export interface Spending {
   date: string;
 }
 
-export interface BaseModalProps {
+interface BaseModalProps {
   modalIsOpen: boolean;
   closeModal: () => void;
   customStyles: ReactModal.Styles;
   loadButton: boolean;
-}
-
-export interface CardProps extends BaseModalProps, DeleteModalProps {
-  spendings: spending[];
-  formatSpending: (date: string) => string;
-  editingId: number | null;
-  setEditingId: (id: number | null) => void;
-  loadButton: boolean;
-  errors: Errors;
-  handleDelete: (id: number, openModal: () => void) => void;
-  openModal: () => void;
-  startEditing: (spending: Spending) => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleEdit: (e: React.SubmitEvent<HTMLFormElement>, spending: Spending) => Promise<void>;
 }
 
 export interface ModalProps extends BaseModalProps {
@@ -33,8 +19,30 @@ export interface ModalProps extends BaseModalProps {
   handleChange: ChangeEvent<HTMLInputElement>;
 }
 
+interface EditModalProps extends BaseModalProps, BaseCardProps {
+  openEditModal: () => void;
+  editModalIsOpen: boolean;
+  closeEditModal: () => void;
+}
+
 export interface DeleteModalProps extends BaseModalProps {
-  deleteSpending: (closeModal: () => void) => void;
+  deleteSpending: (closeModal: () => void) => Promise<void>;
+}
+
+interface BaseCardProps extends BaseModalProps{
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
+  errors: Errors;
+  selectedSpending: Spending | null;
+}
+
+export interface CardProps extends BaseModalProps, BaseCardProps, DeleteModalProps, EditModalProps {
+  spendings: spending[];
+  formatSpending: (date: string) => string;
+  loadButton: boolean;
+  openModal: () => void;
+  handleDelete: (id: number, openModal: () => void) => void;
+  startEditing: (spending: Spending, openEditModal: () => void) => void;
 }
 
 export interface SpendingFiltersProps {
@@ -78,12 +86,6 @@ export interface LoginPayload {
   email: string;
   password: string;
   showPassword?: boolean;
-}
-
-export interface FailedLoginPayload {
-  success: boolean;
-  message: string;
-  error: boolean;
 }
 
 export interface BaseApiResponse {
