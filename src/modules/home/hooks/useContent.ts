@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import type { Spending, Errors } from "../../../types/types";
+import type { Spending, Errors, Requests } from "../../../types/types";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
 import { LoadingContext } from "../../../context/LoadingContext";
@@ -29,7 +29,7 @@ export const useContent = () => {
   useEffect(() => {
     const fetchs = async () => {
       try {
-        const res = await contentService.getSpending();
+        const res: Requests<Spending[]> = await contentService.getSpending();
 
         if (res.success) {
           setInitialSpendings(res.data);
@@ -217,8 +217,6 @@ export const useContent = () => {
       return;
     }
 
-    console.log(editSpending.amount === selectedSpending?.amount);
-
     const noChanges =
       editSpending.description === selectedSpending?.description &&
       editSpending.amount === selectedSpending?.amount &&
@@ -231,7 +229,7 @@ export const useContent = () => {
     }
 
     try {
-      const res = await contentService.editSpending(editSpending);
+      const res: Requests<Spending> = await contentService.editSpending(editSpending);
 
       if (res.success) {
         toast.success('Spending updated successfully');
@@ -244,7 +242,7 @@ export const useContent = () => {
 
         setErrors(errors);
       } else {
-        console.log("The request failed: ", e);
+        console.error("The request failed: ", e);
         toast.error("Server error");
       }
     } finally {

@@ -1,6 +1,7 @@
 import Modal from "react-modal";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import type { BaseCardProps } from "../../../../types/types";
+import FieldError from "../common/FieldError";
 
 const EditSpendingModal = (props: BaseCardProps) => {
   const {
@@ -59,11 +60,8 @@ const EditSpendingModal = (props: BaseCardProps) => {
                 onChange={handleChange}
                 disabled={loadButton}
               />
-              {errors?.description && (
-                <div className="mt-1">
-                  <span className="text-danger">{errors.description[0]}</span>
-                </div>
-              )}
+
+              <FieldError error={errors?.description} />
             </div>
 
             <div className="mb-3">
@@ -79,11 +77,8 @@ const EditSpendingModal = (props: BaseCardProps) => {
                 onChange={handleChange}
                 disabled={loadButton}
               />
-              {errors?.amount && (
-                <div className="mt-1">
-                  <span className="text-danger">{errors.amount[0]}</span>
-                </div>
-              )}
+
+              <FieldError error={errors?.amount} />
             </div>
 
             <div className="mb-4">
@@ -99,11 +94,8 @@ const EditSpendingModal = (props: BaseCardProps) => {
                 onChange={handleChange}
                 disabled={loadButton}
               />
-              {errors?.date && (
-                <div className="mt-1">
-                  <span className="text-danger">{errors.date[0]}</span>
-                </div>
-              )}
+
+              <FieldError error={errors?.date} />
             </div>
 
             <button

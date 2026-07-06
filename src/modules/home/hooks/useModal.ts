@@ -1,15 +1,9 @@
 import { useState } from "react";
-import type { Spending } from "../../../types/types";
 
 export const useModal = () => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);
-  const [newSpending, setNewSpending] = useState<Spending>({
-    description: '',
-    amount: 0,
-    date: ''
-  })
 
   const customStyles: ReactModal.Styles = {
     overlay: {
@@ -46,16 +40,5 @@ export const useModal = () => {
   const openEditModal = () => { setEditModalIsOpen(true) }
   const closeEditModal = () => { setEditModalIsOpen(false) }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setNewSpending({
-      ...newSpending,
-      [e.target.name]: e.target.value
-    });
-  }
-
-  const handleSubmit = () => {
-    return;
-  }
-
-  return { openModal, closeModal, openDeleteModal, closeDeleteModal, openEditModal, closeEditModal, deleteModalIsOpen, modalIsOpen, editModalIsOpen, customStyles, newSpending, handleChange, handleSubmit };
+  return { openModal, closeModal, openDeleteModal, closeDeleteModal, openEditModal, closeEditModal, deleteModalIsOpen, modalIsOpen, editModalIsOpen, customStyles };
 }

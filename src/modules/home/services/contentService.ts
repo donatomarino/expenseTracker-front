@@ -6,6 +6,17 @@ const contentService = {
     return instanceAxios.getRequest({ url: '/get-all-spendings' })
   },
 
+  addSpending(data: Spending): Promise<Requests<Spending>> {
+    return instanceAxios.postRequest({
+      url: '/add-spending',
+      data: {
+        description: data.description,
+        amount: data.amount,
+        date: data.date
+      }
+    })
+  },
+
   editSpending(data: Spending): Promise<Requests<Spending>> {
     return instanceAxios.putRequest({
       url: '/edit-spending',

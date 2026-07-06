@@ -25,7 +25,7 @@ export default {
       const res: AxiosResponse = await instance.post(url, data, { params, headers });
       return res.data;
     } catch (e: any) {
-      throw (e.response?.data || e);
+      throw e;
     }
   },
 

@@ -11,12 +11,13 @@ interface BaseModalProps {
   closeModal: () => void;
   customStyles: ReactModal.Styles;
   loadButton: boolean;
+  errors: Errors;
 }
 
 export interface ModalProps extends BaseModalProps {
-  handleSubmit: React.SubmitEventHandler<HTMLFormElement>;
-  newSpending: Spending;
-  handleChange: ChangeEvent<HTMLInputElement>;
+  handleSubmit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
+  newSpending: Spending | null;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface EditModalProps extends BaseModalProps, BaseCardProps {
@@ -32,7 +33,6 @@ export interface DeleteModalProps extends BaseModalProps {
 interface BaseCardProps extends BaseModalProps{
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
-  errors: Errors;
   selectedSpending: Spending | null;
 }
 
@@ -108,4 +108,8 @@ export interface Errors {
   description?: string,
   amount?: string,
   date?: string;
+}
+
+export interface FieldErrorProps {
+  error?: string;
 }

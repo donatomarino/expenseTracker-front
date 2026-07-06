@@ -1,7 +1,7 @@
 import Modal from "react-modal";
 import type { CardProps } from "../../../../types/types";
-import DeleteSpendingModal from "../Modals/DeleteSpendingModal";
-import EditSpendingModal from "../Modals/EditSpedingModal";
+import DeleteSpendingModal from "../modals/DeleteSpendingModal";
+import EditSpendingModal from "../modals/EditSpedingModal";
 
 Modal.setAppElement("#root");
 

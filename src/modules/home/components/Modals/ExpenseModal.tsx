@@ -1,6 +1,7 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import type { ModalProps } from '../../../../types/types';
+import FieldError from '../common/FieldError';
 
 const ExpenseModal = (props: ModalProps) => {
   const {
@@ -10,7 +11,8 @@ const ExpenseModal = (props: ModalProps) => {
     loadButton,
     newSpending,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    errors
   } = props;
 
   return (
@@ -36,7 +38,7 @@ const ExpenseModal = (props: ModalProps) => {
         </div>
 
         <div>
-          <form className="bg-white rounded-4 p-3" onSubmit={handleSubmit}>
+          <form className="bg-white rounded-4 p-3" onSubmit={(e) => handleSubmit(e, closeModal)}>
             <div className="mb-3">
               <label className="form-label fw-semibold text-secondary">Description</label>
               <input
@@ -45,11 +47,13 @@ const ExpenseModal = (props: ModalProps) => {
                 className="form-control form-control-lg bg-light border-0 shadow-sm"
                 aria-label="Description"
                 placeholder="e.g. Groceries"
-                value={newSpending.description}
+                value={newSpending?.description}
                 onChange={handleChange}
                 disabled={loadButton}
                 required
               />
+              
+              <FieldError error={errors?.description} />
             </div>
 
             <div className="mb-3">
@@ -60,11 +64,12 @@ const ExpenseModal = (props: ModalProps) => {
                 className="form-control form-control-lg bg-light border-0 shadow-sm"
                 aria-label="Amount"
                 placeholder="e.g. 24.99"
-                value={newSpending.amount || ''}
                 onChange={handleChange}
                 disabled={loadButton}
                 required
               />
+
+              <FieldError error={errors?.amount} />
             </div>
 
             <div className="mb-4">
@@ -74,11 +79,13 @@ const ExpenseModal = (props: ModalProps) => {
                 name="date"
                 className="form-control form-control-lg bg-light border-0 shadow-sm"
                 aria-label="Date"
-                value={newSpending.date}
+                value={newSpending?.date}
                 onChange={handleChange}
                 disabled={loadButton}
                 required
               />
+              
+              <FieldError error={errors?.date} />
             </div>
 
             <button
