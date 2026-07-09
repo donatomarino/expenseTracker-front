@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import type { FormFieldProps } from "../../types/types";
+import type { FormFieldProps } from "../../../types/types";
 import FieldError from "./FieldError";
 
 const FormField = (props: FormFieldProps) => {
@@ -62,7 +62,6 @@ const FormField = (props: FormFieldProps) => {
             name={name}
             onChange={onChange}
             placeholder={placeholder}
-            required
             disabled={disabled}
           />
 

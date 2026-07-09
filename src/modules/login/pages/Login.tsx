@@ -1,6 +1,7 @@
 import useLogin from "../hooks/useLogin";
 import { Link } from "react-router-dom";
-import FormField from "../../common/FormField";
+import FormField from "../../common/components/FormField";
+import FullPageLoader from "../../common/components/FullPageLoader";
 
 const Login = () => {
   const {
@@ -8,6 +9,8 @@ const Login = () => {
     handleChange,
     handleSubmit,
     loadButton,
+    loading,
+    errors
   } = useLogin();
 
   return (
@@ -32,6 +35,7 @@ const Login = () => {
               onChange={handleChange}
               placeholder="your@email.com"
               disabled={loadButton}
+              error={errors.email}
             />
 
             <FormField
@@ -43,6 +47,7 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Input your password"
               disabled={loadButton}
+              error={errors.password}
             />
 
             {/* <div className="d-flex justify-content-between align-items-center mb-3">
@@ -73,6 +78,8 @@ const Login = () => {
               <Link to="/register" className="btn btn-link">
                 Don't have an account? Sign up
               </Link>
+
+              {FullPageLoader(loading)}
             </div>
           </form>
         </div>

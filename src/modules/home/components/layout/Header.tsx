@@ -1,9 +1,9 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from 'react-modal';
-import { useModal } from '../hooks/useModal';
-import ExpenseModal from './modals/ExpenseModal';
-import { useContent } from '../hooks/useContent';
-import useHeader from '../hooks/useHeader';
+import { useModal } from '../../hooks/useModal';
+import NewSpendingModal from '../modals/NewSpendingModal';
+import { useContent } from '../../hooks/useContent';
+import useHeader from '../../hooks/useHeader';
 
 Modal.setAppElement('#root');
 const Header = () => {
@@ -18,11 +18,12 @@ const Header = () => {
     newSpending,
     handleChange,
     handleSubmit,
-    errors
+    errors,
+    loading
   } = useHeader();
 
   const {
-    loadButton
+    loadButton,
   } = useContent();
 
   const handleLogout = (): void => {
@@ -64,7 +65,7 @@ const Header = () => {
         </button>
       </div>
 
-      <ExpenseModal
+      <NewSpendingModal
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         customStyles={customStyles}
@@ -73,6 +74,7 @@ const Header = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         errors={errors}
+        loading={loading}
       />
     </header>
   );

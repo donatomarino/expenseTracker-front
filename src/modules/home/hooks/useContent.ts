@@ -3,6 +3,7 @@ import type { Spending, Errors, Requests } from "../../../types/types";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
 import { LoadingContext } from "../../../context/LoadingContext";
+import { useLoad } from "../../common/hooks/useLoad";
 
 export const useContent = () => {
   const { loadButton, disabledButton, reload, triggerReload } = useContext(LoadingContext);
@@ -25,6 +26,9 @@ export const useContent = () => {
   const [selectedSpendingId, setSelectedSpendingId] = useState<number | null>(null);
   const [errors, setErrors] = useState<Errors>({});
 
+  // Spinner loader
+  const { loading, startLoading, stopLoading } = useLoad();
+
   // Load spendings 
   useEffect(() => {
     const fetchs = async () => {
@@ -32,7 +36,8 @@ export const useContent = () => {
         const res: Requests<Spending[]> = await contentService.getSpending();
 
         if (res.success) {
-          setInitialSpendings(res.data);
+          const sortedSpendings = sortSpendingsByDateDesc(res.data);
+          setInitialSpendings(sortedSpendings);
         } else {
           toast.error('Error when charging expenses');
         }
@@ -64,11 +69,16 @@ export const useContent = () => {
     return date.split('-').reverse().join('/'); // Format as DD/MM/YYYY
   }
 
+  // Sort spendings by date desc
+  const sortSpendingsByDateDesc = (spendings: Spending[]): Spending[] => {
+    return [...spendings].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  }
+
   // Order by date
   const orderByDate = (): void => {
-    // Create a new array to avoid mutating the original state
-    const sortedByDate = [...initialSpendings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    setSpendings(sortedByDate);
+    setSpendings(sortSpendingsByDateDesc(initialSpendings));
   }
 
   // Order by amount
@@ -96,33 +106,33 @@ export const useContent = () => {
   // Filter by amount
   const filterByAmount = (): void => {
     // Validate inputs
-    if(Number(maxAmount) < Number(minAmount)) {
+    if (Number(maxAmount) < Number(minAmount)) {
       toast.error("Max amount must be greater than min amount");
       return;
     }
 
     // Check if both minAmount and maxAmount are empty
-    if(!minAmount && !maxAmount) {
+    if (!minAmount && !maxAmount) {
       toast.error("You must enter at least one amount");
       return;
     }
 
     // Filter spending withouth minAmount
-    if(!minAmount) {
+    if (!minAmount) {
       const filteredSpendings = initialSpendings.filter(spending => spending.amount <= Number(maxAmount));
       setSpendings(filteredSpendings);
       return;
     }
 
     // Filter spending withouth maxAmount
-    if(!maxAmount) {
+    if (!maxAmount) {
       const filteredSpendings = initialSpendings.filter(spending => spending.amount >= Number(minAmount));
       setSpendings(filteredSpendings);
       return;
     }
 
     // Validate that amounts are greater than 0
-    if(Number(minAmount) < 0 || Number(maxAmount) < 0) {
+    if (Number(minAmount) < 0 || Number(maxAmount) < 0) {
       toast.error("Amounts must be greater than 0");
       return;
     }
@@ -169,6 +179,7 @@ export const useContent = () => {
       return;
     }
 
+    startLoading();
     try {
       await toast.promise(
         contentService.deleteSpending(selectedSpendingId),
@@ -183,6 +194,8 @@ export const useContent = () => {
       triggerReload();
     } catch (e) {
       console.error('Server error', e);
+    } finally {
+      stopLoading();
     }
   }
 
@@ -228,6 +241,7 @@ export const useContent = () => {
       return;
     }
 
+    startLoading();
     try {
       const res: Requests<Spending> = await contentService.editSpending(editSpending);
 
@@ -247,6 +261,7 @@ export const useContent = () => {
       }
     } finally {
       disabledButton();
+      stopLoading();
     }
   }
 
@@ -277,5 +292,6 @@ export const useContent = () => {
     selectedSpending,
     handleChange,
     handleEdit,
+    loading
   };
 }

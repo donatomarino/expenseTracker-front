@@ -30,7 +30,8 @@ const Content = () => {
     startEditing,
     selectedSpending,
     handleChange,
-    handleEdit
+    handleEdit,
+    loading
   } = useContent();
 
   const {
@@ -85,6 +86,7 @@ const Content = () => {
         selectedSpending={selectedSpending}
         handleChange={handleChange}
         handleEdit={handleEdit}
+        loading={loading}
       />
 
       <h2 className="mt-auto pt-4 text-end fw-bold text-primary">

@@ -4,6 +4,7 @@ import { LoadingContext } from "../../../context/LoadingContext";
 import { toast } from "react-toastify";
 import registerService from "../services/registerService";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const useRegister = () => {
 
@@ -47,16 +48,24 @@ const useRegister = () => {
         toast.error("Error creating account. Please try again.");
       }
 
-    } catch (e: any) {
-      if (e.response && e.response.status === 422) {
-        const errors = e.response.data.errors;
-        disabledButton();
-        setErrors(errors);
-      } else {
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        const status = e.response?.status;
+
+        if (status === 422) {
+          disabledButton();
+          setErrors(e.response?.data?.errors);
+          return;
+        }
+
         console.error("The request failed: ", e);
         disabledButton();
         toast.error("Server error");
+        return;
       }
+
+      console.error("Unexpected error: ", e);
+      toast.error("Unexpected error");
     }
   }
   return {

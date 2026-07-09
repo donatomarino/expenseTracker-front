@@ -1,4 +1,4 @@
-import FormField from "../../common/FormField";
+import FormField from "../../common/components/FormField";
 import { Link } from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 

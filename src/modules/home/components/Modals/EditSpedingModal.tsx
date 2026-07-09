@@ -1,7 +1,8 @@
 import Modal from "react-modal";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import type { BaseCardProps } from "../../../../types/types";
-import FieldError from "../../../common/FieldError";
+import FieldError from "../../../common/components/FieldError";
+import FullPageLoader from "../../../common/components/FullPageLoader";
 
 const EditSpendingModal = (props: BaseCardProps) => {
   const {
@@ -12,7 +13,8 @@ const EditSpendingModal = (props: BaseCardProps) => {
     errors,
     handleChange,
     handleEdit,
-    selectedSpending
+    selectedSpending,
+    loading
   } = props;
 
   return (
@@ -107,7 +109,10 @@ const EditSpendingModal = (props: BaseCardProps) => {
               Save changes
             </button>
           </form>
+          
+          {FullPageLoader(loading)}
         </div>
+
       </div>
     </Modal>
   );

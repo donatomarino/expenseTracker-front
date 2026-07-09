@@ -1,5 +1,6 @@
 import type { DeleteModalProps } from "../../../../types/types";
 import Modal from 'react-modal';
+import FullPageLoader from "../../../common/components/FullPageLoader";
 
 const DeleteSpendingModal = (props: DeleteModalProps) => {
   const {
@@ -7,9 +8,10 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
     closeModal,
     customStyles,
     loadButton,
-    deleteSpending
+    deleteSpending,
+    loading
   } = props;
-  
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -48,6 +50,8 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
             Delete
           </button>
         </div>
+
+        {FullPageLoader(loading)}
       </div>
     </Modal>
   );

@@ -1,9 +1,10 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import type { ModalProps } from '../../../../types/types';
-import FieldError from "../../../common/FieldError";
+import FieldError from "../../../common/components/FieldError";
+import FullPageLoader from '../../../common/components/FullPageLoader';
 
-const ExpenseModal = (props: ModalProps) => {
+const NewSpendingModal = (props: ModalProps) => {
   const {
     modalIsOpen,
     closeModal,
@@ -12,7 +13,8 @@ const ExpenseModal = (props: ModalProps) => {
     newSpending,
     handleChange,
     handleSubmit,
-    errors
+    errors,
+    loading
   } = props;
 
   return (
@@ -52,7 +54,7 @@ const ExpenseModal = (props: ModalProps) => {
                 disabled={loadButton}
                 required
               />
-              
+
               <FieldError error={errors?.description} />
             </div>
 
@@ -84,7 +86,7 @@ const ExpenseModal = (props: ModalProps) => {
                 disabled={loadButton}
                 required
               />
-              
+
               <FieldError error={errors?.date} />
             </div>
 
@@ -96,6 +98,8 @@ const ExpenseModal = (props: ModalProps) => {
               <i className="bi bi-plus-circle me-2"></i>
               Add spending
             </button>
+
+            {FullPageLoader(loading)}
           </form>
         </div>
       </div>
@@ -103,4 +107,4 @@ const ExpenseModal = (props: ModalProps) => {
   );
 };
 
-export default ExpenseModal;
+export default NewSpendingModal;

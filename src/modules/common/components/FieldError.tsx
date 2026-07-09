@@ -1,4 +1,4 @@
-import type { FieldErrorProps } from "../../../../types/types";
+import type { FieldErrorProps } from "../../../types/types";
 
 const FieldError = ({ error }: FieldErrorProps) => {
   if (!error || error.length === 0) return null;

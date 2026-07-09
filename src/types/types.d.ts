@@ -12,6 +12,7 @@ interface BaseModalProps {
   customStyles: ReactModal.Styles;
   loadButton: boolean;
   errors: Errors;
+  loading: boolean;
 }
 
 export interface ModalProps extends BaseModalProps {
@@ -61,6 +62,23 @@ export interface SpendingFiltersProps {
   endDate: string;
   setEndDate: Dispatch<SetStateAction<string>>;
   filterByDateRange: () => void;
+}
+
+export interface FormFieldProps {
+  label: string;
+  type: string;
+  id: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  name: string;
+  disabled: boolean;
+  error?: string;
+}
+
+export interface EmptyStateProps {
+  title: string;
+  description: string;
 }
 
 //--------- Interfaces for context ----------//
@@ -119,18 +137,6 @@ export interface RegisterPayload {
   email: string;
   password: string;
   confirmPassword: string;
-}
-
-export interface FormFieldProps {
-  label: string;
-  type: string;
-  id: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
-  name: string;
-  disabled: boolean;
-  error?: string;
 }
 
 export interface RegisterErrors {
