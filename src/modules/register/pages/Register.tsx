@@ -5,7 +5,6 @@ import useRegister from "../hooks/useRegister";
 const Register = () => {
   const {
     loadButton,
-    disabledButton,
     isRegistred,
     formData,
     errors,
