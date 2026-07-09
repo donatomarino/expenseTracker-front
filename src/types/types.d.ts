@@ -30,7 +30,7 @@ export interface DeleteModalProps extends BaseModalProps {
   deleteSpending: (closeModal: () => void) => Promise<void>;
 }
 
-interface BaseCardProps extends BaseModalProps{
+interface BaseCardProps extends BaseModalProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
   selectedSpending: Spending | null;
@@ -105,11 +105,36 @@ export interface AuthResponse extends BaseApiResponse {
 }
 
 export interface Errors {
-  description?: string,
-  amount?: string,
+  description?: string;
+  amount?: string;
   date?: string;
 }
 
 export interface FieldErrorProps {
   error?: string;
+}
+
+export interface RegisterPayload {
+  full_name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface FormFieldProps {
+  label: string;
+  type: string;
+  id: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  placeholder: string;
+  name: string;
+  disabled: boolean;
+  error?: string;
+}
+
+export interface RegisterErrors {
+  full_name?: string; 
+  email?: string;
+  password?: string;
 }

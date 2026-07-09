@@ -4,6 +4,7 @@ import Home from "./modules/home/pages/Home"
 import { LoadingProvider } from "./context/LoadingContext"
 import Login from "./modules/login/pages/Login"
 import { Bounce, ToastContainer } from "react-toastify"
+import Register from "./modules/register/pages/Register"
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Router>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
           </Routes>
         </Router>

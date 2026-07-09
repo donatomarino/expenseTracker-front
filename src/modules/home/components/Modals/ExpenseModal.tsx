@@ -1,7 +1,7 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import type { ModalProps } from '../../../../types/types';
-import FieldError from '../common/FieldError';
+import FieldError from "../../../common/FieldError";
 
 const ExpenseModal = (props: ModalProps) => {
   const {

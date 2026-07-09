@@ -85,6 +85,7 @@ const Card = (props: CardProps) => {
         closeModal={closeModal}
         customStyles={customStyles}
         loadButton={loadButton}
+        errors={errors}
         deleteSpending={deleteSpending}
       />
     </div>

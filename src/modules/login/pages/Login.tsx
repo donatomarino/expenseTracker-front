@@ -1,13 +1,14 @@
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import useLogin from "../hooks/useLogin";
+import { Link } from "react-router-dom";
+import FormField from "../../common/FormField";
 
 const Login = () => {
   const {
-    formData, 
-    setFormData, 
-    handleChange, 
+    formData,
+    handleChange,
     handleSubmit,
-    loadButton
+    loadButton,
   } = useLogin();
 
   return (
@@ -23,50 +24,27 @@ const Login = () => {
             onSubmit={handleSubmit}
             method="POST"
           >
-            <div className="mb-3">
-              <label htmlFor="loginEmail" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                id="loginEmail"
-                placeholder="your@email.com"
-                value={formData.email}
-                onChange = {handleChange}
-              />
-            </div>
+            <FormField
+              label="Email"
+              type="text"
+              name="email"
+              id="loginEmail"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="your@email.com"
+              disabled={loadButton}
+            />
 
-            <div className="mb-3">
-              <label htmlFor="loginPassword" className="form-label">
-                Password
-              </label>
-
-              <div className="position-relative">
-                <input
-                  type={formData.showPassword ? "text" : "password"}
-                  className="form-control"
-                  name="password"
-                  id="loginPassword"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  style={{ paddingRight: "2.5rem" }}
-                />
-
-                <button
-                  type="button"
-                  className="border-0 bg-transparent position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center justify-content-center text-muted"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setFormData((prev) => ({ ...prev, showPassword: !prev.showPassword }));
-                  }}
-                >
-                  {formData.showPassword ? <FaEye /> : <FaEyeSlash />}
-                </button>
-              </div>
-            </div>
+            <FormField
+              label="Password"
+              type="password"
+              name="password"
+              id="loginPassword"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Input your password"
+              disabled={loadButton}
+            />
 
             {/* <div className="d-flex justify-content-between align-items-center mb-3">
               <div className="form-check">
@@ -84,9 +62,19 @@ const Login = () => {
               </button>
             </div> */}
 
-            <button type="submit" className="btn btn-primary w-100" disabled={loadButton}>
-              Sign in
-            </button>
+            <div className="d-flex flex-column gap-2">
+              <button
+                type="submit"
+                className="btn btn-primary w-100 rounded-pill py-2"
+                disabled={loadButton}
+              >
+                Sign in
+              </button>
+
+              <Link to="/register" className="btn btn-link">
+                Don't have an account? Sign up
+              </Link>
+            </div>
           </form>
         </div>
       </div>

@@ -9,6 +9,10 @@ const useLogin = () => {
   useEffect(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user_name');
+
+    if(loadButton) {
+      disabledButton();
+    }    
   }, []);
 
   const navigate = useNavigate();
@@ -46,7 +50,7 @@ const useLogin = () => {
     }
   }
 
-  return { formData, setFormData, handleChange, handleSubmit, loadButton };
+  return { formData, handleChange, handleSubmit, loadButton };
 }
 
 export default useLogin;
