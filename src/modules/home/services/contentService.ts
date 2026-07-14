@@ -3,12 +3,12 @@ import instanceAxios from '../../../api/APIUtils';
 
 const contentService = {
   getSpending(): Promise<Requests<Spending[]>> {
-    return instanceAxios.getRequest({ url: '/get-all-spendings' })
+    return instanceAxios.getRequest({ url: '/spendings' })
   },
 
   addSpending(data: Spending): Promise<Requests<Spending>> {
     return instanceAxios.postRequest({
-      url: '/add-spending',
+      url: '/spendings',
       data: {
         description: data.description,
         amount: data.amount,
@@ -19,7 +19,7 @@ const contentService = {
 
   editSpending(data: Spending): Promise<Requests<Spending>> {
     return instanceAxios.putRequest({
-      url: '/edit-spending',
+      url: '/spendings',
       data: {
         id: data.id,
         description: data.description,
@@ -31,7 +31,7 @@ const contentService = {
 
   deleteSpending(id: number): Promise<BaseApiResponse> {
     return instanceAxios.deleteRequest({
-      url: `/delete-spending/${id}`,
+      url: `/spendings/${id}`,
     })
   }
 }
