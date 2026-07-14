@@ -20,7 +20,7 @@ const FormField = (props: FormFieldProps) => {
 
   return (
     <div className="mb-3">
-      <label htmlFor={id} className="form-label">
+      <label htmlFor={id} className="form-label fw-semibold">
         {label}
       </label>
 
@@ -29,7 +29,7 @@ const FormField = (props: FormFieldProps) => {
           <div className="position-relative">
             <input
               type={showPassword ? "text" : "password"}
-              className="form-control"
+              className="form-control form-control-lg bg-light border-0 shadow-sm"
               name={name}
               id={id}
               placeholder={placeholder}
@@ -57,7 +57,7 @@ const FormField = (props: FormFieldProps) => {
           <input
             type={type}
             id={id}
-            className="form-control"
+            className="form-control form-control-lg  bg-light border-0 shadow-sm"
             value={value}
             name={name}
             onChange={onChange}

@@ -1,8 +1,8 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import type { ModalProps } from '../../../../types/types';
-import FieldError from "../../../common/components/FieldError";
 import FullPageLoader from '../../../common/components/FullPageLoader';
+import FormField from '../../../common/components/FormField';
 
 const NewSpendingModal = (props: ModalProps) => {
   const {
@@ -41,54 +41,39 @@ const NewSpendingModal = (props: ModalProps) => {
 
         <div>
           <form className="bg-white rounded-4 p-3" onSubmit={(e) => handleSubmit(e, closeModal)}>
-            <div className="mb-3">
-              <label className="form-label fw-semibold text-secondary">Description</label>
-              <input
-                type="text"
-                name="description"
-                className="form-control form-control-lg bg-light border-0 shadow-sm"
-                aria-label="Description"
-                placeholder="e.g. Groceries"
-                value={newSpending?.description}
-                onChange={handleChange}
-                disabled={loadButton}
-                required
-              />
 
-              <FieldError error={errors?.description} />
-            </div>
+            <FormField
+              label="Description"
+              type="text"
+              name="description"
+              id="newSpendingDescription"
+              onChange={handleChange}
+              placeholder='e.g. Groceries'
+              value={newSpending?.description}
+              disabled={loadButton}
+              error={errors?.description}
+            />
 
-            <div className="mb-3">
-              <label className="form-label fw-semibold text-secondary">Amount</label>
-              <input
-                type="text"
-                name="amount"
-                className="form-control form-control-lg bg-light border-0 shadow-sm"
-                aria-label="Amount"
-                placeholder="e.g. 24.99"
-                onChange={handleChange}
-                disabled={loadButton}
-                required
-              />
+            <FormField
+              label="Amount"
+              type="text"
+              name="amount"
+              id="newSpendingAmount"
+              onChange={handleChange}
+              placeholder='e.g. 24.99'
+              disabled={loadButton}
+              error={errors?.amount}
+            />
 
-              <FieldError error={errors?.amount} />
-            </div>
-
-            <div className="mb-4">
-              <label className="form-label fw-semibold text-secondary">Date</label>
-              <input
-                type="date"
-                name="date"
-                className="form-control form-control-lg bg-light border-0 shadow-sm"
-                aria-label="Date"
-                value={newSpending?.date}
-                onChange={handleChange}
-                disabled={loadButton}
-                required
-              />
-
-              <FieldError error={errors?.date} />
-            </div>
+            <FormField
+              label="Date"
+              type="date"
+              name="date"
+              id="newSpendingDate"
+              onChange={handleChange}
+              disabled={loadButton}
+              error={errors?.date}
+            />
 
             <button
               type="submit"

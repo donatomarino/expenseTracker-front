@@ -69,7 +69,7 @@ const Login = () => {
             <div className="d-flex flex-column gap-2">
               <button
                 type="submit"
-                className="btn btn-primary w-100 rounded-pill py-2"
+                className="btn btn-primary w-100 rounded-pill py-2 shadow-sm"
                 disabled={loadButton}
               >
                 Sign in

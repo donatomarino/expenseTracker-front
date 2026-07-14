@@ -3,6 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import type { BaseCardProps } from "../../../../types/types";
 import FieldError from "../../../common/components/FieldError";
 import FullPageLoader from "../../../common/components/FullPageLoader";
+import FormField from "../../../common/components/FormField";
 
 const EditSpendingModal = (props: BaseCardProps) => {
   const {
@@ -49,56 +50,38 @@ const EditSpendingModal = (props: BaseCardProps) => {
             onSubmit={(e) => handleEdit(e, closeModal)}
             method="PUT"
           >
-            <div className="mb-3">
-              <label className="form-label fw-semibold text-secondary">
-                Description
-              </label>
-              <input
-                type="text"
-                name="description"
-                className="form-control form-control-lg bg-light border-0 shadow-sm"
-                aria-label="Description"
-                placeholder={selectedSpending?.description}
-                onChange={handleChange}
-                disabled={loadButton}
-              />
+            <FormField
+              label="Description"
+              type="text"
+              name="description"
+              id="editSpendingDescription"
+              onChange={handleChange}
+              placeholder={selectedSpending?.description || ''}
+              disabled={loadButton}
+              error={errors?.description}
+            />
 
-              <FieldError error={errors?.description} />
-            </div>
+            <FormField
+              label="Amount"
+              type="text"
+              name="amount"
+              id="editSpendingAmount"
+              onChange={handleChange}
+              placeholder={selectedSpending?.amount.toFixed(2) || ''}
+              disabled={loadButton}
+              error={errors?.amount}
+            />
 
-            <div className="mb-3">
-              <label className="form-label fw-semibold text-secondary">
-                Amount
-              </label>
-              <input
-                type="text"
-                name="amount"
-                className="form-control form-control-lg bg-light border-0 shadow-sm"
-                aria-label="Amount"
-                placeholder={selectedSpending?.amount.toFixed(2)}
-                onChange={handleChange}
-                disabled={loadButton}
-              />
-
-              <FieldError error={errors?.amount} />
-            </div>
-
-            <div className="mb-4">
-              <label className="form-label fw-semibold text-secondary">
-                Date
-              </label>
-              <input
-                type="date"
-                name="date"
-                className="form-control form-control-lg bg-light border-0 shadow-sm"
-                aria-label="Date"
-                defaultValue={selectedSpending?.date}
-                onChange={handleChange}
-                disabled={loadButton}
-              />
-
-              <FieldError error={errors?.date} />
-            </div>
+            <FormField
+              label="Date"
+              type="text"
+              name="date"
+              id="editSpendingDate"
+              onChange={handleChange}
+              placeholder={selectedSpending?.date || ''}
+              disabled={loadButton}
+              error={errors?.date}
+            />
 
             <button
               type="submit"
@@ -109,7 +92,7 @@ const EditSpendingModal = (props: BaseCardProps) => {
               Save changes
             </button>
           </form>
-          
+
           {FullPageLoader(loading)}
         </div>
 
