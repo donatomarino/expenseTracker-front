@@ -1,10 +1,12 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import type { ModalProps } from '../../../../types/types';
+import type { NewSpendingModalProps } from '../../../../types/types';
 import FullPageLoader from '../../../common/components/FullPageLoader';
 import FormField from '../../../common/components/FormField';
+import CloseButton from '../../../common/components/CloseButton';
+import Button from '../../../common/components/Button';
 
-const NewSpendingModal = (props: ModalProps) => {
+const NewSpendingModal = (props: NewSpendingModalProps) => {
   const {
     modalIsOpen,
     closeModal,
@@ -14,6 +16,7 @@ const NewSpendingModal = (props: ModalProps) => {
     handleChange,
     handleSubmit,
     errors,
+    setErrors,
     loading
   } = props;
 
@@ -30,17 +33,16 @@ const NewSpendingModal = (props: ModalProps) => {
             <p className="text-secondary mb-0 small">Fill in the details of your new spending.</p>
           </div>
 
-          <button
-            type="button"
-            className="btn-close"
-            onClick={closeModal}
+          <CloseButton
             disabled={loadButton}
-            aria-label="Close"
+            onClick={() => { closeModal(), setErrors({}) }}
           />
         </div>
 
         <div>
-          <form className="bg-white rounded-4 p-3" onSubmit={(e) => handleSubmit(e, closeModal)}>
+          <form className="bg-white rounded-4 p-3" onSubmit={(e) => {
+            handleSubmit(e, closeModal)
+          }}>
 
             <FormField
               label="Description"
@@ -75,20 +77,20 @@ const NewSpendingModal = (props: ModalProps) => {
               error={errors?.date}
             />
 
-            <button
-              type="submit"
-              className="btn btn-primary fw-semibold w-100 rounded-pill py-2 shadow-sm"
+            <Button
+              type='submit'
+              className='fw-semibold w-100'
               disabled={loadButton}
+              variant='primary'
             >
               <i className="bi bi-plus-circle me-2"></i>
               Add spending
-            </button>
-
+            </Button>
             {FullPageLoader(loading)}
           </form>
         </div>
       </div>
-    </Modal>
+    </Modal >
   );
 };
 

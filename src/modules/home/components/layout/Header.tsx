@@ -4,6 +4,7 @@ import { useModal } from '../../hooks/useModal';
 import NewSpendingModal from '../modals/NewSpendingModal';
 import { useContent } from '../../hooks/useContent';
 import useHeader from '../../hooks/useHeader';
+import Button from '../../../common/components/Button';
 
 Modal.setAppElement('#root');
 const Header = () => {
@@ -19,6 +20,7 @@ const Header = () => {
     handleChange,
     handleSubmit,
     errors,
+    setErrors,
     loading
   } = useHeader();
 
@@ -44,25 +46,24 @@ const Header = () => {
       </div>
 
       <div className="d-flex align-items-center gap-3">
-        <button
-          type="button"
-          className="btn btn-primary btn-lg rounded-pill px-4 shadow-sm"
+        <Button
+          className='btn-lg'
           onClick={openModal}
           disabled={loadButton}
+          variant='primary'
         >
           <i className="bi bi-file-plus me-2"></i>
           Add spending
-        </button>
+        </Button>
 
-        <button
-          type="button"
-          className="btn btn-outline-danger rounded-pill px-4 shadow-sm"
+        <Button
+          variant='outlineDanger'
           onClick={() => handleLogout()}
           disabled={loadButton}
         >
           <i className="bi bi-box-arrow-right me-2"></i>
           Logout
-        </button>
+        </Button>
       </div>
 
       <NewSpendingModal
@@ -74,6 +75,7 @@ const Header = () => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         errors={errors}
+        setErrors={setErrors}
         loading={loading}
       />
     </header>

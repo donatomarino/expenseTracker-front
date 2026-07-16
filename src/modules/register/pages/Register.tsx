@@ -1,6 +1,7 @@
 import FormField from "../../common/components/FormField";
 import { Link } from "react-router-dom";
 import useRegister from "../hooks/useRegister";
+import Button from "../../common/components/Button";
 
 const Register = () => {
   const {
@@ -74,22 +75,22 @@ const Register = () => {
             />
 
             {isRegistred ? (
-              <button
-                type="button"
-                className="btn btn-outline-primary w-100 rounded-pill py-2"
+              <Button
+                variant="outlinePrimary"
+                className="w-100"
                 onClick={() => navigate("/login")}
               >
                 Go to Login
-              </button>
+              </Button>
             ) : (
               <div className="d-flex flex-column gap-2">
-                <button
+                <Button
                   type="submit"
-                  className="btn btn-primary rounded-pill py-2"
+                  variant="primary"
                   disabled={loadButton}
                 >
                   Register
-                </button>
+                </Button>
 
                 <Link to="/login" className="btn btn-link">
                   Already have an account? Log in

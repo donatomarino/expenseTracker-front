@@ -1,9 +1,10 @@
 import Modal from "react-modal";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import type { BaseCardProps } from "../../../../types/types";
-import FieldError from "../../../common/components/FieldError";
 import FullPageLoader from "../../../common/components/FullPageLoader";
 import FormField from "../../../common/components/FormField";
+import CloseButton from "../../../common/components/CloseButton";
+import Button from "../../../common/components/Button";
 
 const EditSpendingModal = (props: BaseCardProps) => {
   const {
@@ -33,14 +34,9 @@ const EditSpendingModal = (props: BaseCardProps) => {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="btn-close"
-            onClick={() => {
-              closeModal();
-            }}
+          <CloseButton
             disabled={loadButton}
-            aria-label="Close"
+            onClick={closeModal}
           />
         </div>
 
@@ -83,14 +79,15 @@ const EditSpendingModal = (props: BaseCardProps) => {
               error={errors?.date}
             />
 
-            <button
+            <Button
               type="submit"
-              className="btn btn-primary fw-semibold w-100 rounded-pill py-2 shadow-sm mb-2"
+              className="fw-semibold w-100 mt-2"
+              variant="primary"
               disabled={loadButton}
             >
               <i className="bi bi-check-circle me-2"></i>
               Save changes
-            </button>
+            </Button>
           </form>
 
           {FullPageLoader(loading)}

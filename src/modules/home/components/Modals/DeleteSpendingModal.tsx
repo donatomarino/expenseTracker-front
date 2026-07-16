@@ -1,6 +1,7 @@
 import type { DeleteModalProps } from "../../../../types/types";
 import Modal from 'react-modal';
 import FullPageLoader from "../../../common/components/FullPageLoader";
+import Button from "../../../common/components/Button";
 
 const DeleteSpendingModal = (props: DeleteModalProps) => {
   const {
@@ -32,23 +33,23 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
         </div>
 
         <div className="d-flex justify-content-center gap-2 mt-4">
-          <button
-            type="button"
-            className="btn btn-light border px-4"
+          <Button
+            className="border px-4"
+            variant="light"
             onClick={closeModal}
             disabled={loadButton}
           >
             Cancel
-          </button>
+          </Button>
 
-          <button
-            type="button"
-            className="btn btn-danger px-4 fw-semibold"
-            disabled={loadButton}
+          <Button
+            className="px-4 fw-semibold"
+            variant="danger"
             onClick={() => deleteSpending(closeModal)}
+            disabled={loadButton}
           >
             Delete
-          </button>
+          </Button>
         </div>
 
         {FullPageLoader(loading)}

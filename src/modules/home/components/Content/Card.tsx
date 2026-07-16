@@ -3,6 +3,7 @@ import type { CardProps } from "../../../../types/types";
 import DeleteSpendingModal from "../modals/DeleteSpendingModal";
 import EditSpendingModal from "../modals/EditSpedingModal";
 import EmptyState from "./EmptyState";
+import Button from "../../../common/components/Button";
 
 Modal.setAppElement("#root");
 
@@ -49,23 +50,21 @@ const Card = (props: CardProps) => {
                 </p>
 
                 <div className="d-flex justify-content-center gap-2">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
+                  <Button
+                    variant="outlinePrimary"
                     onClick={() => startEditing(spending, openEditModal)}
                     disabled={loadButton}
                   >
                     Edit
-                  </button>
+                  </Button>
 
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger"
+                  <Button
+                    variant="outlineDanger"
                     onClick={() => handleDelete(spending.id, openModal)}
                     disabled={loadButton}
                   >
                     Delete
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import type { SpendingFiltersProps } from "../../../../types/types";
+import Button from "../../../common/components/Button";
 
 const SpendingFilters = (props: SpendingFiltersProps) => {
   const {
@@ -18,7 +19,7 @@ const SpendingFilters = (props: SpendingFiltersProps) => {
     setEndDate,
     filterByDateRange
   } = props;
-  
+
   return (
     <>
       <div>
@@ -34,15 +35,15 @@ const SpendingFilters = (props: SpendingFiltersProps) => {
       </div>
 
       <div className="dropdown">
-        <button
-          className="btn btn-outline-primary dropdown-toggle px-3"
-          type="button"
+        <Button
+          className="dropdown-toggle px-3"
+          variant="outlinePrimary"
           data-bs-toggle="dropdown"
           data-bs-auto-close="outside"
           aria-expanded="false"
         >
           Filter by amount
-        </button>
+        </Button>
 
         <div className="dropdown-menu p-3 border-0 shadow rounded-4" style={{ minWidth: "280px" }}>
           <div className="mb-3">
@@ -65,25 +66,34 @@ const SpendingFilters = (props: SpendingFiltersProps) => {
             />
           </div>
 
-          <button type="button" className="btn btn-primary w-100 fw-semibold" onClick={filterByAmount}>
+          <Button
+            className="w-100 fw-semibold"
+            variant="primary"
+            onClick={filterByAmount}
+          >
             Search
-          </button>
-          <button type="button" className="btn btn-light border w-100 mt-2" onClick={restoreSpendings}>
+          </Button>
+          
+          <Button
+            className="border w-100 mt-2"
+            variant="light"
+            onClick={restoreSpendings}
+          >
             Restore
-          </button>
+          </Button>
         </div>
       </div>
 
       <div className="dropdown">
-        <button
-          className="btn btn-outline-primary dropdown-toggle px-3"
-          type="button"
+        <Button
+          className="dropdown-toggle px-3"
           data-bs-toggle="dropdown"
           data-bs-auto-close="outside"
           aria-expanded="false"
+          variant="outlinePrimary"
         >
           Filter by date
-        </button>
+        </Button>
 
         <div className="dropdown-menu p-3 border-0 shadow rounded-4" style={{ minWidth: "280px" }}>
           <div className="mb-3">
@@ -108,39 +118,57 @@ const SpendingFilters = (props: SpendingFiltersProps) => {
             />
           </div>
 
-          <button type="button" className="btn btn-primary w-100 fw-semibold" onClick={filterByDateRange}>
+          <Button
+            className="w-100 fw-semibold"
+            onClick={filterByDateRange}
+            variant="primary"
+          >
             Search
-          </button>
-          <button type="button" className="btn btn-light border w-100 mt-2" onClick={restoreSpendings}>
+          </Button>
+
+          <Button
+            className="border w-100 mt-2"
+            onClick={restoreSpendings}
+            variant="light"
+          >
             Restore
-          </button>
+          </Button>
         </div>
       </div>
 
       <div className="dropdown">
-        <button
-          className="btn btn-primary dropdown-toggle px-3"
-          type="button"
+        <Button
+          className="dropdown-toggle px-3"
+          variant="primary"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
           Order
-        </button>
+        </Button>
         <ul className="dropdown-menu border-0 shadow rounded-4">
           <li>
-            <button type="button" className="dropdown-item py-2" onClick={orderByDate}>
+            <Button
+              className="dropdown-item"
+              onClick={orderByDate}
+            >
               Date
-            </button>
+            </Button>
           </li>
           <li>
-            <button type="button" className="dropdown-item py-2" onClick={orderByAmount}>
+            <Button
+              className="dropdown-item"
+              onClick={orderByAmount}
+            >
               Amount
-            </button>
+            </Button>
           </li>
           <li>
-            <button type="button" className="dropdown-item py-2" onClick={orderByDescription}>
+            <Button
+              className="dropdown-item"
+              onClick={orderByDescription}
+            >
               Description
-            </button>
+            </Button>
           </li>
         </ul>
       </div>

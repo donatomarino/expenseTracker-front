@@ -2,6 +2,7 @@ import useLogin from "../hooks/useLogin";
 import { Link } from "react-router-dom";
 import FormField from "../../common/components/FormField";
 import FullPageLoader from "../../common/components/FullPageLoader";
+import Button from "../../common/components/Button";
 
 const Login = () => {
   const {
@@ -67,13 +68,14 @@ const Login = () => {
             </div> */}
 
             <div className="d-flex flex-column gap-2">
-              <button
+              <Button
                 type="submit"
-                className="btn btn-primary w-100 rounded-pill py-2 shadow-sm"
+                className="w-100"
+                variant="primary"
                 disabled={loadButton}
               >
                 Sign in
-              </button>
+              </Button>
 
               <Link to="/register" className="btn btn-link">
                 Don't have an account? Sign up

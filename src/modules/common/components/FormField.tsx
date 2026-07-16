@@ -2,21 +2,20 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { FormFieldProps } from "../../../types/types";
 import FieldError from "./FieldError";
+import Button from "./Button";
 
 const FormField = (props: FormFieldProps) => {
   const {
     id,
     label,
     type,
-    value,
-    onChange,
-    placeholder,
-    name,
     disabled,
-    error
+    error,
+    ...inputProps
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
+  const inputType = type === "password" ? (showPassword ? "text" : "password") : type;
 
   return (
     <div className="mb-3">
@@ -24,52 +23,35 @@ const FormField = (props: FormFieldProps) => {
         {label}
       </label>
 
-      {type === "password" ? (
-        <>
-          <div className="position-relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              className="form-control form-control-lg bg-light border-0 shadow-sm"
-              name={name}
-              id={id}
-              placeholder={placeholder}
-              value={value}
-              onChange={onChange}
-              disabled={disabled}
-            />
+      <div className="position-relative">
+        <input
+          id={id}
+          type={inputType}
+          disabled={disabled}
+          className="form-control form-control-lg bg-light border-0 shadow-sm"
+          {...inputProps}
+        />
 
-            <button
-              type="button"
-              className="border-0 bg-transparent position-absolute top-50 end-0 translate-middle-y me-2 d-flex align-items-center justify-content-center text-muted"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowPassword(prev => !prev);;
-              }}
-            >
-              {showPassword ? <FaEye /> : <FaEyeSlash />}
-            </button>
-
-          </div>
-          <FieldError error={error} />
-        </>
-      ) : (
-        <div>
-          <input
-            type={type}
-            id={id}
-            className="form-control form-control-lg  bg-light border-0 shadow-sm"
-            value={value}
-            name={name}
-            onChange={onChange}
-            placeholder={placeholder}
+        {type === "password" && (
+          <Button
+            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            aria-pressed={showPassword}
+            aria-controls={id}
             disabled={disabled}
-          />
+            className="border-0 bg-transparent position-absolute top-50 end-0 translate-middle-y d-flex align-items-center justify-content-center text-muted"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowPassword(prev => !prev);
+            }}
+          >
+            {showPassword ? <FaEye /> : <FaEyeSlash />}
+          </Button>
+        )}
+      </div>
 
-          <FieldError error={error} />
-        </div>
-      )}
+      <FieldError error={error} />
     </div>
-  );
+  )
 }
 
 export default FormField;

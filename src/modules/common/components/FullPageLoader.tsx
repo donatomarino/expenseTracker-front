@@ -1,4 +1,3 @@
-import React from 'react';
 import loadingGif from '../../../assets/loading-gif.gif';
 
 const FullPageLoader = (loading: boolean ) => {

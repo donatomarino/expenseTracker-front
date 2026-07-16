@@ -72,7 +72,7 @@ const useHeader = () => {
     }
   }
 
-  return { newSpending, handleChange, handleSubmit, errors, loading };
+  return { newSpending, handleChange, handleSubmit, errors, setErrors, loading };
 }
 
 export default useHeader;

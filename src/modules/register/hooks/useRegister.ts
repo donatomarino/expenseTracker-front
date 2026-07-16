@@ -31,6 +31,7 @@ const useRegister = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     disabledButton();
+    setErrors({});
 
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");

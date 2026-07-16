@@ -31,6 +31,10 @@ export interface DeleteModalProps extends BaseModalProps {
   deleteSpending: (closeModal: () => void) => Promise<void>;
 }
 
+export interface NewSpendingModalProps extends ModalProps {
+  setErrors: Dispatch<SetStateAction<Errors>>;
+}
+
 interface BaseCardProps extends BaseModalProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
@@ -144,3 +148,13 @@ export interface RegisterErrors {
   email?: string;
   password?: string;
 }
+
+
+// --------- TYPES BUTTONS ---------- //
+export type CloseButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export type ButtonVariant = "primary" | "outlinePrimary" | "secondary" | "danger" | "outlineDanger" | "light";
+
+export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: ButtonVariant;
+};
