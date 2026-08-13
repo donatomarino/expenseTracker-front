@@ -3,7 +3,7 @@ import Button from "../../../../common/components/Button";
 const RangeAndFilters = () => {
   return (
      <div className="d-flex align-items-center gap-2">
-        <Button variant="primary" className="px-3" onClick={() => {}}>
+        <Button variant="outlinePrimary" className="px-3" onClick={() => {}}>
           Last 90 days
         </Button>
 
@@ -11,7 +11,7 @@ const RangeAndFilters = () => {
           <Button
             id="filtersDropdown"
             className="dropdown-toggle px-3"
-            variant="outlinePrimary"
+            variant="primary"
             data-bs-toggle="dropdown"
             data-bs-auto-close="outside"
             aria-expanded="false"

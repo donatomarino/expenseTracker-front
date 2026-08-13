@@ -1,4 +1,3 @@
-import Button from "../../../common/components/Button";
 import MonthYearNavigator from "./toolbar/MonthYearNavigator";
 import PeriodSummary from "./toolbar/PeriodSummary";
 import RangeAndFilters from "./toolbar/RangeAndFilters";
