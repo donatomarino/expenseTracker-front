@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import type { CardProps } from "../../../../types/types";
 import DeleteSpendingModal from "../modals/DeleteSpendingModal";
 import EditSpendingModal from "../modals/EditSpedingModal";
-import EmptyState from "./EmptyState";
+import EmptyState from "../dashboard/EmptyState";
 import Button from "../../../common/components/Button";
 
 Modal.setAppElement("#root");

@@ -1,4 +1,4 @@
-import Content from "../components/content/Content";
+import Dashboard from "../components/layout/Dashboard";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header"
 
@@ -7,7 +7,7 @@ const Home = () => {
     <>
       <Header />
 
-      <Content />
+      <Dashboard />
 
       <Footer />
     </>

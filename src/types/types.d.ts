@@ -1,5 +1,5 @@
 //--------- Interfaces for components ----------//
-export interface Spending {
+export interface Spendings {
   id?: number;
   description: string;
   amount: number;
@@ -158,3 +158,11 @@ export type ButtonVariant = "primary" | "outlinePrimary" | "secondary" | "danger
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
 };
+
+
+// --------- TYPES SPENDINGS BY MONTH ---------- //
+// export type Month = "january" | "february" | "march" | "april" | "may" | "june" | "july" | "august" | "september" | "october" | "november" | "december";
+
+export type YearMonthKey = string;
+
+export type SpendingsByMonth = Record<YearMonthKey, Spending[]>;

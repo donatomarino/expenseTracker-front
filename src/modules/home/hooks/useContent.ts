@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import type { Spending, Errors, Requests } from "../../../types/types";
+import type { Spendings, Errors, Requests } from "../../../types/types";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
 import { LoadingContext } from "../../../context/LoadingContext";
@@ -9,12 +9,12 @@ export const useContent = () => {
   const { loadButton, disabledButton, reload, triggerReload } = useContext(LoadingContext);
 
   // State for spendings and initial spendings
-  const [initialSpendings, setInitialSpendings] = useState<Spending[]>([]);
-  const [spendings, setSpendings] = useState<Spending[]>([]);
+  const [initialSpendings, setInitialSpendings] = useState<Spendings[]>([]);
+  const [spendings, setSpendings] = useState<Spendings[]>([]);
 
   // State for editing spending
-  const [editSpending, setEditSpending] = useState<Spending | null>(null);
-  const [selectedSpending, setSelectedSpending] = useState<Spending | null>(null);
+  const [editSpending, setEditSpending] = useState<Spendings | null>(null);
+  const [selectedSpending, setSelectedSpending] = useState<Spendings | null>(null);
 
   // Filters
   const [minAmount, setMinAmount] = useState<string>('');
@@ -33,7 +33,7 @@ export const useContent = () => {
   useEffect(() => {
     const fetchs = async () => {
       try {
-        const res: Requests<Spending[]> = await contentService.getSpending();
+        const res: Requests<Spendings[]> = await contentService.getSpending();
 
         if (res.success) {
           const sortedSpendings = sortSpendingsByDateDesc(res.data);
@@ -70,7 +70,7 @@ export const useContent = () => {
   }
 
   // Sort spendings by date desc
-  const sortSpendingsByDateDesc = (spendings: Spending[]): Spending[] => {
+  const sortSpendingsByDateDesc = (spendings: Spendings[]): Spendings[] => {
     return [...spendings].sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
@@ -200,7 +200,7 @@ export const useContent = () => {
   }
 
   // Edit
-  const startEditing = (spending: Spending, openEditModal: () => void) => {
+  const startEditing = (spending: Spendings, openEditModal: () => void) => {
     if (spending.id !== undefined && spending.id !== null) {
 
       setSelectedSpending(spending);
@@ -243,7 +243,7 @@ export const useContent = () => {
 
     startLoading();
     try {
-      const res: Requests<Spending> = await contentService.editSpending(editSpending);
+      const res: Requests<Spendings> = await contentService.editSpending(editSpending);
 
       if (res.success) {
         toast.success('Spending updated successfully');
