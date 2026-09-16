@@ -1,3 +1,4 @@
+import ExpenseControls from "../dashboard/ExpenseControls";
 import SummaryCards from "../dashboard/SummaryCards";
 import Toolbar from "../dashboard/Toolbar";
 
@@ -6,6 +7,7 @@ const Dashboard = () => {
     <div className="container-fluid p-3">
       <Toolbar />
       <SummaryCards />
+      <ExpenseControls />
     </div>
   )
 }

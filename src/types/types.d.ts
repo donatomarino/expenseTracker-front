@@ -166,3 +166,28 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export type YearMonthKey = string;
 
 export type SpendingsByMonth = Record<YearMonthKey, Spending[]>;
+
+
+// --------- TYPES DASHBOARD ---------- //
+export type SortValue =
+  | "recent"
+  | "oldest"
+  | "highest"
+  | "lowest"
+  | "description";
+
+export type SortOption = {
+  value: SortValue;
+  label: string;
+}
+
+export type UseExpenseControlsResult = {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  selectedSort: SortValue;
+  setSelectedSort: Dispatch<SetStateAction<SortValue>>;
+  selectedSortOption: SortOption | undefined;
+  selectedSortLabel: string;
+  handleRestore: () => void;
+  sortOptions: readonly SortOption[];
+};
