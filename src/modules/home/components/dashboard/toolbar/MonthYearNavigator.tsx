@@ -1,104 +1,154 @@
 import Button from "../../../../common/components/Button";
+import "../css/month-year-navigator.css";
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const years = ["2024", "2025", "2026"];
 
 const MonthYearNavigator = () => {
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const years = ["2024", "2025", "2026"];
-
   return (
-    <div className="d-flex align-items-center gap-2">
+    <div className="month-year-navigator d-flex align-items-center gap-2">
+      {/* Previous month */}
       <Button
-        variant="secondary"
-        className="rounded-circle d-flex align-items-center justify-content-center"
-        onClick={() => { }}
+        variant="light"
+        className="navigation-button rounded-circle d-flex align-items-center justify-content-center border"
+        onClick={() => {}}
+        aria-label="Go to previous month"
       >
-        <i className="bi bi-chevron-left"></i>
+        <i
+          className="bi bi-chevron-left"
+          aria-hidden="true"
+        ></i>
       </Button>
 
+      {/* Month and year selectors */}
       <div className="d-flex align-items-center gap-2">
-        {/* Mes */}
+        {/* Month */}
         <div className="dropdown">
           <Button
-            id="monthDropdown"
-            className="dropdown-toggle px-3"
-            variant="secondary"
+            id="month-dropdown"
+            className="period-button dropdown-toggle px-3 d-flex align-items-center gap-2"
+            variant="light"
             data-bs-toggle="dropdown"
             data-bs-auto-close="outside"
             aria-expanded="false"
+            aria-haspopup="true"
           >
-            August
+            <i
+              className="bi bi-calendar3"
+              aria-hidden="true"
+            ></i>
+
+            <span>August</span>
           </Button>
+
           <div
-            className="dropdown-menu p-2 border-0 shadow rounded-4"
-            style={{ minWidth: "220px" }}
-            aria-labelledby="monthDropdown"
+            className="dropdown-menu period-menu p-2 border-0 shadow rounded-4"
+            aria-labelledby="month-dropdown"
           >
-            <h6 className="dropdown-header text-muted">Select month</h6>
+            <p className="dropdown-header text-uppercase small fw-semibold">
+              Select month
+            </p>
+
             {months.map((month) => (
               <button
                 key={month}
-                className="dropdown-item d-flex justify-content-between align-items-center"
                 type="button"
+                className={`dropdown-item period-option ${
+                  month === "August" ? "active" : ""
+                }`}
+                onClick={() => {}}
               >
                 <span>{month}</span>
+
+                {month === "August" && (
+                  <i
+                    className="bi bi-check-lg"
+                    aria-hidden="true"
+                  ></i>
+                )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Año */}
+        {/* Year */}
         <div className="dropdown">
           <Button
-            id="yearDropdown"
-            className="dropdown-toggle px-3"
-            variant="secondary"
+            id="year-dropdown"
+            className="period-button dropdown-toggle px-3 d-flex align-items-center gap-2"
+            variant="light"
             data-bs-toggle="dropdown"
             data-bs-auto-close="outside"
             aria-expanded="false"
+            aria-haspopup="true"
           >
-            2026
+            <i
+              className="bi bi-calendar-event"
+              aria-hidden="true"
+            ></i>
+
+            <span>2026</span>
           </Button>
+
           <div
-            className="dropdown-menu p-2 border-0 shadow rounded-4"
-            style={{ minWidth: "160px" }}
-            aria-labelledby="yearDropdown"
+            className="dropdown-menu dropdown-menu-end period-menu year-menu p-2 border-0 shadow rounded-4"
+            aria-labelledby="year-dropdown"
           >
-            <h6 className="dropdown-header text-muted">Select year</h6>
+            <p className="dropdown-header text-uppercase small fw-semibold">
+              Select year
+            </p>
+
             {years.map((year) => (
               <button
                 key={year}
-                className="dropdown-item"
                 type="button"
+                className={`dropdown-item period-option ${
+                  year === "2026" ? "active" : ""
+                }`}
+                onClick={() => {}}
               >
-                {year}
+                <span>{year}</span>
+
+                {year === "2026" && (
+                  <i
+                    className="bi bi-check-lg"
+                    aria-hidden="true"
+                  ></i>
+                )}
               </button>
             ))}
           </div>
         </div>
       </div>
 
+      {/* Next month */}
       <Button
-        variant="secondary"
-        className="rounded-circle d-flex align-items-center justify-content-center"
-        onClick={() => { }}
+        variant="light"
+        className="navigation-button rounded-circle d-flex align-items-center justify-content-center border"
+        onClick={() => {}}
+        aria-label="Go to next month"
       >
-        <i className="bi bi-chevron-right"></i>
+        <i
+          className="bi bi-chevron-right"
+          aria-hidden="true"
+        ></i>
       </Button>
     </div>
-  )
-}
+  );
+};
 
 export default MonthYearNavigator;

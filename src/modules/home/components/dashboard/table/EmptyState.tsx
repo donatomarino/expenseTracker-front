@@ -1,4 +1,4 @@
-import type { EmptyStateProps } from "../../../../types/types";
+import type { EmptyStateProps } from "../../../../../types/types";
 
 const EmptyState = (props: EmptyStateProps) => {
   const {

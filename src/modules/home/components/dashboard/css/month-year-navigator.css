@@ -1,0 +1,99 @@
+.month-year-navigator {
+  white-space: nowrap;
+}
+
+.navigation-button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: #495057;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.navigation-button:hover {
+  color: var(--bs-primary);
+  background-color: #f1f3f5;
+  border-color: var(--bs-primary) !important;
+  transform: translateY(-1px);
+}
+
+.navigation-button:active {
+  transform: translateY(0);
+}
+
+.period-button {
+  min-height: 40px;
+  color: #212529;
+  border-color: #dee2e6;
+  font-weight: 500;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.period-button:hover,
+.period-button:focus {
+  background-color: #f8f9fa;
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+}
+
+.period-menu {
+  width: 230px;
+}
+
+.year-menu {
+  width: 170px;
+}
+
+.period-menu .dropdown-header {
+  color: #6c757d;
+  padding: 0.55rem 0.75rem 0.4rem;
+}
+
+.period-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  color: #343a40;
+}
+
+.period-option:hover {
+  background-color: #f1f3f5;
+}
+
+.period-option.active {
+  color: var(--bs-primary);
+  background-color: rgba(13, 110, 253, 0.1);
+  font-weight: 600;
+}
+
+.period-option.active:hover {
+  background-color: rgba(13, 110, 253, 0.15);
+}
+
+@media (max-width: 575.98px) {
+  .month-year-navigator {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .period-button {
+    padding-inline: 0.7rem !important;
+  }
+
+  .period-menu {
+    width: 210px;
+  }
+
+  .year-menu {
+    width: 160px;
+  }
+}

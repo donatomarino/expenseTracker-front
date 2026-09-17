@@ -41,28 +41,33 @@ const Header = () => {
           Dashboard
         </p>
         <h1 className="h3 fw-bold text-dark mb-0">
-          Hey, {localStorage.getItem('user_name')?.split(' ')[0]}
+          Hey, Donato{localStorage.getItem('user_name')?.split(' ')[0]}
+          <i
+            className="bi bi-emoji-smile ms-2"
+            aria-hidden="true"
+          ></i>
         </h1>
       </div>
 
-      <div className="d-flex align-items-center gap-3">
+      <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
         <Button
-          className='btn-lg'
+          className="d-flex align-items-center justify-content-center gap-2"
           onClick={openModal}
           disabled={loadButton}
-          variant='primary'
+          variant="primary"
         >
-          <i className="bi bi-file-plus me-2"></i>
-          Add spending
+          <i className="bi bi-file-plus" aria-hidden="true"></i>
+          <span>Add spending</span>
         </Button>
 
         <Button
-          variant='outlineDanger'
-          onClick={() => handleLogout()}
+          className="d-flex align-items-center justify-content-center gap-2"
+          variant="outlineDanger"
+          onClick={handleLogout}
           disabled={loadButton}
         >
-          <i className="bi bi-box-arrow-right me-2"></i>
-          Logout
+          <i className="bi bi-box-arrow-right" aria-hidden="true"></i>
+          <span>Logout</span>
         </Button>
       </div>
 
