@@ -1,5 +1,9 @@
 import type { AxiosResponse } from "axios"
+<<<<<<< HEAD
 import type { RequestParams, Requests, BaseApiResponse, AuthResponse } from "../types/types"
+=======
+import type { RequestParams } from "../types/types"
+>>>>>>> 8baa3d5 (fix)
 import { authInstance, apiInstance } from "../config/axios.config";
 
 export default {
