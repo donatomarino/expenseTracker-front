@@ -1,12 +1,5 @@
 import { useMemo, useState } from "react";
-
-type Expense = {
-  id: number;
-  date: string;
-  description: string;
-  paymentMethod: string;
-  amount: number;
-}
+import type { Expense } from "../../../../types/types";
 
 const PAGE_SIZE_OPTIONS = [10, 15, 25] as const;
 
@@ -33,6 +26,13 @@ const ExpenseTable = () => {
       paymentMethod: "Debit Card",
       amount: 75.0,
     },
+        {
+      id: 4,
+      date: "2023-01-04",
+      description: "Amazon",
+      paymentMethod: "Transfer",
+      amount: 75.0,
+    }
   ];
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -56,6 +56,9 @@ const ExpenseTable = () => {
 
       case "Cash":
         return "text-bg-success";
+
+      case "Transfer":
+        return "text-bg-warning";
 
       default:
         return "text-bg-secondary";
@@ -94,7 +97,7 @@ const ExpenseTable = () => {
     setPageSize(Number(e.target.value));
     setCurrentPage(1); // Reset to first page when page size changes
   };
-  
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -154,7 +157,7 @@ const ExpenseTable = () => {
                 </td>
 
                 <td className="text-end fw-semibold text-dark">
-                  ${expense.amount.toFixed(2)}
+                  €{expense.amount.toFixed(2)}
                 </td>
 
                 <td className="text-center">
@@ -223,9 +226,8 @@ const ExpenseTable = () => {
         <nav aria-label="Expenses pagination">
           <ul className="pagination pagination-sm mb-0">
             <li
-              className={`page-item ${
-                currentPage === 1 ? "disabled" : ""
-              }`}
+              className={`page-item ${currentPage === 1 ? "disabled" : ""
+                }`}
             >
               <button
                 type="button"
@@ -240,9 +242,8 @@ const ExpenseTable = () => {
             {pageNumbers.map((page) => (
               <li
                 key={page}
-                className={`page-item ${
-                  currentPage === page ? "active" : ""
-                }`}
+                className={`page-item ${currentPage === page ? "active" : ""
+                  }`}
               >
                 <button
                   type="button"
@@ -258,9 +259,8 @@ const ExpenseTable = () => {
             ))}
 
             <li
-              className={`page-item ${
-                currentPage === totalPages ? "disabled" : ""
-              }`}
+              className={`page-item ${currentPage === totalPages ? "disabled" : ""
+                }`}
             >
               <button
                 type="button"

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import './App.css'
 import Home from "./modules/home/pages/Home"
 import { LoadingProvider } from "./context/LoadingContext"
@@ -7,15 +7,25 @@ import { Bounce, ToastContainer } from "react-toastify"
 import Register from "./modules/register/pages/Register"
 
 function App() {
+  const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   return (
     <div className="app">
       <LoadingProvider>
         <Router>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Home />} />
+            {isAuthenticated ? (
+              <>
+                <Route path="/" element={<Home />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </>
+            ) : (
+              <>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="*" element={<Navigate to="/login" replace />} />
+              </>
+            )}
           </Routes>
         </Router>
       </LoadingProvider>

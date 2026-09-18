@@ -36,7 +36,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="Input your full name"
               disabled={loadButton}
-              error={errors.full_name}
+              error={errors.fullName}
             />
 
             <FormField

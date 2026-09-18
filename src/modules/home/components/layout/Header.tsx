@@ -30,7 +30,7 @@ const Header = () => {
 
   const handleLogout = (): void => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user_name");
+    localStorage.removeItem("name");
     window.location.href = "/login";
   }
 
@@ -41,7 +41,7 @@ const Header = () => {
           Dashboard
         </p>
         <h1 className="h3 fw-bold text-dark mb-0">
-          Hey, Donato{localStorage.getItem('user_name')?.split(' ')[0]}
+          Hey, {localStorage.getItem('name')?.split(' ')[0]}
           <i
             className="bi bi-emoji-smile ms-2"
             aria-hidden="true"

@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import type { RegisterErrors, RegisterPayload, Requests, Spending } from "../../../types/types";
+import { useContext, useEffect, useState } from "react";
+import type { RegisterErrors, RegisterPayload, RegisterResponse } from "../../../types/types";
 import { LoadingContext } from "../../../context/LoadingContext";
 import { toast } from "react-toastify";
 import registerService from "../services/registerService";
@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const useRegister = () => {
-
   const { loadButton, disabledButton } = useContext(LoadingContext);
 
   const [formData, setFormData] = useState<RegisterPayload>({
@@ -18,6 +17,10 @@ const useRegister = () => {
   });
   const [isRegistred, setIsRegistered] = useState<boolean>(false);
   const [errors, setErrors] = useState<RegisterErrors>({});
+
+  useEffect(() => {
+    console.log("Errores" + JSON.stringify(errors.fullName));
+  }, [errors]);
 
   const navigate = useNavigate();
 
@@ -40,8 +43,7 @@ const useRegister = () => {
     }
 
     try {
-      const res: Requests<Spending> = await registerService.register(formData);
-
+      const res: RegisterResponse = await registerService.register(formData);
       if (res.success) {
         toast.success("Account created successfully. Please log in.");
         setIsRegistered(prev => !prev);
@@ -53,20 +55,25 @@ const useRegister = () => {
       if (axios.isAxiosError(e)) {
         const status = e.response?.status;
 
-        if (status === 422) {
-          disabledButton();
-          setErrors(e.response?.data?.errors);
+        if (status === 400) {
+          setErrors(e.response?.data);
+          return;
+        }
+
+        if(status === 409) {
+          toast.error(e.response?.data?.message);
           return;
         }
 
         console.error("The request failed: ", e);
-        disabledButton();
         toast.error("Server error");
         return;
       }
 
       console.error("Unexpected error: ", e);
       toast.error("Unexpected error");
+    } finally {
+      disabledButton();
     }
   }
   return {

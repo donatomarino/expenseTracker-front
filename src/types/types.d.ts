@@ -1,9 +1,10 @@
-//--------- Interfaces for components ----------//
-export interface Spendings {
-  id?: number;
-  description: string;
-  amount: number;
+//--------- Components ----------//
+interface Expense {
+  id: number;
   date: string;
+  description: string;
+  paymentMethod: string;
+  amount: number;
 }
 
 interface BaseModalProps {
@@ -77,7 +78,7 @@ export interface FormFieldProps {
   placeholder?: string;
   name: string;
   disabled: boolean;
-  error?: string;
+  error?: string | string[];
 }
 
 export interface EmptyStateProps {
@@ -98,10 +99,13 @@ export interface LoadingProviderProps {
 }
 
 //--------- Interfaces for API ----------//
+export type Service = "api" | "auth";
+
 export interface RequestParams {
   url: string;
   data?: object;
   params?: Record<string, string | number | boolean>;
+  service?: Service;
 }
 
 export interface LoginPayload {
@@ -109,6 +113,20 @@ export interface LoginPayload {
   password: string;
   showPassword?: boolean;
 }
+
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  user_name: string;
+}
+
+export interface RegisterResponse {
+  message: String;
+  success:boolean;
+}
+
+
+/** */
 
 export interface BaseApiResponse {
   success: boolean;
@@ -120,11 +138,6 @@ export interface Requests<T> extends BaseApiResponse {
   data: T;
 }
 
-export interface AuthResponse extends BaseApiResponse {
-  access_token: string;
-  token_type: string;
-  user_name: string;
-}
 
 export interface Errors {
   description?: string;
@@ -133,7 +146,7 @@ export interface Errors {
 }
 
 export interface FieldErrorProps {
-  error?: string;
+  error?: string | string[];
 }
 
 export interface RegisterPayload {
@@ -144,9 +157,9 @@ export interface RegisterPayload {
 }
 
 export interface RegisterErrors {
-  full_name?: string; 
-  email?: string;
-  password?: string;
+  fullName?: string | string[]; 
+  email?: string | string[];
+  password?: string | string[];
 }
 
 
@@ -168,7 +181,7 @@ export type YearMonthKey = string;
 export type SpendingsByMonth = Record<YearMonthKey, Spending[]>;
 
 
-// --------- TYPES DASHBOARD ---------- //
+// --------- TYPES/INTERFACES DASHBOARD ---------- //
 export type SortValue =
   | "recent"
   | "oldest"
@@ -181,7 +194,7 @@ export type SortOption = {
   label: string;
 }
 
-export type UseExpenseControlsResult = {
+export interface UseExpenseControlsResult {
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
   selectedSort: SortValue;
