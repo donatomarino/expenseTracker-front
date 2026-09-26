@@ -1,9 +1,11 @@
+import type { AxiosRequestConfig } from "axios";
+
 //--------- Components ----------//
-interface Expense {
+interface Spending {
   id: number;
-  date: string;
+  spendingDate: string;
   description: string;
-  paymentMethod: string;
+  paymentMethod: PaymentMethod;
   amount: number;
 }
 
@@ -87,14 +89,23 @@ export interface EmptyStateProps {
 }
 
 //--------- Interfaces for context ----------//
-export interface LoadingContextType {
+export interface LoadingContextValue {
   loadButton: boolean;
   disabledButton: () => void;
   reload: boolean;
   triggerReload: () => void;
 }
 
-export interface LoadingProviderProps {
+export interface SpendingContextValue {
+  months: Month[];
+  years: number[];
+  month: Month;
+  setMonth: Dispatch<SetStateAction<Month>>;
+  year: number;
+  setYear: Dispatch<SetStateAction<number>>;
+}
+
+export interface ContextProps {
   children: React.ReactNode;
 }
 
@@ -104,7 +115,7 @@ export type Service = "api" | "auth";
 export interface RequestParams {
   url: string;
   data?: object;
-  params?: Record<string, string | number | boolean>;
+  params?: SpendingRequest;
   service?: Service;
 }
 
@@ -123,6 +134,30 @@ export interface AuthResponse {
 export interface RegisterResponse {
   message: String;
   success:boolean;
+}
+
+export interface SpendingRequest {
+  year?: number;
+  month?: number;
+  startDate?: string;
+  endDate?: string;
+  minAmount?: number;
+  maxAmount?: number;
+  search?: string;
+  sort?: SpendingSort;
+  paymentMethod?: PaymentMethod;
+  page?: number;
+  size?: number;
+}
+
+export interface SpendingResponse {
+  spendings: Spending[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean
 }
 
 
@@ -173,21 +208,16 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 
-// --------- TYPES SPENDINGS BY MONTH ---------- //
-// export type Month = "january" | "february" | "march" | "april" | "may" | "june" | "july" | "august" | "september" | "october" | "november" | "december";
+// --------- TYPES SPENDINGS BY YEAR AND MONTH ---------- //
+export type Month = "january" | "february" | "march" | "april" | "may" | "june" | "july" | "august" | "september" | "october" | "november" | "december";
+// export type YearMonthKey = string;
 
-export type YearMonthKey = string;
-
-export type SpendingsByMonth = Record<YearMonthKey, Spending[]>;
+// export type SpendingsByMonth = Record<YearMonthKey, Spending[]>;
 
 
 // --------- TYPES/INTERFACES DASHBOARD ---------- //
-export type SortValue =
-  | "recent"
-  | "oldest"
-  | "highest"
-  | "lowest"
-  | "description";
+export type PaymentMethod = "CASH" | "DEBIT_CARD" | "CREDIT_CARD" | "TRANSFER";
+export type SortValue = "OLDEST" | "NEWEST" | "AMOUNT_LOW_TO_HIGH" | "AMOUNT_HIGH_TO_LOW" | "DESCRIPTION"; 
 
 export type SortOption = {
   value: SortValue;
@@ -204,3 +234,5 @@ export interface UseExpenseControlsResult {
   handleRestore: () => void;
   sortOptions: readonly SortOption[];
 };
+
+

@@ -1,6 +1,6 @@
 const SummaryCards = () => {
   return (
-    <div className="d-flex flex-wrap justify-content-between align-items-stretch gap-3 mb-4">
+    <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 mb-4">
       {/* Total spent */}
       <div className="flex-grow-1">
         <div className="card h-100 border-0 shadow-sm rounded-4">

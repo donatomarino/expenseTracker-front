@@ -5,6 +5,7 @@ import { LoadingProvider } from "./context/LoadingContext"
 import Login from "./modules/login/pages/Login"
 import { Bounce, ToastContainer } from "react-toastify"
 import Register from "./modules/register/pages/Register"
+import { SpendingProvider } from "./context/SpendingContext"
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'));
@@ -12,29 +13,31 @@ function App() {
   return (
     <div className="app">
       <LoadingProvider>
-        <Router>
-          <Routes>
-            {isAuthenticated ? (
-              <>
-                <Route path="/" element={<Home />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </>
-            ) : (
-              <>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="*" element={<Navigate to="/login" replace />} />
-              </>
-            )}
-          </Routes>
-        </Router>
+        <SpendingProvider>
+          <Router>
+            <Routes>
+              {isAuthenticated ? (
+                <>
+                  <Route path="/" element={<Home />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </>
+              ) : (
+                <>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="*" element={<Navigate to="/login" replace />} />
+                </>
+              )}
+            </Routes>
+          </Router>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            theme="dark"
+            transition={Bounce}
+          />
+        </SpendingProvider>
       </LoadingProvider>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        theme="dark"
-        transition={Bounce}
-      />
     </div>
   )
 }

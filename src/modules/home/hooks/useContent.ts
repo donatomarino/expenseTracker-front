@@ -30,23 +30,23 @@ export const useContent = () => {
   const { loading, startLoading, stopLoading } = useLoad();
 
   // Load spendings 
-  useEffect(() => {
-    const fetchs = async () => {
-      try {
-        const res: Requests<Spendings[]> = await contentService.getSpending();
+  // useEffect(() => {
+  //   const fetchs = async () => {
+  //     try {
+  //       const res: Requests<Spendings[]> = await contentService.getSpending();
 
-        if (res.success) {
-          const sortedSpendings = sortSpendingsByDateDesc(res.data);
-          setInitialSpendings(sortedSpendings);
-        } else {
-          toast.error('Error when charging expenses');
-        }
-      } catch (e: any) {
-        console.error('The request failed: ', e);
-      }
-    }
-    fetchs();
-  }, [reload]);
+  //       if (res.success) {
+  //         const sortedSpendings = sortSpendingsByDateDesc(res.data);
+  //         setInitialSpendings(sortedSpendings);
+  //       } else {
+  //         toast.error('Error when charging expenses');
+  //       }
+  //     } catch (e: any) {
+  //       console.error('The request failed: ', e);
+  //     }
+  //   }
+  //   fetchs();
+  // }, [reload]);
 
   useEffect(() => {
     setSpendings(initialSpendings)

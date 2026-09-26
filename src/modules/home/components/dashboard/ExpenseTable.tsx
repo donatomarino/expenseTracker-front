@@ -1,42 +1,12 @@
-import { useMemo, useState } from "react";
-import type { Expense } from "../../../../types/types";
+import { useSpending } from "../../hooks/useSpending";
 
 const PAGE_SIZE_OPTIONS = [10, 15, 25] as const;
 
 const ExpenseTable = () => {
-  const expenses: Expense[] = [
-    {
-      id: 1,
-      date: "2023-01-01",
-      description: "Grocery shopping",
-      paymentMethod: "Credit Card",
-      amount: 100.0,
-    },
-    {
-      id: 2,
-      date: "2023-01-02",
-      description: "Gas",
-      paymentMethod: "Cash",
-      amount: 50.0,
-    },
-    {
-      id: 3,
-      date: "2023-01-03",
-      description: "Restaurant",
-      paymentMethod: "Debit Card",
-      amount: 75.0,
-    },
-        {
-      id: 4,
-      date: "2023-01-04",
-      description: "Amazon",
-      paymentMethod: "Transfer",
-      amount: 75.0,
-    }
-  ];
+  const { spendings, totalElements, getPaymentBadgeClass, formatPaymentMethod } = useSpending();
 
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [pageSize, setPageSize] = useState<number>(10);
 
   const formatDate = (date: string) => {
     return new Intl.DateTimeFormat("en-US", {
@@ -46,61 +16,42 @@ const ExpenseTable = () => {
     }).format(new Date(date));
   };
 
-  const getPaymentBadgeClass = (paymentMethod: string) => {
-    switch (paymentMethod) {
-      case "Credit Card":
-        return "text-bg-primary";
+  // const totalPages = Math.ceil(expenses.length / pageSize);
 
-      case "Debit Card":
-        return "text-bg-info";
+  // const visibleExpenses = useMemo(() => {
+  //   const firstIndex = (currentPage - 1) * pageSize;
+  //   const lastIndex = firstIndex + pageSize;
 
-      case "Cash":
-        return "text-bg-success";
+  //   return expenses.slice(firstIndex, lastIndex);
+  // }, [expenses, currentPage, pageSize]);
 
-      case "Transfer":
-        return "text-bg-warning";
+  // const pageNumbers = Array.from(
+  //   { length: totalPages },
+  //   (_, index) => index + 1
+  // );
 
-      default:
-        return "text-bg-secondary";
-    }
-  };
+  // const handlePreviousPage = () => {
+  //   setCurrentPage((prevPage) =>
+  //     Math.max(prevPage - 1, 1)
+  //   );
+  // };
 
-  const totalPages = Math.ceil(expenses.length / pageSize);
+  // const handleNextPage = () => {
+  //   setCurrentPage((prevPage) =>
+  //     Math.min(prevPage + 1, totalPages)
+  //   );
+  // };
 
-  const visibleExpenses = useMemo(() => {
-    const firstIndex = (currentPage - 1) * pageSize;
-    const lastIndex = firstIndex + pageSize;
+  // const handlePageSizeChange = (
+  //   e: React.ChangeEvent<HTMLSelectElement>
+  // ) => {
+  //   setPageSize(Number(e.target.value));
+  //   setCurrentPage(1); // Reset to first page when page size changes
+  // };
 
-    return expenses.slice(firstIndex, lastIndex);
-  }, [expenses, currentPage, pageSize]);
-
-  const pageNumbers = Array.from(
-    { length: totalPages },
-    (_, index) => index + 1
-  );
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prevPage) =>
-      Math.max(prevPage - 1, 1)
-    );
-  };
-
-  const handleNextPage = () => {
-    setCurrentPage((prevPage) =>
-      Math.min(prevPage + 1, totalPages)
-    );
-  };
-
-  const handlePageSizeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setPageSize(Number(e.target.value));
-    setCurrentPage(1); // Reset to first page when page size changes
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  // const handlePageChange = (page: number) => {
+  //   (page);
+  // };
 
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
@@ -134,30 +85,30 @@ const ExpenseTable = () => {
           </thead>
 
           <tbody>
-            {visibleExpenses.map((expense) => (
-              <tr key={expense.id}>
+            {spendings.map((spending) => (
+              <tr key={spending.id}>
                 <td className="px-4 text-nowrap text-muted">
-                  {formatDate(expense.date)}
+                  {formatDate(spending.spendingDate)}
                 </td>
 
                 <td>
                   <span className="fw-semibold text-dark">
-                    {expense.description}
+                    {spending.description}
                   </span>
                 </td>
 
                 <td>
                   <span
                     className={`badge rounded-pill ${getPaymentBadgeClass(
-                      expense.paymentMethod
+                      spending.paymentMethod
                     )}`}
                   >
-                    {expense.paymentMethod}
+                    {formatPaymentMethod(spending.paymentMethod)}
                   </span>
                 </td>
 
                 <td className="text-end fw-semibold text-dark">
-                  €{expense.amount.toFixed(2)}
+                  €{spending.amount.toFixed(2)}
                 </td>
 
                 <td className="text-center">
@@ -165,7 +116,7 @@ const ExpenseTable = () => {
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-primary"
-                      aria-label={`Edit ${expense.description}`}
+                      aria-label={`Edit ${spending.description}`}
                     >
                       <i
                         className="bi bi-pencil"
@@ -176,7 +127,7 @@ const ExpenseTable = () => {
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-danger"
-                      aria-label={`Delete ${expense.description}`}
+                      aria-label={`Delete ${spending.description}`}
                     >
                       <i
                         className="bi bi-trash"
@@ -188,7 +139,7 @@ const ExpenseTable = () => {
               </tr>
             ))}
 
-            {visibleExpenses.length === 0 && (
+            {spendings.length === 0 && (
               <tr>
                 <td colSpan={5} className="text-center py-5 text-muted">
                   No expenses found.
@@ -199,7 +150,7 @@ const ExpenseTable = () => {
         </table>
       </div>
 
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 p-3 border-top bg-light">
+      {/* <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 p-3 border-top bg-light">
         <div className="d-flex align-items-center gap-2">
           <label
             htmlFor="page-size"
@@ -273,7 +224,7 @@ const ExpenseTable = () => {
             </li>
           </ul>
         </nav>
-      </div>
+      </div> */}
     </div>
   );
 };

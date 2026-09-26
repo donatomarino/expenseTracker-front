@@ -6,6 +6,10 @@ import FormField from '../../../common/components/FormField';
 import CloseButton from '../../../common/components/CloseButton';
 import Button from '../../../common/components/Button';
 
+/**
+ * TODO: 
+ * - El seleccionador de fechas tiene que tener solamente el año actual y los dos anteriores
+ */
 const NewSpendingModal = (props: NewSpendingModalProps) => {
   const {
     modalIsOpen,

@@ -1,31 +1,22 @@
+import { useSpendingContext } from "../../../../../context/SpendingContext";
+import type { Month } from "../../../../../types/types";
 import Button from "../../../../common/components/Button";
 import "../css/month-year-navigator.css";
 
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-const years = ["2024", "2025", "2026"];
-
 const MonthYearNavigator = () => {
+  const { years, months, year, month, setYear, setMonth } = useSpendingContext();
+
+  const formatMonth = (month: Month) => {
+    return month.charAt(0).toLocaleUpperCase() + month.slice(1);
+  }
+
   return (
     <div className="month-year-navigator d-flex align-items-center gap-2">
       {/* Previous month */}
       <Button
         variant="light"
         className="navigation-button rounded-circle d-flex align-items-center justify-content-center border"
-        onClick={() => {}}
+        onClick={() => { }}
         aria-label="Go to previous month"
       >
         <i
@@ -52,7 +43,7 @@ const MonthYearNavigator = () => {
               aria-hidden="true"
             ></i>
 
-            <span>August</span>
+            <span>{formatMonth(month)}</span>
           </Button>
 
           <div
@@ -63,18 +54,17 @@ const MonthYearNavigator = () => {
               Select month
             </p>
 
-            {months.map((month) => (
+            {months.map((monthOption) => (
               <button
-                key={month}
+                key={monthOption}
                 type="button"
-                className={`dropdown-item period-option ${
-                  month === "August" ? "active" : ""
-                }`}
-                onClick={() => {}}
+                className={`dropdown-item period-option ${monthOption === month ? "active" : ""
+                  }`}
+                onClick={() => { setMonth(monthOption) }}
               >
-                <span>{month}</span>
+                <span>{formatMonth(monthOption)}</span>
 
-                {month === "August" && (
+                {monthOption === month && (
                   <i
                     className="bi bi-check-lg"
                     aria-hidden="true"
@@ -101,7 +91,7 @@ const MonthYearNavigator = () => {
               aria-hidden="true"
             ></i>
 
-            <span>2026</span>
+            <span>{year}</span>
           </Button>
 
           <div
@@ -112,18 +102,17 @@ const MonthYearNavigator = () => {
               Select year
             </p>
 
-            {years.map((year) => (
+            {years.map((yearOption) => (
               <button
-                key={year}
+                key={yearOption}
                 type="button"
-                className={`dropdown-item period-option ${
-                  year === "2026" ? "active" : ""
-                }`}
-                onClick={() => {}}
+                className={`dropdown-item period-option ${yearOption === year ? "active" : ""
+                  }`}
+                onClick={() => { setYear(yearOption) }}
               >
-                <span>{year}</span>
+                <span>{yearOption}</span>
 
-                {year === "2026" && (
+                {yearOption === year && (
                   <i
                     className="bi bi-check-lg"
                     aria-hidden="true"
@@ -139,7 +128,7 @@ const MonthYearNavigator = () => {
       <Button
         variant="light"
         className="navigation-button rounded-circle d-flex align-items-center justify-content-center border"
-        onClick={() => {}}
+        onClick={() => { }}
         aria-label="Go to next month"
       >
         <i

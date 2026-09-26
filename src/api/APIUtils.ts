@@ -3,17 +3,18 @@ import type { RequestParams } from "../types/types"
 import { authInstance, apiInstance } from "../config/axios.config";
 
 export default {
-  // getRequest: async<T>({
-  //   url,
-  //   params = {}
-  // }: RequestParams): Promise<T> => {
-  //   try {
-  //     const res: AxiosResponse = await apiInstance.get(url, { params });
-  //     return res.data;
-  //   } catch (e: any) {
-  //     return (e);
-  //   }
-  // },
+  getRequest: async<T>({
+    url,
+    params = {}
+  }: RequestParams): Promise<T> => {
+    try {
+      const instance = apiInstance;
+      const res = await instance.get<T>(url, { params });
+      return res.data;
+    } catch (e: any) {
+      throw e;
+    }
+  },
 
   postRequest: async<T>({
     url,

@@ -1,8 +1,8 @@
 import React, { createContext, useState } from 'react';
-import type { LoadingContextType, LoadingProviderProps } from '../types/types';
+import type { ContextProps, LoadingContextValue } from '../types/types';
 
 // Create context
-export const LoadingContext = createContext<LoadingContextType>({
+export const LoadingContext = createContext<LoadingContextValue>({
   loadButton: false,
   disabledButton: () => { },
   reload: false,
@@ -10,7 +10,7 @@ export const LoadingContext = createContext<LoadingContextType>({
 });
 
 // Create provider of context
-export const LoadingProvider = ({ children }: LoadingProviderProps) => {
+export const LoadingProvider = ({ children }: ContextProps) => {
   const [loadButton, setLoadButton] = useState<boolean>(false);
   const [reload, setReload] = useState<boolean>(false);
 
