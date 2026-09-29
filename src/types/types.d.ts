@@ -97,6 +97,22 @@ export interface LoadingContextValue {
 }
 
 export interface SpendingContextValue {
+  // currentPage: number;
+  // setCurrentPage: Dispatch<SetStateAction<number>>;
+  // pageSize: number;
+  // setPageSize: Dispatch<SetStateAction<number>>;
+  // totalElements: number;
+  // setTotalElements: Dispatch<SetStateAction<number>>;
+  // totalPages: number;
+  // setTotalPages: Dispatch<SetStateAction<number>>;
+  spendings: Spending[];
+  setSpendings: Dispatch<SetStateAction<Spending>>;
+  dateSearchMode: DateSearchMode;
+  startDate: string;
+  endDate: string;
+  setDateSearchMode: Dispatch<SetStateAction<DateSearchMode>>;
+  setStartDate: Dispatch<SetStateAction<string>>;
+  setEndDate: Dispatch<SetStateAction<string>>;
   months: Month[];
   years: number[];
   month: Month;
@@ -157,7 +173,14 @@ export interface SpendingResponse {
   totalElements: number;
   totalPages: number;
   first: boolean;
-  last: boolean
+  last: boolean;
+  statistics: SpendingStatistics;
+}
+
+export interface SpendingStatistics {
+  totalSpent: number;
+  totalTransactions: number;
+  average: number;
 }
 
 
@@ -172,7 +195,6 @@ export interface BaseApiResponse {
 export interface Requests<T> extends BaseApiResponse {
   data: T;
 }
-
 
 export interface Errors {
   description?: string;
@@ -223,6 +245,8 @@ export type SortOption = {
   value: SortValue;
   label: string;
 }
+
+export type DateSearchMode = "last90Days" | "customRange";
 
 export interface UseExpenseControlsResult {
   search: string;

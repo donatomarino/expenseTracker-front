@@ -1,13 +1,17 @@
+import { useSpendingContext } from "../../../../../context/SpendingContext";
 import Button from "../../../../common/components/Button";
+import { useSpending } from "../../../hooks/useSpending";
 
 const RangeAndFilters = () => {
+  const { getLast90Days } = useSpending();
+
   return (
     <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
       {/* Quick range */}
       <Button
         variant="outlinePrimary"
         className="range-button px-3 d-flex align-items-center justify-content-center gap-2"
-        onClick={() => {}}
+        onClick={() => getLast90Days()}
       >
         <i className="bi bi-calendar3" aria-hidden="true"></i>
         <span>Last 90 days</span>
@@ -94,7 +98,7 @@ const RangeAndFilters = () => {
             <Button
               variant="primary"
               className="flex-grow-1 fw-semibold"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               Apply
             </Button>
@@ -102,7 +106,7 @@ const RangeAndFilters = () => {
             <Button
               variant="light"
               className="border flex-grow-1"
-              onClick={() => {}}
+              onClick={() => { }}
             >
               Reset
             </Button>

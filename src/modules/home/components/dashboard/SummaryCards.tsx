@@ -1,4 +1,12 @@
+import { useSpending } from "../../hooks/useSpending";
+
 const SummaryCards = () => {
+  const { statistics } = useSpending();
+
+  const totalSpent = statistics?.totalSpent ?? 0;
+  const totalTransactions = statistics?.totalTransactions ?? 0;
+  const average = statistics?.average ?? 0;
+
   return (
     <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 mb-4">
       {/* Total spent */}
@@ -6,7 +14,7 @@ const SummaryCards = () => {
         <div className="card h-100 border-0 shadow-sm rounded-4">
           <div className="card-body d-flex flex-column">
             <span className="text-muted text-uppercase small mb-1">Total spent</span>
-            <h4 className="fw-bold mb-1">1.200 €</h4>
+            <h4 className="fw-bold mb-1">{totalSpent.toFixed(2) ?? 0} €</h4>
             <span className="text-muted small">In this period</span>
           </div>
         </div>
@@ -17,7 +25,7 @@ const SummaryCards = () => {
         <div className="card h-100 border-0 shadow-sm rounded-4">
           <div className="card-body d-flex flex-column">
             <span className="text-muted text-uppercase small mb-1">Transactions</span>
-            <h4 className="fw-bold mb-1">24</h4>
+            <h4 className="fw-bold mb-1">{totalTransactions}</h4>
             <span className="text-muted small">Recorded expenses</span>
           </div>
         </div>
@@ -28,7 +36,7 @@ const SummaryCards = () => {
         <div className="card h-100 border-0 shadow-sm rounded-4">
           <div className="card-body d-flex flex-column">
             <span className="text-muted text-uppercase small mb-1">Average</span>
-            <h4 className="fw-bold mb-1">51 €/day</h4>
+            <h4 className="fw-bold mb-1">{average.toFixed(2)} €/day</h4>
             <span className="text-muted small">Daily spending</span>
           </div>
         </div>

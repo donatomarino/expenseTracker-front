@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import type { ContextProps, Month, SpendingContextValue } from "../types/types";
+import type { ContextProps, DateSearchMode, Month, Spending, SpendingContextValue } from "../types/types";
 
 /* TODO:
 - Centralizar todos los filtros dentro del contexto
@@ -8,6 +8,11 @@ import type { ContextProps, Month, SpendingContextValue } from "../types/types";
 const SpendingContext = createContext<SpendingContextValue | undefined>(undefined);
 
 export const SpendingProvider = ({ children }: ContextProps) => {
+  // const [currentPage, setCurrentPage] = useState<number>(1);
+  // const [pageSize, setPageSize] = useState<number>(10);
+  // const [totalElements, setTotalElements] = useState<number>(0);
+  // const [totalPages, setTotalPages] = useState<number>(0);
+
   const currentYear: number = new Date().getFullYear();
   const years: number[] = [
     currentYear,
@@ -32,7 +37,29 @@ export const SpendingProvider = ({ children }: ContextProps) => {
   ];
   const [month, setMonth] = useState<Month>(months[new Date().getMonth()]);
 
+  const [dateSearchMode, setDateSearchMode] = useState<DateSearchMode>("customRange");
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+
+  const [spendings, setSpendings] = useState<Spending[]>([]);
+
   const contextValue: SpendingContextValue = {
+    // currentPage,
+    // setCurrentPage,
+    // pageSize,
+    // setPageSize,
+    // totalElements,
+    // setTotalElements,
+    // totalPages,
+    // setTotalPages,
+    dateSearchMode,
+    setDateSearchMode,
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+    spendings,
+    setSpendings,
     months,
     years,
     month,

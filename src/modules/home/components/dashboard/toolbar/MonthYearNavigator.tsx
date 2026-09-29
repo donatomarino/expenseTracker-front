@@ -1,6 +1,7 @@
 import { useSpendingContext } from "../../../../../context/SpendingContext";
 import type { Month } from "../../../../../types/types";
 import Button from "../../../../common/components/Button";
+import { useSpending } from "../../../hooks/useSpending";
 import "../css/month-year-navigator.css";
 
 const MonthYearNavigator = () => {

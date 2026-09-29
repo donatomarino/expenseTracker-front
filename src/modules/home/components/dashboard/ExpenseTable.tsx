@@ -1,9 +1,10 @@
+import Button from "../../../common/components/Button";
 import { useSpending } from "../../hooks/useSpending";
 
 const PAGE_SIZE_OPTIONS = [10, 15, 25] as const;
 
 const ExpenseTable = () => {
-  const { spendings, totalElements, getPaymentBadgeClass, formatPaymentMethod } = useSpending();
+  const { spendings, totalElements, pageSize, totalPages, currentPage, getPaymentBadgeClass, formatPaymentMethod, changePage, first, last } = useSpending();
 
   // const [currentPage, setCurrentPage] = useState<number>(1);
   // const [pageSize, setPageSize] = useState<number>(10);
@@ -15,43 +16,6 @@ const ExpenseTable = () => {
       year: "numeric",
     }).format(new Date(date));
   };
-
-  // const totalPages = Math.ceil(expenses.length / pageSize);
-
-  // const visibleExpenses = useMemo(() => {
-  //   const firstIndex = (currentPage - 1) * pageSize;
-  //   const lastIndex = firstIndex + pageSize;
-
-  //   return expenses.slice(firstIndex, lastIndex);
-  // }, [expenses, currentPage, pageSize]);
-
-  // const pageNumbers = Array.from(
-  //   { length: totalPages },
-  //   (_, index) => index + 1
-  // );
-
-  // const handlePreviousPage = () => {
-  //   setCurrentPage((prevPage) =>
-  //     Math.max(prevPage - 1, 1)
-  //   );
-  // };
-
-  // const handleNextPage = () => {
-  //   setCurrentPage((prevPage) =>
-  //     Math.min(prevPage + 1, totalPages)
-  //   );
-  // };
-
-  // const handlePageSizeChange = (
-  //   e: React.ChangeEvent<HTMLSelectElement>
-  // ) => {
-  //   setPageSize(Number(e.target.value));
-  //   setCurrentPage(1); // Reset to first page when page size changes
-  // };
-
-  // const handlePageChange = (page: number) => {
-  //   (page);
-  // };
 
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
@@ -150,81 +114,79 @@ const ExpenseTable = () => {
         </table>
       </div>
 
-      {/* <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 p-3 border-top bg-light">
-        <div className="d-flex align-items-center gap-2">
-          <label
-            htmlFor="page-size"
-            className="small text-muted text-nowrap"
-          >
-            Expenses per page
-          </label>
+      <div>
+        <div>
 
-          <select
-            id="page-size"
-            className="form-select form-select-sm"
-            value={pageSize}
-            onChange={handlePageSizeChange}
-            style={{ width: "80px" }}
-          >
-            {PAGE_SIZE_OPTIONS.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
         </div>
 
-        <nav aria-label="Expenses pagination">
-          <ul className="pagination pagination-sm mb-0">
-            <li
-              className={`page-item ${currentPage === 1 ? "disabled" : ""
-                }`}
-            >
-              <button
-                type="button"
-                className="page-link"
-                onClick={handlePreviousPage}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-            </li>
-
-            {pageNumbers.map((page) => (
-              <li
-                key={page}
-                className={`page-item ${currentPage === page ? "active" : ""
-                  }`}
-              >
-                <button
+        <div className="mt-3 me-3">
+          <nav aria-label="Expenses pagination">
+            <ul className="pagination justify-content-end align-items-center">
+              <li className="page-item">
+                <Button
                   type="button"
-                  className="page-link"
-                  onClick={() => handlePageChange(page)}
-                  aria-current={
-                    currentPage === page ? "page" : undefined
+                  variant="light"
+                  className="navigation-button rounded-circle d-flex align-items-center justify-content-center border"
+                  onClick={() =>
+                    changePage(currentPage - 1)
                   }
+                  disabled={first}
+                  aria-label="Go to previous page"
                 >
-                  {page}
-                </button>
+                  <i
+                    className="bi bi-chevron-left"
+                    aria-hidden="true"
+                  />
+                </Button>
               </li>
-            ))}
 
-            <li
-              className={`page-item ${currentPage === totalPages ? "disabled" : ""
-                }`}
-            >
-              <button
-                type="button"
-                className="page-link"
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div> */}
+              {Array.from(
+                { length: totalPages },
+                (_, index) => index + 1
+              ).map((page) => (
+                <li
+                  key={page}
+                  className={`page-item ${currentPage === page
+                    ? "active"
+                    : ""
+                    }`}
+                >
+                  <Button
+                    type="button"
+                    className="page-link rounded-circle px-3 py-2"
+                    onClick={() => changePage(page)}
+                    aria-current={
+                      currentPage === page
+                        ? "page"
+                        : undefined
+                    }
+                  >
+                    {page}
+                  </Button>
+                </li>
+              ))}
+
+              <li className="page-item">
+                <Button
+                  type="button"
+                  variant="light"
+                  className="navigation-button rounded-circle d-flex align-items-center justify-content-center border"
+                  onClick={() =>
+                    changePage(currentPage + 1)
+                  }
+                  disabled={last}
+                  aria-label="Go to next page"
+                >
+                  <i
+                    className="bi bi-chevron-right"
+                    aria-hidden="true"
+                  />
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </div>
   );
 };
