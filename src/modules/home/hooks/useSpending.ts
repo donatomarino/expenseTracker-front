@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react"
 import { LoadingContext } from "../../../context/LoadingContext";
-import type { PaymentMethod, SpendingRequest, SpendingResponse, SpendingStatistics } from "../../../types/types";
+import type { PaymentMethod, SpendingRequest, GetSpendingResponse, SpendingStatistics } from "../../../types/types";
 import contentService from "../services/contentService";
 import { useSpendingContext } from "../../../context/SpendingContext";
 
 export const useSpending = () => {
-  const { loadButton, disabledButton, reload, triggerReload } = useContext(LoadingContext);
-  const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode } = useSpendingContext();
+  const { reload } = useContext(LoadingContext);
+  const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode, startDate, endDate } = useSpendingContext();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -14,6 +14,7 @@ export const useSpending = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [first, setFirst] = useState<boolean>(false);
   const [last, setLast] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
   const [statistics, setStatistics] = useState<SpendingStatistics>({
     totalSpent: 0,
     totalTransactions: 0,
@@ -50,6 +51,45 @@ export const useSpending = () => {
     return date.toISOString().slice(0, 10);
   }
 
+  const buildSpendingParams = (page = 0, size = pageSize): SpendingRequest => {
+    const baseParams: SpendingRequest = {
+      page,
+      size,
+    };
+
+    if(search) {
+      baseParams.search = search;
+    }
+
+    if (dateSearchMode === "last90Days") {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - 90);
+
+      return {
+        ...baseParams,
+        startDate: formatDate(start),
+        endDate: formatDate(end),
+      };
+    }
+
+    if (startDate && endDate) {
+      return {
+        ...baseParams,
+        startDate,
+        endDate,
+      };
+    }
+
+    const monthIndex = months.indexOf(month) + 1;
+
+    return {
+      ...baseParams,
+      month: monthIndex,
+      year,
+    };
+  };
+
   // Load spendings
   useEffect(() => {
     const fetchs = async () => {
@@ -58,76 +98,48 @@ export const useSpending = () => {
        * Añadir el componente de loading mientras hace la petición a la base de datos.
        */
       try {
-        dateSearchMode === "last90Days" && setDateSearchMode("customRange");
+        const params = buildSpendingParams();
+        const res: GetSpendingResponse = await contentService.getSpending(params);
 
-        const monthIndex = months.indexOf(month) + 1;
-
-        const params: SpendingRequest = ({
-          month: monthIndex,
-          year
-        });
-        const res: SpendingResponse = await contentService.getSpending(params);
-
-        applySpendingResponse(res);
+        applySpendingResponse(res, 1);
       } catch (e: any) {
         console.error("Error loading spendings: ", e);
       }
     };
     fetchs();
-  }, [reload, year, month]);
+  }, [reload, year, month, dateSearchMode, startDate, endDate, search]);
 
   // Api request
-  const apiRequest = async (params: SpendingRequest): Promise<SpendingResponse> => {
+  const apiRequest = async (params: SpendingRequest): Promise<GetSpendingResponse> => {
     return await contentService.getSpending(params);
   }
 
-  // Saca los gastos de los últimos 90 días
-  const getLast90Days = async (): Promise<void> => {
-    try {
-      if (setDateSearchMode)
-        setDateSearchMode("last90Days");
-      const endDate: Date = new Date();
-      const startDate: Date = new Date();
-      console.log(formatDate(endDate));
-      startDate.setDate(startDate.getDate() - 90);
+  // Toggle last 90 days mode
+  const toggleLast90Days = (): void => {
+    setDateSearchMode((currentMode: string) => 
+    currentMode === "last90Days" ? "customRange" : "last90Days");
+  };
 
-      const params: SpendingRequest = ({
-        startDate: formatDate(startDate),
-        endDate: formatDate(endDate),
-      })
-
-      const res: SpendingResponse = await apiRequest(params);
-      console.log(res)
-
-      applySpendingResponse(res);
-    } catch (e: any) {
-      console.error("Error loading spendings from the last 90 days:", e);
-    }
-  }
-
+  // Change page
   const changePage = async (page: number): Promise<void> => {
     if (page < 1 || page > totalPages) {
       return;
     }
 
     try {
-      const params: SpendingRequest = {
-        page: page - 1,
-        size: pageSize
-      };
+      const params = buildSpendingParams(page - 1, pageSize);
+      const res: GetSpendingResponse = await apiRequest(params);
 
-      const res: SpendingResponse = await apiRequest(params);
-
-      applySpendingResponse(res);
+      applySpendingResponse(res, page);
     } catch (e: any) {
       console.error("Error loading spendings", e);
     }
   }
 
   // Setter response api request
-  const applySpendingResponse = (res: SpendingResponse): void => {
+  const applySpendingResponse = (res: GetSpendingResponse, pageNumber = 1): void => {
     setSpendings(res.spendings ?? []);
-    setCurrentPage(res.page);
+    setCurrentPage(pageNumber);
     setPageSize(res.size);
     setTotalElements(res.totalElements);
     setTotalPages(res.totalPages);
@@ -140,5 +152,5 @@ export const useSpending = () => {
     });
   }
 
-  return { spendings, currentPage, pageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, getLast90Days, changePage, first, last, statistics };
+  return { spendings, currentPage, pageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch };
 };

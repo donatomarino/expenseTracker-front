@@ -1,15 +1,11 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import type { NewSpendingModalProps } from '../../../../types/types';
+import type { NewSpendingModalProps, paymentMethodOption } from '../../../../types/types';
 import FullPageLoader from '../../../common/components/FullPageLoader';
 import FormField from '../../../common/components/FormField';
 import CloseButton from '../../../common/components/CloseButton';
 import Button from '../../../common/components/Button';
 
-/**
- * TODO: 
- * - El seleccionador de fechas tiene que tener solamente el año actual y los dos anteriores
- */
 const NewSpendingModal = (props: NewSpendingModalProps) => {
   const {
     modalIsOpen,
@@ -23,6 +19,13 @@ const NewSpendingModal = (props: NewSpendingModalProps) => {
     setErrors,
     loading
   } = props;
+
+  const paymentMethodOptions: paymentMethodOption[] = [
+    { value: 'CREDIT_CARD', label: 'Credit Card' },
+    { value: 'DEBIT_CARD', label: 'Debit Card' },
+    { value: 'CASH', label: 'Cash' },
+    { value: 'TRANSFER', label: 'Transfer' }
+  ];
 
   return (
     <Modal
@@ -70,6 +73,39 @@ const NewSpendingModal = (props: NewSpendingModalProps) => {
               disabled={loadButton}
               error={errors?.amount}
             />
+
+            <div className="mb-3">
+              <label
+                htmlFor="newSpendingPaymentMethod"
+                className="form-label fw-semibold text-dark mb-2"
+              >
+                Payment method
+              </label>
+
+              <div className="input-group">
+                <span
+                  className="input-group-text bg-light border-end-0 text-primary"
+                  aria-hidden="true"
+                >
+                  <i className="bi bi-credit-card fs-5" />
+                </span>
+
+                <select
+                  id="newSpendingPaymentMethod"
+                  name="paymentMethod"
+                  className="form-select border-start-0 rounded-end-3"
+                  value={newSpending?.paymentMethod ?? "CREDIT_CARD"}
+                  onChange={handleChange}
+                  disabled={loadButton}
+                >
+                  {paymentMethodOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
             <FormField
               label="Date"

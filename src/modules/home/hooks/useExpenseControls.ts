@@ -4,8 +4,7 @@ import { sortOptions } from "../components/dashboard/constants/sortOptions";
 
 const useExpenseControls = (): UseExpenseControlsResult => {
 
-  const [search, setSearch] = useState<string>("");
-  const [selectedSort, setSelectedSort] = useState<SortValue>("recent");
+  const [selectedSort, setSelectedSort] = useState<SortValue>("NEWEST");
 
   const selectedSortOption = sortOptions.find(
     (option) => option.value === selectedSort
@@ -14,12 +13,10 @@ const useExpenseControls = (): UseExpenseControlsResult => {
   const selectedSortLabel = selectedSortOption?.label ?? "Most recent";
 
   const handleRestore = (): void => {
-    setSelectedSort("recent");
+    setSelectedSort("NEWEST");
   }
 
   return {
-    search,
-    setSearch,
     selectedSort,
     setSelectedSort,
     selectedSortOption,

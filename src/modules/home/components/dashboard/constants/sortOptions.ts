@@ -2,23 +2,23 @@ import type { SortOption } from "../../../../../types/types";
 
 export const sortOptions: SortOption[] = [
   {
-    value: "recent",
+    value: "NEWEST",
     label: "Most recent",
   },
   {
-    value: "oldest",
+    value: "OLDEST",
     label: "Oldest first",
   },
   {
-    value: "highest",
+    value: "AMOUNT_LOW_TO_HIGH",
     label: "Highest amount",
   },
   {
-    value: "lowest",
+    value: "AMOUNT_HIGH_TO_LOW",
     label: "Lowest amount",
   },
   {
-    value: "description",
+    value: "DESCRIPTION",
     label: "Description: A-Z",
   },
 ];

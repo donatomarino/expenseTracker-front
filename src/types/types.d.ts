@@ -3,11 +3,13 @@ import type { AxiosRequestConfig } from "axios";
 //--------- Components ----------//
 interface Spending {
   id: number;
-  spendingDate: string;
+  date: string;
   description: string;
   paymentMethod: PaymentMethod;
   amount: number;
 }
+
+export type CreateSpendingRequest = Omit<Spending, "id">;
 
 interface BaseModalProps {
   modalIsOpen: boolean;
@@ -20,8 +22,8 @@ interface BaseModalProps {
 
 export interface ModalProps extends BaseModalProps {
   handleSubmit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
-  newSpending: Spending | null;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  newSpending: CreateSpendingRequest | null;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
 interface EditModalProps extends BaseModalProps, BaseCardProps {
@@ -39,7 +41,7 @@ export interface NewSpendingModalProps extends ModalProps {
 }
 
 interface BaseCardProps extends BaseModalProps {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
   selectedSpending: Spending | null;
 }
@@ -149,7 +151,7 @@ export interface AuthResponse {
 
 export interface RegisterResponse {
   message: String;
-  success:boolean;
+  success: boolean;
 }
 
 export interface SpendingRequest {
@@ -166,7 +168,7 @@ export interface SpendingRequest {
   size?: number;
 }
 
-export interface SpendingResponse {
+export interface GetSpendingResponse {
   spendings: Spending[];
   page: number;
   size: number;
@@ -214,7 +216,7 @@ export interface RegisterPayload {
 }
 
 export interface RegisterErrors {
-  fullName?: string | string[]; 
+  fullName?: string | string[];
   email?: string | string[];
   password?: string | string[];
 }
@@ -239,18 +241,20 @@ export type Month = "january" | "february" | "march" | "april" | "may" | "june" 
 
 // --------- TYPES/INTERFACES DASHBOARD ---------- //
 export type PaymentMethod = "CASH" | "DEBIT_CARD" | "CREDIT_CARD" | "TRANSFER";
-export type SortValue = "OLDEST" | "NEWEST" | "AMOUNT_LOW_TO_HIGH" | "AMOUNT_HIGH_TO_LOW" | "DESCRIPTION"; 
+export type SortValue = "OLDEST" | "NEWEST" | "AMOUNT_LOW_TO_HIGH" | "AMOUNT_HIGH_TO_LOW" | "DESCRIPTION";
 
 export type SortOption = {
   value: SortValue;
   label: string;
 }
 
+export type paymentMethodOption = {
+  value: PaymentMethod;
+  label: string;
+}
 export type DateSearchMode = "last90Days" | "customRange";
 
 export interface UseExpenseControlsResult {
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
   selectedSort: SortValue;
   setSelectedSort: Dispatch<SetStateAction<SortValue>>;
   selectedSortOption: SortOption | undefined;

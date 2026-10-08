@@ -1,17 +1,21 @@
 import { useContext, useState } from "react";
-import type { Errors, Requests, Spending } from "../../../types/types";
+import type { CreateSpendingRequest, Errors } from "../../../types/types";
 import { LoadingContext } from "../../../context/LoadingContext";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
 import { useLoad } from "../../common/hooks/useLoad";
 
 const useHeader = () => {
-  // New spending datas
-  const [newSpending, setNewSpending] = useState<Spending | null>({
+
+  const initialSpendingState: CreateSpendingRequest = {
     description: '',
+    date: '',
     amount: 0,
-    date: ''
-  });
+    paymentMethod: 'CREDIT_CARD',
+  };
+
+  // New spending datas
+  const [newSpending, setNewSpending] = useState<CreateSpendingRequest>(initialSpendingState);
 
   // Disabled buttons
   const { disabledButton } = useContext(LoadingContext);
@@ -26,40 +30,45 @@ const useHeader = () => {
   const { loading, startLoading, stopLoading } = useLoad();
 
   // Input change handler for new spending form
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     if (!newSpending) return;
 
-    setNewSpending({
-      ...newSpending,
-      [e.target.name]: e.target.value
-    });
+    console.log(newSpending.amount);
+    setNewSpending((previous) => ({
+      ...previous!,
+      [e.target.name]: e.target.name === 'amount' ? parseFloat(e.target.value.replace(',', '.')) : e.target.value
+    }))
   }
 
   // Form submission for adding new spending
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void): Promise<void> => {
     e.preventDefault();
-    disabledButton();
 
     if (!newSpending) {
       toast.error("Server error");
       return;
     }
 
+    if (newSpending.amount.toLocaleString().includes(',')) {
+      newSpending.amount.toLocaleString().replace(',', '.');
+    }
+
+    disabledButton();
     startLoading();
     try {
-      const res: Requests<Spending> = await contentService.addSpending(newSpending);
+      // Call the service to add new spending
+      await contentService.addSpending(newSpending);
 
-      if (res.success) {
-        toast.success('Spending added successfully');
-        triggerReload();
-        setErrors({});
-        setNewSpending(null);
-        closeModal();
-      }
+      // Show success message and reload spendings
+      toast.success('Spending added successfully');
+      triggerReload();
+      setErrors({});
+      setNewSpending(initialSpendingState);
+      closeModal();
+
     } catch (e: any) {
-      console.log(e.response);
-      if (e.response && e.response.status === 422) {
-        const errors = e.response.data.errors;
+      if (e.response && e.response.status === 400) {
+        const errors = e.response.data;
 
         setErrors(errors);
       } else {

@@ -3,15 +3,16 @@ import Button from "../../../../common/components/Button";
 import { useSpending } from "../../../hooks/useSpending";
 
 const RangeAndFilters = () => {
-  const { getLast90Days } = useSpending();
+  const { toggleLast90Days } = useSpending();
+  const { dateSearchMode } = useSpendingContext();
 
   return (
     <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
       {/* Quick range */}
       <Button
-        variant="outlinePrimary"
+        variant={dateSearchMode === "last90Days" ? "primary" : "light"}
         className="range-button px-3 d-flex align-items-center justify-content-center gap-2"
-        onClick={() => getLast90Days()}
+        onClick={() => toggleLast90Days()}
       >
         <i className="bi bi-calendar3" aria-hidden="true"></i>
         <span>Last 90 days</span>

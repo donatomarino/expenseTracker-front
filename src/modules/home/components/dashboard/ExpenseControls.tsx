@@ -1,17 +1,18 @@
 import Button from "../../../common/components/Button";
 import "./css/expensecontrols.css";
 import useExpenseControls from "../../hooks/useExpenseControls";
+import { useSpending } from "../../hooks/useSpending";
 
 const ExpenseControls = () => {
   const {
-    search,
-    setSearch,
     selectedSort,
     setSelectedSort,
     selectedSortLabel,
     handleRestore,
     sortOptions,
   } = useExpenseControls();
+
+  const { search, setSearch } = useSpending();
 
   return (
     <section

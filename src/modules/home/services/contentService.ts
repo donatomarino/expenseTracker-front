@@ -1,26 +1,27 @@
-import type { SpendingRequest, SpendingResponse } from "../../../types/types";
+import type { Spending, SpendingRequest, GetSpendingResponse, CreateSpendingRequest} from "../../../types/types";
 import instanceAxios from '../../../api/APIUtils';
 
 const contentService = {
     getSpending: async (
     params: SpendingRequest = {}
-  ): Promise<SpendingResponse> => {
-    return instanceAxios.getRequest<SpendingResponse>({
+  ): Promise<GetSpendingResponse> => {
+    return instanceAxios.getRequest<GetSpendingResponse>({
       url: "/spendings",
       params,
     });
   },
 
-  // addSpending(data: Spending): Promise<Requests<Spending>> {
-  //   return instanceAxios.postRequest({
-  //     url: '/spendings',
-  //     data: {
-  //       description: data.description,
-  //       amount: data.amount,
-  //       date: data.date
-  //     }
-  //   })
-  // },
+  addSpending(data: CreateSpendingRequest): Promise<Spending> {
+    return instanceAxios.postRequest({
+      url: '/spendings',
+      data: {
+        description: data.description,
+        amount: data.amount,
+        date: data.date,
+        paymentMethod: data.paymentMethod
+      }
+    })
+  },
 
   // editSpending(data: Spending): Promise<Requests<Spending>> {
   //   return instanceAxios.putRequest({

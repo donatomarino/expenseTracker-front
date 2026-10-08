@@ -52,7 +52,7 @@ const ExpenseTable = () => {
             {spendings.map((spending) => (
               <tr key={spending.id}>
                 <td className="px-4 text-nowrap text-muted">
-                  {formatDate(spending.spendingDate)}
+                  {formatDate(spending.date)}
                 </td>
 
                 <td>
@@ -116,7 +116,7 @@ const ExpenseTable = () => {
 
       <div>
         <div>
-
+            {/* TODO: Add page size selector */}
         </div>
 
         <div className="mt-3 me-3">
