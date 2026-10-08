@@ -1,12 +1,28 @@
 import { useContext, useEffect, useState } from "react"
 import { LoadingContext } from "../../../context/LoadingContext";
-import type { PaymentMethod, SpendingRequest, GetSpendingResponse, SpendingStatistics } from "../../../types/types";
+import type { PaymentMethod, SpendingRequest, GetSpendingResponse, SpendingStatistics, Spending } from "../../../types/types";
 import contentService from "../services/contentService";
 import { useSpendingContext } from "../../../context/SpendingContext";
+import { toast } from "react-toastify";
+import { useLoad } from "../../common/hooks/useLoad";
+import useFormErrors from "./useFormErrors";
 
 export const useSpending = () => {
-  const { reload } = useContext(LoadingContext);
+  const { reload, disabledButton, triggerReload, loadButton } = useContext(LoadingContext);
   const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode, startDate, endDate } = useSpendingContext();
+
+  // State for editing spending
+  const [editSpending, setEditSpending] = useState<Spending | null>(null);
+  const [selectedSpending, setSelectedSpending] = useState<Spending | null>(null);
+
+  // State for selected spending ID
+  const [selectedSpendingId, setSelectedSpendingId] = useState<number | null>(null);
+
+  // Spinner loader
+  const { loading, startLoading, stopLoading } = useLoad();
+
+  // Form errors
+  const { errors, setErrors, clearErrors } = useFormErrors();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -57,7 +73,7 @@ export const useSpending = () => {
       size,
     };
 
-    if(search) {
+    if (search) {
       baseParams.search = search;
     }
 
@@ -116,9 +132,110 @@ export const useSpending = () => {
 
   // Toggle last 90 days mode
   const toggleLast90Days = (): void => {
-    setDateSearchMode((currentMode: string) => 
-    currentMode === "last90Days" ? "customRange" : "last90Days");
+    setDateSearchMode((currentMode: string) =>
+      currentMode === "last90Days" ? "customRange" : "last90Days");
   };
+
+  // Edit spending
+  const startEditing = (spending: Spending, openEditModal: () => void) => {
+    if (spending.id !== undefined && spending.id !== null) {
+
+      setSelectedSpending(spending);
+      setEditSpending(spending);
+
+      openEditModal();
+    } else {
+      console.error("Invalid spending selected for editing");
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
+    if (!editSpending) return;
+
+    setEditSpending({
+      ...editSpending,
+      [e.target.name]: e.target.value
+    });
+  }
+
+  const handleEdit = async (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void): Promise<void> => {
+    e.preventDefault();
+    disabledButton();
+
+    if (!editSpending || !selectedSpending) {
+      toast.error("Server error");
+      disabledButton();
+      return;
+    }
+
+    const noChanges =
+      editSpending.description === selectedSpending?.description &&
+      editSpending.amount === selectedSpending?.amount &&
+      editSpending.date === selectedSpending?.date &&
+      editSpending.paymentMethod === selectedSpending?.paymentMethod;
+
+    if (noChanges) {
+      toast.error('You have to modify at least one field');
+      disabledButton();
+      return;
+    }
+
+    startLoading();
+    try {
+      // Call the service to edit spending
+      await contentService.editSpending(editSpending);
+
+      toast.success('Spending updated successfully');
+      closeModal();
+      triggerReload();
+      clearErrors();
+
+    } catch (e: any) {
+      if (e.response && e.response.status === 400) {
+        const errors = e.response.data;
+
+        setErrors(errors);
+      } else {
+        console.error("The request failed: ", e);
+        toast.error("Server error");
+      }
+    } finally {
+      disabledButton();
+      stopLoading();
+    }
+  }
+
+  // Delete
+  const handleDelete = (id: number, openModal: () => void): void => {
+    setSelectedSpendingId(id);
+    openModal();
+  }
+
+  const deleteSpending = async (closeModal: () => void): Promise<void> => {
+    if (selectedSpendingId === null) {
+      toast.error("Server error");
+      return;
+    }
+
+    startLoading();
+    try {
+      await toast.promise(
+        contentService.deleteSpending(selectedSpendingId),
+        {
+          pending: "Deleting spending...",
+          success: "Spending deleted successfully",
+          error: "Error deleting spending",
+        }
+      );
+
+      closeModal();
+      triggerReload();
+    } catch (e) {
+      console.error('Server error', e);
+    } finally {
+      stopLoading();
+    }
+  }
 
   // Change page
   const changePage = async (page: number): Promise<void> => {
@@ -152,5 +269,5 @@ export const useSpending = () => {
     });
   }
 
-  return { spendings, currentPage, pageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch };
+  return { spendings, currentPage, pageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch, startEditing, handleChange, handleEdit, errors, selectedSpending, loading, loadButton, editSpending, handleDelete, deleteSpending };
 };

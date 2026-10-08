@@ -44,6 +44,7 @@ interface BaseCardProps extends BaseModalProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
   handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
   selectedSpending: Spending | null;
+  editSpending: Spending | null;
 }
 
 export interface CardProps extends BaseModalProps, BaseCardProps, DeleteModalProps, EditModalProps {

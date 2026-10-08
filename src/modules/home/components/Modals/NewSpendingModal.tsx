@@ -1,10 +1,11 @@
 import Modal from 'react-modal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import type { NewSpendingModalProps, paymentMethodOption } from '../../../../types/types';
+import type { NewSpendingModalProps } from '../../../../types/types';
 import FullPageLoader from '../../../common/components/FullPageLoader';
 import FormField from '../../../common/components/FormField';
 import CloseButton from '../../../common/components/CloseButton';
 import Button from '../../../common/components/Button';
+import { paymentMethodOptions } from '../dashboard/constants/paymenthMethodOptions';
 
 const NewSpendingModal = (props: NewSpendingModalProps) => {
   const {
@@ -19,13 +20,6 @@ const NewSpendingModal = (props: NewSpendingModalProps) => {
     setErrors,
     loading
   } = props;
-
-  const paymentMethodOptions: paymentMethodOption[] = [
-    { value: 'CREDIT_CARD', label: 'Credit Card' },
-    { value: 'DEBIT_CARD', label: 'Debit Card' },
-    { value: 'CASH', label: 'Cash' },
-    { value: 'TRANSFER', label: 'Transfer' }
-  ];
 
   return (
     <Modal

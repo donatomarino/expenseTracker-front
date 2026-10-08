@@ -32,25 +32,25 @@ export default {
     }
   },
 
-  // putRequest: async<T>({
-  //   url,
-  //   data = {},
-  //   params = {},
-  // }: RequestParams): Promise<Requests<T>> => {
-  //   try {
-  //     const res: AxiosResponse = await apiInstance.put(url, data, { params });
-  //     return res.data;
-  //   } catch (e: any) {
-  //     throw e;
-  //   }
-  // },
+  putRequest: async<T>({
+    url,
+    data = {},
+    params = {},
+  }: RequestParams): Promise<T> => {
+    try {
+      const res: AxiosResponse = await apiInstance.put(url, data, { params });
+      return res.data;
+    } catch (e: any) {
+      throw e;
+    }
+  },
 
-  // deleteRequest: async ({ url }: RequestParams): Promise<BaseApiResponse> => {
-  //   try {
-  //     const res: AxiosResponse = await apiInstance.delete(url);
-  //     return res.data;
-  //   } catch (e: any) {
-  //     throw e;
-  //   }
-  // }
+  deleteRequest: async ({ url }: RequestParams): Promise<void> => {
+    try {
+      const res: AxiosResponse = await apiInstance.delete(url);
+      return res.data;
+    } catch (e: any) {
+      throw e;
+    }
+  }
 };

@@ -211,13 +211,27 @@ export const useContent = () => {
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     if (!editSpending) return;
 
-    setEditSpending({
+    const fieldName = e.target.name;
+    const fieldValue = fieldName === 'amount'
+      ? Number(e.target.value)
+      : e.target.value;
+
+    const nextEditSpending = {
       ...editSpending,
-      [e.target.name]: e.target.value
-    });
+      [fieldName]: fieldValue,
+    };
+
+    setEditSpending(nextEditSpending);
+
+    if (selectedSpending) {
+      setSelectedSpending({
+        ...selectedSpending,
+        [fieldName]: fieldValue,
+      });
+    }
   }
 
   const handleEdit = async (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void): Promise<void> => {
@@ -233,7 +247,8 @@ export const useContent = () => {
     const noChanges =
       editSpending.description === selectedSpending?.description &&
       editSpending.amount === selectedSpending?.amount &&
-      editSpending.date === selectedSpending?.date;
+      editSpending.date === selectedSpending?.date &&
+      editSpending.paymentMethod === selectedSpending?.paymentMethod;
 
     if (noChanges) {
       toast.error('You have to modify at least one field');

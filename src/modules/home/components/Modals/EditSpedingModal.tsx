@@ -5,6 +5,7 @@ import FullPageLoader from "../../../common/components/FullPageLoader";
 import FormField from "../../../common/components/FormField";
 import CloseButton from "../../../common/components/CloseButton";
 import Button from "../../../common/components/Button";
+import { paymentMethodOptions } from "../dashboard/constants/paymenthMethodOptions";
 
 const EditSpendingModal = (props: BaseCardProps) => {
   const {
@@ -16,7 +17,8 @@ const EditSpendingModal = (props: BaseCardProps) => {
     handleChange,
     handleEdit,
     selectedSpending,
-    loading
+    loading,
+    editSpending
   } = props;
 
   return (
@@ -67,6 +69,39 @@ const EditSpendingModal = (props: BaseCardProps) => {
               disabled={loadButton}
               error={errors?.amount}
             />
+
+            <div className="mb-3">
+              <label
+                htmlFor="newSpendingPaymentMethod"
+                className="form-label fw-semibold text-dark mb-2"
+              >
+                Payment method
+              </label>
+
+              <div className="input-group">
+                <span
+                  className="input-group-text bg-light border-end-0 text-primary"
+                  aria-hidden="true"
+                >
+                  <i className="bi bi-credit-card fs-5" />
+                </span>
+
+                <select
+                  id="newSpendingPaymentMethod"
+                  name="paymentMethod"
+                  className="form-select border-start-0 rounded-end-3"
+                  value={editSpending?.paymentMethod || ""}
+                  onChange={handleChange}
+                  disabled={loadButton}
+                >
+                  {paymentMethodOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
             <FormField
               label="Date"

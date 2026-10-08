@@ -1,13 +1,15 @@
 import Button from "../../../common/components/Button";
+import { useModal } from "../../hooks/useModal";
 import { useSpending } from "../../hooks/useSpending";
+import DeleteSpendingModal from "../modals/DeleteSpendingModal";
+import EditSpendingModal from "../modals/EditSpedingModal";
 
 const PAGE_SIZE_OPTIONS = [10, 15, 25] as const;
 
 const ExpenseTable = () => {
-  const { spendings, totalElements, pageSize, totalPages, currentPage, getPaymentBadgeClass, formatPaymentMethod, changePage, first, last } = useSpending();
+  const { spendings, totalElements, pageSize, totalPages, currentPage, getPaymentBadgeClass, formatPaymentMethod, changePage, first, last, startEditing, errors, handleChange, handleEdit, selectedSpending, loading, loadButton, editSpending, deleteSpending, handleDelete } = useSpending();
 
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [pageSize, setPageSize] = useState<number>(10);
+  const { openEditModal, editModalIsOpen, closeEditModal, customStyles, modalIsOpen, closeModal, openModal } = useModal();
 
   const formatDate = (date: string) => {
     return new Intl.DateTimeFormat("en-US", {
@@ -80,6 +82,7 @@ const ExpenseTable = () => {
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-primary"
+                      onClick={() => startEditing(spending, openEditModal)}
                       aria-label={`Edit ${spending.description}`}
                     >
                       <i
@@ -91,6 +94,7 @@ const ExpenseTable = () => {
                     <button
                       type="button"
                       className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(spending.id, openModal)}
                       aria-label={`Delete ${spending.description}`}
                     >
                       <i
@@ -116,7 +120,7 @@ const ExpenseTable = () => {
 
       <div>
         <div>
-            {/* TODO: Add page size selector */}
+          {/* TODO: Add page size selector */}
         </div>
 
         <div className="mt-3 me-3">
@@ -187,6 +191,29 @@ const ExpenseTable = () => {
           </nav>
         </div>
       </div>
+
+      <EditSpendingModal
+        modalIsOpen={editModalIsOpen}
+        closeModal={closeEditModal}
+        customStyles={customStyles}
+        loadButton={loadButton}
+        errors={errors}
+        handleChange={handleChange}
+        handleEdit={handleEdit}
+        selectedSpending={selectedSpending}
+        loading={loading}
+        editSpending={editSpending}
+      />
+
+      <DeleteSpendingModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        customStyles={customStyles}
+        loadButton={loadButton}
+        errors={errors}
+        deleteSpending={deleteSpending}
+        loading={loading}
+      />
     </div>
   );
 };

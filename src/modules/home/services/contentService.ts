@@ -23,23 +23,23 @@ const contentService = {
     })
   },
 
-  // editSpending(data: Spending): Promise<Requests<Spending>> {
-  //   return instanceAxios.putRequest({
-  //     url: '/spendings',
-  //     data: {
-  //       id: data.id,
-  //       description: data.description,
-  //       amount: data.amount,
-  //       date: data.date
-  //     }
-  //   })
-  // },
+  editSpending(data: Spending): Promise<Spending> {
+    return instanceAxios.putRequest({
+      url: `/spendings/${data.id}`,
+      data: {
+        description: data.description,
+        amount: data.amount,
+        date: data.date,
+        paymentMethod: data.paymentMethod
+      }
+    })
+  },
 
-  // deleteSpending(id: number): Promise<BaseApiResponse> {
-  //   return instanceAxios.deleteRequest({
-  //     url: `/spendings/${id}`,
-  //   })
-  // }
+  deleteSpending(id: number): Promise<void> {
+    return instanceAxios.deleteRequest({
+      url: `/spendings/${id}`,
+    })
+  }
 }
 
 export default contentService;
