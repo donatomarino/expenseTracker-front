@@ -10,11 +10,11 @@ export const sortOptions: SortOption[] = [
     label: "Oldest first",
   },
   {
-    value: "AMOUNT_LOW_TO_HIGH",
+    value: "AMOUNT_HIGH_TO_LOW",
     label: "Highest amount",
   },
   {
-    value: "AMOUNT_HIGH_TO_LOW",
+    value: "AMOUNT_LOW_TO_HIGH",
     label: "Lowest amount",
   },
   {

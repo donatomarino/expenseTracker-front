@@ -9,7 +9,7 @@ import useFormErrors from "./useFormErrors";
 
 export const useSpending = () => {
   const { reload, disabledButton, triggerReload, loadButton } = useContext(LoadingContext);
-  const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode, startDate, endDate } = useSpendingContext();
+  const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode, startDate, endDate, selectedSort } = useSpendingContext();
 
   // State for editing spending
   const [editSpending, setEditSpending] = useState<Spending | null>(null);
@@ -77,6 +77,10 @@ export const useSpending = () => {
       baseParams.search = search;
     }
 
+    if(selectedSort) {
+      baseParams.sort = selectedSort;
+    }
+
     if (dateSearchMode === "last90Days") {
       const end = new Date();
       const start = new Date();
@@ -123,7 +127,7 @@ export const useSpending = () => {
       }
     };
     fetchs();
-  }, [reload, year, month, dateSearchMode, startDate, endDate, search]);
+  }, [reload, year, month, dateSearchMode, startDate, endDate, search, selectedSort]);
 
   // Api request
   const apiRequest = async (params: SpendingRequest): Promise<GetSpendingResponse> => {

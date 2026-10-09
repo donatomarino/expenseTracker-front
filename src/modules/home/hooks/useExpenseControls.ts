@@ -1,10 +1,9 @@
-import { useState } from "react";
-import type { UseExpenseControlsResult, SortValue  } from "../../../types/types";
+import type { UseExpenseControlsResult } from "../../../types/types";
 import { sortOptions } from "../components/dashboard/constants/sortOptions";
+import { useSpendingContext } from "../../../context/SpendingContext";
 
 const useExpenseControls = (): UseExpenseControlsResult => {
-
-  const [selectedSort, setSelectedSort] = useState<SortValue>("NEWEST");
+  const { selectedSort, setSelectedSort } = useSpendingContext();
 
   const selectedSortOption = sortOptions.find(
     (option) => option.value === selectedSort
@@ -12,18 +11,13 @@ const useExpenseControls = (): UseExpenseControlsResult => {
 
   const selectedSortLabel = selectedSortOption?.label ?? "Most recent";
 
-  const handleRestore = (): void => {
-    setSelectedSort("NEWEST");
-  }
-
   return {
     selectedSort,
     setSelectedSort,
     selectedSortOption,
     selectedSortLabel,
-    handleRestore,
-    sortOptions
-  }
-}
+    sortOptions,
+  };
+};
 
 export default useExpenseControls;

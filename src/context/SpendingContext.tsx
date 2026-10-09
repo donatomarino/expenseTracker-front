@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import type { ContextProps, DateSearchMode, Month, Spending, SpendingContextValue } from "../types/types";
+import type { ContextProps, DateSearchMode, Month, SortValue, Spending, SpendingContextValue } from "../types/types";
 
 /* TODO:
 - Centralizar todos los filtros dentro del contexto
@@ -41,6 +41,9 @@ export const SpendingProvider = ({ children }: ContextProps) => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
+  const [selectedSort, setSelectedSort] = useState<SortValue>("NEWEST");
+  
+
   const [spendings, setSpendings] = useState<Spending[]>([]);
 
   const contextValue: SpendingContextValue = {
@@ -66,6 +69,8 @@ export const SpendingProvider = ({ children }: ContextProps) => {
     year,
     setMonth,
     setYear,
+    selectedSort,
+    setSelectedSort,
   };
 
   return (

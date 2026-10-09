@@ -8,7 +8,6 @@ const ExpenseControls = () => {
     selectedSort,
     setSelectedSort,
     selectedSortLabel,
-    handleRestore,
     sortOptions,
   } = useExpenseControls();
 
@@ -119,24 +118,6 @@ const ExpenseControls = () => {
               })}
             </div>
 
-            <div className="dropdown-divider"></div>
-
-            <div className="d-flex flex-column gap-2">
-              <Button
-                className="w-100 fw-semibold"
-                variant="primary"
-              >
-                Apply sorting
-              </Button>
-
-              <Button
-                className="w-100 border"
-                variant="light"
-                onClick={handleRestore}
-              >
-                Restore
-              </Button>
-            </div>
           </div>
         </div>
       </div>

@@ -122,6 +122,8 @@ export interface SpendingContextValue {
   setMonth: Dispatch<SetStateAction<Month>>;
   year: number;
   setYear: Dispatch<SetStateAction<number>>;
+  selectedSort: SortValue;
+  setSelectedSort: Dispatch<SetStateAction<SortValue>>;
 }
 
 export interface ContextProps {
@@ -260,7 +262,6 @@ export interface UseExpenseControlsResult {
   setSelectedSort: Dispatch<SetStateAction<SortValue>>;
   selectedSortOption: SortOption | undefined;
   selectedSortLabel: string;
-  handleRestore: () => void;
   sortOptions: readonly SortOption[];
 };
 
