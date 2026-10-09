@@ -86,9 +86,39 @@ export interface FormFieldProps {
   error?: string | string[];
 }
 
-export interface EmptyStateProps {
-  title: string;
-  description: string;
+export interface ExpenseRowProps {
+  spending: Spending;
+  formatDate: (date: string) => string;
+  getPaymentBadgeClass: (paymentMethod: PaymentMethod) => string;
+  formatPaymentMethod: (paymentMethod: PaymentMethod) => string;
+  startEditing: (spending: Spending, openEditModal: () => void) => void;
+  openEditModal: () => void;
+  openModal: () => void;
+  handleDelete: (id: number, openModal: () => void) => void;
+}
+
+export interface PaginationProps {
+  changePage: (page: number) => void;
+  currentPage: number;
+  first: boolean;
+  last: boolean;
+  totalPages: number;
+}
+
+export interface PageSizeSelectorProps {
+  pageSize: number;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+export interface SearchInputProps {
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+}
+
+export interface SortDropdownProps {
+  selectedSort: SortValue;
+  setSelectedSort: Dispatch<SetStateAction<SortValue>>;
+  selectedSortLabel: string;
 }
 
 //--------- Interfaces for context ----------//
@@ -100,14 +130,8 @@ export interface LoadingContextValue {
 }
 
 export interface SpendingContextValue {
-  // currentPage: number;
-  // setCurrentPage: Dispatch<SetStateAction<number>>;
-  // pageSize: number;
-  // setPageSize: Dispatch<SetStateAction<number>>;
-  // totalElements: number;
-  // setTotalElements: Dispatch<SetStateAction<number>>;
-  // totalPages: number;
-  // setTotalPages: Dispatch<SetStateAction<number>>;
+  pageSize: number;
+  setPageSize: Dispatch<SetStateAction<number>>;
   spendings: Spending[];
   setSpendings: Dispatch<SetStateAction<Spending>>;
   dateSearchMode: DateSearchMode;

@@ -9,7 +9,7 @@ import useFormErrors from "./useFormErrors";
 
 export const useSpending = () => {
   const { reload, disabledButton, triggerReload, loadButton } = useContext(LoadingContext);
-  const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode, startDate, endDate, selectedSort } = useSpendingContext();
+  const { year, months, month, spendings, setSpendings, setDateSearchMode, dateSearchMode, startDate, endDate, selectedSort, pageSize, setPageSize } = useSpendingContext();
 
   // State for editing spending
   const [editSpending, setEditSpending] = useState<Spending | null>(null);
@@ -25,9 +25,8 @@ export const useSpending = () => {
   const { errors, setErrors, clearErrors } = useFormErrors();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [totalElements, setTotalElements] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalElements, setTotalElements] = useState<number>(0);
   const [first, setFirst] = useState<boolean>(false);
   const [last, setLast] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
@@ -63,9 +62,26 @@ export const useSpending = () => {
     return paymentMethodLabels[paymentMethod];
   };
 
-  const formatDate = (date: Date): string => {
-    return date.toISOString().slice(0, 10);
-  }
+  // Format spending date for UI display
+  const formatDate = (date: string): string => {
+    const today = new Date();
+    const spendingDate = new Date(date);
+
+    const msPerDay = 24 * 60 * 60 * 1000;
+    const daysAgo = Math.floor((today.getTime() - spendingDate.getTime()) / msPerDay);
+
+    if (daysAgo < 7) {
+      if (daysAgo === 0) return "Today";
+      if (daysAgo === 1) return "1 day ago";
+      return `${daysAgo} days ago`;
+    }
+
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    }).format(new Date(date));
+  };
 
   const buildSpendingParams = (page = 0, size = pageSize): SpendingRequest => {
     const baseParams: SpendingRequest = {
@@ -77,7 +93,7 @@ export const useSpending = () => {
       baseParams.search = search;
     }
 
-    if(selectedSort) {
+    if (selectedSort) {
       baseParams.sort = selectedSort;
     }
 
@@ -88,8 +104,8 @@ export const useSpending = () => {
 
       return {
         ...baseParams,
-        startDate: formatDate(start),
-        endDate: formatDate(end),
+        startDate: formatDateForRequest(start),
+        endDate: formatDateForRequest(end),
       };
     }
 
@@ -110,6 +126,10 @@ export const useSpending = () => {
     };
   };
 
+  const formatDateForRequest = (date: Date): string => {
+    return date.toISOString().slice(0, 10);
+  };
+
   // Load spendings
   useEffect(() => {
     const fetchs = async () => {
@@ -127,7 +147,7 @@ export const useSpending = () => {
       }
     };
     fetchs();
-  }, [reload, year, month, dateSearchMode, startDate, endDate, search, selectedSort]);
+  }, [reload, year, month, dateSearchMode, startDate, endDate, search, selectedSort, pageSize]);
 
   // Api request
   const apiRequest = async (params: SpendingRequest): Promise<GetSpendingResponse> => {
@@ -273,5 +293,5 @@ export const useSpending = () => {
     });
   }
 
-  return { spendings, currentPage, pageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch, startEditing, handleChange, handleEdit, errors, selectedSpending, loading, loadButton, editSpending, handleDelete, deleteSpending };
+  return { spendings, currentPage, pageSize, setPageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch, startEditing, handleChange, handleEdit, errors, selectedSpending, loading, loadButton, editSpending, handleDelete, deleteSpending, formatDate };
 };

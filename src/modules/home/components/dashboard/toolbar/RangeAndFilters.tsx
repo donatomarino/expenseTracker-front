@@ -7,7 +7,7 @@ const RangeAndFilters = () => {
   const { dateSearchMode } = useSpendingContext();
 
   return (
-    <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
+    <div className="range-and-filters d-flex align-items-stretch align-items-sm-center gap-2">
       {/* Quick range */}
       <Button
         variant={dateSearchMode === "last90Days" ? "primary" : "light"}
@@ -19,7 +19,7 @@ const RangeAndFilters = () => {
       </Button>
 
       {/* Filters dropdown */}
-      <div className="dropdown">
+      <div className="dropdown flex-grow-1">
         <Button
           id="filters-dropdown"
           className="filters-button dropdown-toggle px-3 d-flex align-items-center justify-content-center gap-2 w-100"

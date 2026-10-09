@@ -1,5 +1,11 @@
+/****************** MONTH/YEAR NAVIGATOR  *****************/
 .month-year-navigator {
   white-space: nowrap;
+}
+
+.month-dropdown-button {
+  width: 180px;
+  justify-content: space-between;
 }
 
 .navigation-button {
@@ -79,7 +85,30 @@
   background-color: rgba(13, 110, 253, 0.15);
 }
 
+
+
+/****************** RESPONSIVE STYLES  *****************/
 @media (max-width: 575.98px) {
+  .range-and-filters {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: row;
+  }
+
+  .range-button {
+    flex: 1 1 0;
+    width: 100%;
+  }
+
+  .dropdown {
+    flex: 1.5 1 0;
+  }
+
+  .filters-button {
+    width: 100%;
+    flex: 1.5 1 0;
+  }
+
   .month-year-navigator {
     justify-content: center;
     width: 100%;
@@ -95,5 +124,20 @@
 
   .year-menu {
     width: 160px;
+  }
+}
+
+
+/****************** PERIOD SUMMARY  *****************/
+.period-summary {
+  width: 12rem;
+}
+
+@media (max-width: 576px) {
+  .period-summary {
+    width: 100%;
+    max-width: 12rem;
+    margin-inline: auto;
+    text-align: center;
   }
 }

@@ -42,7 +42,8 @@ export const SpendingProvider = ({ children }: ContextProps) => {
   const [endDate, setEndDate] = useState<string>('');
 
   const [selectedSort, setSelectedSort] = useState<SortValue>("NEWEST");
-  
+
+  const [pageSize, setPageSize] = useState<number>(10);
 
   const [spendings, setSpendings] = useState<Spending[]>([]);
 
@@ -71,6 +72,8 @@ export const SpendingProvider = ({ children }: ContextProps) => {
     setYear,
     selectedSort,
     setSelectedSort,
+    pageSize,
+    setPageSize
   };
 
   return (
