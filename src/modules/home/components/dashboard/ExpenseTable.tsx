@@ -45,7 +45,7 @@ const ExpenseTable = () => {
 
   const formValues: SpendingFormValues = {
     description: editSpending?.description ?? selectedSpending?.description ?? '',
-    amount: editSpending?.amount ? String(editSpending?.amount) : '',
+    amount: editSpending?.amount ? String(editSpending.amount) : '',
     paymentMethod: editSpending?.paymentMethod ?? selectedSpending?.paymentMethod ?? 'CREDIT_CARD',
     date: editSpending?.date ?? selectedSpending?.date ?? '',
   };

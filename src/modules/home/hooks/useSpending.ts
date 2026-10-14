@@ -24,25 +24,28 @@ export const useSpending = () => {
   // Form errors
   const { errors, setErrors, clearErrors } = useFormErrors();
 
+  // Pagination and search state
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [totalElements, setTotalElements] = useState<number>(0);
   const [first, setFirst] = useState<boolean>(false);
   const [last, setLast] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+
+  // Statistics
   const [statistics, setStatistics] = useState<SpendingStatistics>({
     totalSpent: 0,
     totalTransactions: 0,
     average: 0
   });
 
+  // Payment method mappings
   const paymentBadgeClasses: Record<PaymentMethod, string> = {
     CREDIT_CARD: "text-bg-primary",
     DEBIT_CARD: "text-bg-info",
     CASH: "text-bg-success",
     TRANSFER: "text-bg-warning",
   };
-
   const paymentMethodLabels: Record<PaymentMethod, string> = {
     CREDIT_CARD: "Credit Card",
     DEBIT_CARD: "Debit Card",
@@ -50,12 +53,12 @@ export const useSpending = () => {
     TRANSFER: "Transfer",
   };
 
+  // Payment method formatters
   const getPaymentBadgeClass = (
     paymentMethod: PaymentMethod
   ): string => {
     return paymentBadgeClasses[paymentMethod];
   };
-
   const formatPaymentMethod = (
     paymentMethod: PaymentMethod
   ): string => {
@@ -83,6 +86,7 @@ export const useSpending = () => {
     }).format(new Date(date));
   };
 
+  // Builds query params for the spending request
   const buildSpendingParams = (page = 0, size = pageSize): SpendingRequest => {
     const baseParams: SpendingRequest = {
       page,
@@ -126,6 +130,7 @@ export const useSpending = () => {
     };
   };
 
+  // Formats dates as YYYY-MM-DD for API requests
   const formatDateForRequest = (date: Date): string => {
     return date.toISOString().slice(0, 10);
   };
@@ -176,16 +181,9 @@ export const useSpending = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     if (!editSpending) return;
 
-    let nextValue: string | number | undefined = e.target.value;
-
-    if (e.target.name === 'amount') {
-      const normalized = e.target.value.replace(',', '.').trim();
-      nextValue = normalized === '' ? undefined : Number.parseFloat(normalized);
-    }
-
     setEditSpending({
       ...editSpending,
-      [e.target.name]: nextValue
+      [e.target.name]: e.target.value
     });
   }
 
@@ -213,8 +211,14 @@ export const useSpending = () => {
 
     startLoading();
     try {
+      // Normalize the amount before sending it to the backend
+      const payload = {
+        ...editSpending,
+        amount: Number(editSpending.amount.toString().replace(",", "."))
+      };
+      
       // Call the service to edit spending
-      await contentService.editSpending(editSpending);
+      await contentService.editSpending(payload);
 
       toast.success('Spending updated successfully');
       closeModal();
@@ -236,7 +240,7 @@ export const useSpending = () => {
     }
   }
 
-  // Delete
+  // Delete spending
   const handleDelete = (id: number, openModal: () => void): void => {
     setSelectedSpendingId(id);
     openModal();

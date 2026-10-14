@@ -11,6 +11,13 @@ interface Spending {
 
 export type CreateSpendingRequest = Omit<Spending, "id">;
 
+export interface SpendingFormData {
+  description: string;
+  date: string;
+  amount: string;
+  paymentMethod: PaymentMethod;
+}
+
 // interface BaseModalProps {
 //   modalIsOpen: boolean;
 //   closeModal: () => void;

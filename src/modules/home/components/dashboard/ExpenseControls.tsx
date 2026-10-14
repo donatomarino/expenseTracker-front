@@ -1,7 +1,7 @@
 import "./css/expenseControls.css";
 import useExpenseControls from "../../hooks/useExpenseControls";
 import { useSpending } from "../../hooks/useSpending";
-import { SearchInput } from "./expenseControls/searchInput";
+import { SearchInput } from "./expenseControls/SearchInput";
 import { SortDropdown } from "./expenseControls/SortDropdown";
 
 const ExpenseControls = () => {

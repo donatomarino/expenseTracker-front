@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import type { CreateSpendingRequest } from "../../../types/types";
+import type { SpendingFormData } from "../../../types/types";
 import { LoadingContext } from "../../../context/LoadingContext";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
@@ -9,10 +9,10 @@ import { useModal } from "./useModal";
 
 const useHeader = () => {
 
-  const initialSpendingState: CreateSpendingRequest = {
+  const initialSpendingState: SpendingFormData = {
     description: '',
     date: '',
-    amount: 0,
+    amount: '',
     paymentMethod: 'CREDIT_CARD',
   };
 
@@ -25,7 +25,7 @@ const useHeader = () => {
   } = useModal();
 
   // New spending datas
-  const [newSpending, setNewSpending] = useState<CreateSpendingRequest>(initialSpendingState);
+  const [newSpending, setNewSpending] = useState<SpendingFormData>(initialSpendingState);
 
   // Disabled buttons
   const { disabledButton } = useContext(LoadingContext);
@@ -44,8 +44,8 @@ const useHeader = () => {
     if (!newSpending) return;
 
     setNewSpending((previous) => ({
-      ...previous!,
-      [e.target.name]: e.target.name === 'amount' ? parseFloat(e.target.value.replace(',', '.')) : e.target.value
+      ...previous,
+      [e.target.name]: e.target.value
     }))
   }
 
@@ -75,15 +75,17 @@ const useHeader = () => {
       return;
     }
 
-    if (newSpending.amount.toLocaleString().includes(',')) {
-      newSpending.amount.toLocaleString().replace(',', '.');
-    }
-
     disabledButton();
     startLoading();
     try {
+       // Normalize the amount before sending it to the backend
+      const payload = {
+        ...newSpending,
+        amount: Number(newSpending.amount.replace(",", "."))
+      }
+
       // Call the service to add new spending
-      await contentService.addSpending(newSpending);
+      await contentService.addSpending(payload);
 
       // Show success message and reload spendings
       toast.success('Spending added successfully');
