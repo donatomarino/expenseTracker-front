@@ -1,10 +1,11 @@
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from 'react-modal';
-import { useContent } from '../../hooks/useContent';
 import useHeader from '../../hooks/useHeader';
 import Button from '../../../common/components/Button';
 import SpendingModal from '../modals/SpendingModal';
 import type { SpendingFormIdAndPlaceHolder, SpendingFormValues } from '../../../../types/types';
+import { useContext } from 'react';
+import { LoadingContext } from '../../../../context/LoadingContext';
 
 Modal.setAppElement('#root');
 const Header = () => {
@@ -20,7 +21,8 @@ const Header = () => {
     customStyles,
     headerWrapperStyle,
     handleCloseNewModal,
-    handleLogout
+    handleLogout,
+    loadButton
   } = useHeader();
 
   const formValues: SpendingFormValues = {
@@ -41,11 +43,6 @@ const Header = () => {
     description: "e.g. Groceries",
     amount: "e.g. 24.99",
   }
-
-  //TODO: Cambiarlo por el nuevo hook correspondiente
-  const {
-    loadButton,
-  } = useContent();
 
   return (
     <div className={modalIsOpen ? 'bg-white' : 'sticky-top bg-white'} style={headerWrapperStyle}>

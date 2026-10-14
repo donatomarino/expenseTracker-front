@@ -1,6 +1,7 @@
 import type { SortDropdownProps } from "../../../../../types/types";
 import Button from "../../../../common/components/Button";
-import { sortOptions } from "../constants/sortOptions";
+import { sortOptions } from "../../../constants/sortOptions";
+
 
 export const SortDropdown = ({ selectedSort, setSelectedSort, selectedSortLabel }: SortDropdownProps) => {
   return (

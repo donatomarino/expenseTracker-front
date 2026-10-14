@@ -1,7 +1,7 @@
 import MonthYearNavigator from "./toolbar/MonthYearNavigator";
 import PeriodSummary from "./toolbar/PeriodSummary";
 import RangeAndFilters from "./toolbar/RangeAndFilters";
-import "./css/toolbar.css";
+import "./styles/toolbar.css";
 
 const Toolbar = () => {
   return (

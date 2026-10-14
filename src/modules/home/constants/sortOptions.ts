@@ -1,4 +1,4 @@
-import type { SortOption } from "../../../../../types/types";
+import type { SortOption } from "../../../types/types";
 
 export const sortOptions: SortOption[] = [
   {

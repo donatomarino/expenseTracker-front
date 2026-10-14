@@ -1,5 +1,5 @@
 import type { PaymentMethodFieldProps } from '../../../../../types/types';
-import { paymentMethodOptions } from '../../dashboard/constants/paymenthMethodOptions';
+import { paymentMethodOptions } from '../../../constants/paymenthMethodOptions';
 
 const PaymentMethodField = ({
   htmlFor,
@@ -8,7 +8,7 @@ const PaymentMethodField = ({
   onChange,
   disabled,
 }: PaymentMethodFieldProps) => {
-  
+
   return (
     <div className="mb-3">
       <label

@@ -1,5 +1,5 @@
 import type { PageSizeSelectorProps } from "../../../../../types/types";
-import { PAGE_SIZE_OPTIONS } from "../constants/pageSizeOptions";
+import { PAGE_SIZE_OPTIONS } from "../../../constants/pageSizeOptions";
 
 export const PageSizeSelector = ({ pageSize, onChange, }: PageSizeSelectorProps) => (
   <div className="d-flex align-items-center gap-2">

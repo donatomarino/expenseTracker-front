@@ -1,6 +1,6 @@
 import type { UseExpenseControlsResult } from "../../../types/types";
-import { sortOptions } from "../components/dashboard/constants/sortOptions";
 import { useSpendingContext } from "../../../context/SpendingContext";
+import { sortOptions } from "../constants/sortOptions";
 
 const useExpenseControls = (): UseExpenseControlsResult => {
   const { selectedSort, setSelectedSort } = useSpendingContext();

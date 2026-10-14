@@ -1,4 +1,4 @@
-import type { paymentMethodOption } from "../../../../../types/types";
+import type { paymentMethodOption } from "../../../types/types";
 
 export const paymentMethodOptions: paymentMethodOption[] = [
   {

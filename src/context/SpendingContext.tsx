@@ -8,11 +8,6 @@ import type { ContextProps, DateSearchMode, Month, SortValue, Spending, Spending
 const SpendingContext = createContext<SpendingContextValue | undefined>(undefined);
 
 export const SpendingProvider = ({ children }: ContextProps) => {
-  // const [currentPage, setCurrentPage] = useState<number>(1);
-  // const [pageSize, setPageSize] = useState<number>(10);
-  // const [totalElements, setTotalElements] = useState<number>(0);
-  // const [totalPages, setTotalPages] = useState<number>(0);
-
   const currentYear: number = new Date().getFullYear();
   const years: number[] = [
     currentYear,
@@ -48,14 +43,6 @@ export const SpendingProvider = ({ children }: ContextProps) => {
   const [spendings, setSpendings] = useState<Spending[]>([]);
 
   const contextValue: SpendingContextValue = {
-    // currentPage,
-    // setCurrentPage,
-    // pageSize,
-    // setPageSize,
-    // totalElements,
-    // setTotalElements,
-    // totalPages,
-    // setTotalPages,
     dateSearchMode,
     setDateSearchMode,
     startDate,

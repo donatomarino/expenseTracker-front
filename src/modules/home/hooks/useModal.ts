@@ -1,6 +1,7 @@
 import { useState } from "react";
+import type { UseModalResult } from "../../../types/types";
 
-export const useModal = () => {
+export const useModal = (): UseModalResult => {
   const [modalIsOpen, setIsOpen] = useState<boolean>(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState<boolean>(false);

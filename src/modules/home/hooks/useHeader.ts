@@ -1,58 +1,39 @@
-import { useContext, useState } from "react";
-import type { SpendingFormData } from "../../../types/types";
-import { LoadingContext } from "../../../context/LoadingContext";
-import contentService from "../services/contentService";
-import { toast } from "react-toastify";
-import { useLoad } from "../../common/hooks/useLoad";
-import useFormErrors from "./useFormErrors";
+import useNewSpendingForm from "./useNewSpendingForm";
+import useCreateSpending from "./useCreateSpending";
 import { useModal } from "./useModal";
+import type { UseHeaderResult } from "../../../types/types";
+import { useContext } from "react";
+import { LoadingContext } from "../../../context/LoadingContext";
 
-const useHeader = () => {
-
-  const initialSpendingState: SpendingFormData = {
-    description: '',
-    date: '',
-    amount: '',
-    paymentMethod: 'CREDIT_CARD',
-  };
+const useHeader = (): UseHeaderResult => {
+  const { loadButton } = useContext(LoadingContext);
 
   const {
     modalIsOpen,
     openModal,
     closeModal,
     customStyles,
-    headerWrapperStyle
+    headerWrapperStyle,
   } = useModal();
 
-  // New spending datas
-  const [newSpending, setNewSpending] = useState<SpendingFormData>(initialSpendingState);
+  const {
+    newSpending,
+    handleChange,
+    resetNewSpending,
+  } = useNewSpendingForm();
 
-  // Disabled buttons
-  const { disabledButton } = useContext(LoadingContext);
+  const {
+    handleSubmit,
+    errors,
+    clearErrors,
+    loading,
+  } = useCreateSpending({
+    newSpending,
+    resetNewSpending,
+    closeModal,
+  });
 
-  // Reload spendings
-  const { triggerReload } = useContext(LoadingContext);
-
-  // Errors
-  const { errors, setErrors, clearErrors } = useFormErrors();
-
-  // Spinner loader
-  const { loading, startLoading, stopLoading } = useLoad();
-
-  // Input change handler for new spending form
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
-    if (!newSpending) return;
-
-    setNewSpending((previous) => ({
-      ...previous,
-      [e.target.name]: e.target.value
-    }))
-  }
-
-  // Resets the spending form to its initial state
-  const resetNewSpending = (): void => {
-    setNewSpending(initialSpendingState);
-  };
+  // Close modal and clean errors
   const handleCloseNewModal = () => {
     closeModal();
     clearErrors();
@@ -64,52 +45,25 @@ const useHeader = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("name");
     window.location.href = "/login";
-  }
+  };
 
-  // Form submission for adding new spending
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void): Promise<void> => {
-    e.preventDefault();
-
-    if (!newSpending) {
-      toast.error("Server error");
-      return;
-    }
-
-    disabledButton();
-    startLoading();
-    try {
-       // Normalize the amount before sending it to the backend
-      const payload = {
-        ...newSpending,
-        amount: Number(newSpending.amount.replace(",", "."))
-      }
-
-      // Call the service to add new spending
-      await contentService.addSpending(payload);
-
-      // Show success message and reload spendings
-      toast.success('Spending added successfully');
-      triggerReload();
-      setErrors({});
-      setNewSpending(initialSpendingState);
-      closeModal();
-
-    } catch (e: any) {
-      if (e.response && e.response.status === 400) {
-        const errors = e.response.data;
-
-        setErrors(errors);
-      } else {
-        console.error("Error submitting new spending", e);
-        toast.error("Server error");
-      }
-    } finally {
-      disabledButton();
-      stopLoading();
-    }
-  }
-
-  return { newSpending, handleChange, handleSubmit, errors, clearErrors, loading, resetNewSpending, modalIsOpen, openModal, customStyles, headerWrapperStyle, handleCloseNewModal, handleLogout };
-}
+  return {
+    newSpending,
+    handleChange,
+    handleSubmit,
+    errors,
+    clearErrors,
+    loading,
+    resetNewSpending,
+    modalIsOpen,
+    openModal,
+    closeModal,
+    customStyles,
+    headerWrapperStyle,
+    handleCloseNewModal,
+    handleLogout,
+    loadButton
+  };
+};
 
 export default useHeader;

@@ -1,4 +1,4 @@
-import "./css/expenseControls.css";
+import "./styles/expenseControls.css";
 import useExpenseControls from "../../hooks/useExpenseControls";
 import { useSpending } from "../../hooks/useSpending";
 import { SearchInput } from "./expenseControls/SearchInput";
