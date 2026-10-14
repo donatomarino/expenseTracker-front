@@ -5,8 +5,8 @@ import Button from "../../../common/components/Button";
 
 const DeleteSpendingModal = (props: DeleteModalProps) => {
   const {
-    modalIsOpen,
-    closeModal,
+    isOpen,
+    onClose,
     customStyles,
     loadButton,
     deleteSpending,
@@ -15,7 +15,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
 
   return (
     <Modal
-      isOpen={modalIsOpen}
+      isOpen={isOpen}
       contentLabel="Delete spending"
       style={customStyles}
     >
@@ -36,7 +36,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
           <Button
             className="border px-4"
             variant="light"
-            onClick={closeModal}
+            onClick={onClose}
             disabled={loadButton}
           >
             Cancel
@@ -45,7 +45,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
           <Button
             className="px-4 fw-semibold"
             variant="danger"
-            onClick={() => deleteSpending(closeModal)}
+            onClick={() => deleteSpending(onClose)}
             disabled={loadButton}
           >
             Delete

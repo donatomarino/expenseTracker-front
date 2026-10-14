@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from "axios";
 
-//--------- Components ----------//
+//--------- SPENDING ----------//
 interface Spending {
   id: number;
   date: string;
@@ -11,69 +11,70 @@ interface Spending {
 
 export type CreateSpendingRequest = Omit<Spending, "id">;
 
-interface BaseModalProps {
-  modalIsOpen: boolean;
-  closeModal: () => void;
-  customStyles: ReactModal.Styles;
-  loadButton: boolean;
-  errors: Errors;
-  loading: boolean;
-}
+// interface BaseModalProps {
+//   modalIsOpen: boolean;
+//   closeModal: () => void;
+//   customStyles: ReactModal.Styles;
+//   loadButton: boolean;
+//   errors: Errors;
+//   loading: boolean;
+// }
 
-export interface ModalProps extends BaseModalProps {
-  handleSubmit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
-  newSpending: CreateSpendingRequest | null;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-}
+// export interface ModalProps extends BaseModalProps {
+//   handleSubmit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
+//   newSpending: CreateSpendingRequest | null;
+//   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+// }
 
-interface EditModalProps extends BaseModalProps, BaseCardProps {
-  openEditModal: () => void;
-  editModalIsOpen: boolean;
-  closeEditModal: () => void;
-}
+// interface EditModalProps extends BaseModalProps, BaseCardProps {
+//   openEditModal: () => void;
+//   editModalIsOpen: boolean;
+//   closeEditModal: () => void;
+// }
 
-export interface DeleteModalProps extends BaseModalProps {
-  deleteSpending: (closeModal: () => void) => Promise<void>;
-}
 
-export interface NewSpendingModalProps extends ModalProps {
-  setErrors: Dispatch<SetStateAction<Errors>>;
-}
 
-interface BaseCardProps extends BaseModalProps {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
-  selectedSpending: Spending | null;
-  editSpending: Spending | null;
-}
+// export interface NewSpendingModalProps extends ModalProps {
+//   setErrors: Dispatch<SetStateAction<Errors>>;
+// }
 
-export interface CardProps extends BaseModalProps, BaseCardProps, DeleteModalProps, EditModalProps {
-  spendings: spending[];
-  formatSpending: (date: string) => string;
-  loadButton: boolean;
-  openModal: () => void;
-  handleDelete: (id: number, openModal: () => void) => void;
-  startEditing: (spending: Spending, openEditModal: () => void) => void;
-}
+// interface BaseCardProps extends BaseModalProps {
+//   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+//   handleEdit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
+//   selectedSpending: Spending | null;
+//   editSpending: Spending | null;
+// }
 
-export interface SpendingFiltersProps {
-  minAmount: string;
-  setMinAmount: (value: string) => void;
-  maxAmount: string;
-  setMaxAmount: (value: string) => void;
-  filterByAmount: () => void;
-  restoreSpendings: () => void;
-  orderByDate: () => void;
-  orderByAmount: () => void;
-  orderByDescription: () => void;
-  setSearch: Dispatch<SetStateAction<string>>;
-  startDate: string;
-  setStartDate: Dispatch<SetStateAction<string>>;
-  endDate: string;
-  setEndDate: Dispatch<SetStateAction<string>>;
-  filterByDateRange: () => void;
-}
+// export interface CardProps extends BaseModalProps, BaseCardProps, DeleteModalProps, EditModalProps {
+//   spendings: spending[];
+//   formatSpending: (date: string) => string;
+//   loadButton: boolean;
+//   openModal: () => void;
+//   handleDelete: (id: number, openModal: () => void) => void;
+//   startEditing: (spending: Spending, openEditModal: () => void) => void;
+// }
 
+// export interface SpendingFiltersProps {
+//   minAmount: string;
+//   setMinAmount: (value: string) => void;
+//   maxAmount: string;
+//   setMaxAmount: (value: string) => void;
+//   filterByAmount: () => void;
+//   restoreSpendings: () => void;
+//   orderByDate: () => void;
+//   orderByAmount: () => void;
+//   orderByDescription: () => void;
+//   setSearch: Dispatch<SetStateAction<string>>;
+//   startDate: string;
+//   setStartDate: Dispatch<SetStateAction<string>>;
+//   endDate: string;
+//   setEndDate: Dispatch<SetStateAction<string>>;
+//   filterByDateRange: () => void;
+// }
+
+
+
+//--------- INTERFACES TABLE ----------//
 export interface FormFieldProps {
   label: string;
   type: string;
@@ -121,6 +122,60 @@ export interface SortDropdownProps {
   selectedSortLabel: string;
 }
 
+
+
+//--------- MODAL PROPS  ----------//
+type SpendingModalMode = 'new' | 'edit';
+
+interface SpendingFormValues {
+  description?: string;
+  amount?: string;
+  paymentMethod: PaymentMethod,
+  date?: string;
+}
+
+interface SpendingFormIdAndPlaceHolder {
+  description: string;
+  amount: string;
+  paymentMethod?: string;
+  date?: string;
+}
+
+export interface HeaderModalProps {
+  mode?: SpendingModalMode;
+  loadButton: boolean;
+  onClose: () => void;
+}
+
+export interface PaymentMethodFieldProps {
+  htmlFor: string;
+  id: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  disabled: boolean;
+}
+
+export interface SpendingModalProps extends HeaderModalProps, BaseModalProps {
+  formValues?: SpendingFormValues;
+  formIds: SpendingFormIdAndPlaceHolder;
+  formPlaceHolders: SpendingFormIdAndPlaceHolder;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onSubmit: (e: React.SubmitEvent<HTMLFormElement>, closeModal: () => void) => Promise<void>;
+}
+
+export interface DeleteModalProps extends BaseModalProps, HeaderModalProps {
+  deleteSpending: (closeModal: () => void) => Promise<void>;
+}
+
+interface BaseModalProps {
+  isOpen: boolean,
+  customStyles: ReactModal.Styles;
+  loading: boolean;
+  errors: Errors;
+}
+
+
+
 //--------- Interfaces for context ----------//
 export interface LoadingContextValue {
   loadButton: boolean;
@@ -154,6 +209,8 @@ export interface ContextProps {
   children: React.ReactNode;
 }
 
+
+
 //--------- Interfaces for API ----------//
 export type Service = "api" | "auth";
 
@@ -168,6 +225,13 @@ export interface LoginPayload {
   email: string;
   password: string;
   showPassword?: boolean;
+}
+
+export interface RegisterPayload {
+  full_name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
 
 export interface AuthResponse {
@@ -212,19 +276,6 @@ export interface SpendingStatistics {
   average: number;
 }
 
-
-/** */
-
-export interface BaseApiResponse {
-  success: boolean;
-  message: string;
-  error?: boolean;
-}
-
-export interface Requests<T> extends BaseApiResponse {
-  data: T;
-}
-
 export interface Errors {
   description?: string;
   amount?: string;
@@ -235,13 +286,6 @@ export interface FieldErrorProps {
   error?: string | string[];
 }
 
-export interface RegisterPayload {
-  full_name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
 export interface RegisterErrors {
   fullName?: string | string[];
   email?: string | string[];
@@ -249,21 +293,19 @@ export interface RegisterErrors {
 }
 
 
+
 // --------- TYPES BUTTONS ---------- //
 export type CloseButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
 export type ButtonVariant = "primary" | "outlinePrimary" | "secondary" | "danger" | "outlineDanger" | "light";
-
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
 };
 
 
+
 // --------- TYPES SPENDINGS BY YEAR AND MONTH ---------- //
 export type Month = "january" | "february" | "march" | "april" | "may" | "june" | "july" | "august" | "september" | "october" | "november" | "december";
-// export type YearMonthKey = string;
 
-// export type SpendingsByMonth = Record<YearMonthKey, Spending[]>;
 
 
 // --------- TYPES/INTERFACES DASHBOARD ---------- //
@@ -281,6 +323,9 @@ export type paymentMethodOption = {
 }
 export type DateSearchMode = "last90Days" | "customRange";
 
+
+
+//--------- INTERFACES HOOKS ----------//
 export interface UseExpenseControlsResult {
   selectedSort: SortValue;
   setSelectedSort: Dispatch<SetStateAction<SortValue>>;

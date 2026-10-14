@@ -176,9 +176,16 @@ export const useSpending = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     if (!editSpending) return;
 
+    let nextValue: string | number | undefined = e.target.value;
+
+    if (e.target.name === 'amount') {
+      const normalized = e.target.value.replace(',', '.').trim();
+      nextValue = normalized === '' ? undefined : Number.parseFloat(normalized);
+    }
+
     setEditSpending({
       ...editSpending,
-      [e.target.name]: e.target.value
+      [e.target.name]: nextValue
     });
   }
 
@@ -293,5 +300,5 @@ export const useSpending = () => {
     });
   }
 
-  return { spendings, currentPage, pageSize, setPageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch, startEditing, handleChange, handleEdit, errors, selectedSpending, loading, loadButton, editSpending, handleDelete, deleteSpending, formatDate };
+  return { spendings, currentPage, pageSize, setPageSize, totalElements, totalPages, getPaymentBadgeClass, formatPaymentMethod, toggleLast90Days, changePage, first, last, statistics, search, setSearch, startEditing, handleChange, handleEdit, errors, clearErrors, selectedSpending, loading, loadButton, editSpending, handleDelete, deleteSpending, formatDate };
 };

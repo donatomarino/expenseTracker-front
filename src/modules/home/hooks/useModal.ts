@@ -12,6 +12,7 @@ export const useModal = () => {
       alignItems: 'center',
       justifyContent: 'center',
       padding: '1rem',
+      zIndex: 2000,
     },
     content: {
       position: 'relative',
@@ -40,5 +41,9 @@ export const useModal = () => {
   const openEditModal = () => { setEditModalIsOpen(true) }
   const closeEditModal = () => { setEditModalIsOpen(false) }
 
-  return { openModal, closeModal, openDeleteModal, closeDeleteModal, openEditModal, closeEditModal, deleteModalIsOpen, modalIsOpen, editModalIsOpen, customStyles };
+  const headerWrapperStyle = modalIsOpen
+    ? { zIndex: 0, pointerEvents: 'none' as const }
+    : { zIndex: 1030 };
+
+  return { openModal, closeModal, openDeleteModal, closeDeleteModal, openEditModal, closeEditModal, deleteModalIsOpen, modalIsOpen, editModalIsOpen, customStyles, headerWrapperStyle };
 }

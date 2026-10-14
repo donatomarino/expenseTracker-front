@@ -1,12 +1,13 @@
 import { useModal } from "../../hooks/useModal";
 import { useSpending } from "../../hooks/useSpending";
 import DeleteSpendingModal from "../modals/DeleteSpendingModal";
-import EditSpendingModal from "../modals/EditSpedingModal";
 import EmptyState from "./table/EmptyState";
 import { ExpenseRow } from "./table/ExpenseRow";
 import { Pagination } from "./table/Pagination";
 import { TableHeader } from "./table/TableHeader";
 import { PageSizeSelector } from "./table/PageSizeSelector";
+import SpendingModal from "../modals/SpendingModal";
+import type { SpendingFormIdAndPlaceHolder, SpendingFormValues } from "../../../../types/types";
 
 const ExpenseTable = () => {
   const {
@@ -23,6 +24,7 @@ const ExpenseTable = () => {
     last,
     startEditing,
     errors,
+    clearErrors,
     handleChange,
     handleEdit,
     selectedSpending,
@@ -39,6 +41,32 @@ const ExpenseTable = () => {
   const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const nextSize: number = Number(e.target.value);
     setPageSize(nextSize);
+  };
+
+  const formValues: SpendingFormValues = {
+    description: editSpending?.description ?? selectedSpending?.description ?? '',
+    amount: editSpending?.amount ? String(editSpending?.amount) : '',
+    paymentMethod: editSpending?.paymentMethod ?? selectedSpending?.paymentMethod ?? 'CREDIT_CARD',
+    date: editSpending?.date ?? selectedSpending?.date ?? '',
+  };
+
+  const formIds: SpendingFormIdAndPlaceHolder = {
+    description: "editSpendingDescription",
+    amount: "editSpendingAmount",
+    paymentMethod: "editSpendingPaymentMethod",
+    date: "editSpendingDate"
+  }
+
+  const formPlaceHolders: SpendingFormIdAndPlaceHolder = {
+    description: selectedSpending?.description ?? '',
+    amount: selectedSpending?.amount?.toString() ?? '',
+    paymentMethod: editSpending?.paymentMethod || '',
+    date: selectedSpending?.date ?? '',
+  }
+
+  const handleCloseEditModal = () => {
+    closeEditModal();
+    clearErrors();
   };
 
   return (
@@ -92,22 +120,24 @@ const ExpenseTable = () => {
       </div>
 
       {/* Edit and Delete Modals */}
-      <EditSpendingModal
-        modalIsOpen={editModalIsOpen}
-        closeModal={closeEditModal}
+      <SpendingModal
+        isOpen={editModalIsOpen}
+        mode="edit"
         customStyles={customStyles}
         loadButton={loadButton}
+        onClose={handleCloseEditModal}
+        formValues={formValues}
+        formIds={formIds}
+        formPlaceHolders={formPlaceHolders}
+        onChange={handleChange}
         errors={errors}
-        handleChange={handleChange}
-        handleEdit={handleEdit}
-        selectedSpending={selectedSpending}
+        onSubmit={handleEdit}
         loading={loading}
-        editSpending={editSpending}
       />
 
       <DeleteSpendingModal
-        modalIsOpen={modalIsOpen}
-        closeModal={closeModal}
+        isOpen={modalIsOpen}
+        onClose={closeModal}
         customStyles={customStyles}
         loadButton={loadButton}
         errors={errors}

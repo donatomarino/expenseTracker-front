@@ -1,9 +1,11 @@
 import { useContext, useState } from "react";
-import type { CreateSpendingRequest, Errors } from "../../../types/types";
+import type { CreateSpendingRequest } from "../../../types/types";
 import { LoadingContext } from "../../../context/LoadingContext";
 import contentService from "../services/contentService";
 import { toast } from "react-toastify";
 import { useLoad } from "../../common/hooks/useLoad";
+import useFormErrors from "./useFormErrors";
+import { useModal } from "./useModal";
 
 const useHeader = () => {
 
@@ -13,6 +15,14 @@ const useHeader = () => {
     amount: 0,
     paymentMethod: 'CREDIT_CARD',
   };
+
+  const {
+    modalIsOpen,
+    openModal,
+    closeModal,
+    customStyles,
+    headerWrapperStyle
+  } = useModal();
 
   // New spending datas
   const [newSpending, setNewSpending] = useState<CreateSpendingRequest>(initialSpendingState);
@@ -24,7 +34,7 @@ const useHeader = () => {
   const { triggerReload } = useContext(LoadingContext);
 
   // Errors
-  const [errors, setErrors] = useState<Errors>({});
+  const { errors, setErrors, clearErrors } = useFormErrors();
 
   // Spinner loader
   const { loading, startLoading, stopLoading } = useLoad();
@@ -33,11 +43,27 @@ const useHeader = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     if (!newSpending) return;
 
-    console.log(newSpending.amount);
     setNewSpending((previous) => ({
       ...previous!,
       [e.target.name]: e.target.name === 'amount' ? parseFloat(e.target.value.replace(',', '.')) : e.target.value
     }))
+  }
+
+  // Resets the spending form to its initial state
+  const resetNewSpending = (): void => {
+    setNewSpending(initialSpendingState);
+  };
+  const handleCloseNewModal = () => {
+    closeModal();
+    clearErrors();
+    resetNewSpending();
+  };
+
+  // Redirects the user to the login page
+  const handleLogout = (): void => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("name");
+    window.location.href = "/login";
   }
 
   // Form submission for adding new spending
@@ -81,7 +107,7 @@ const useHeader = () => {
     }
   }
 
-  return { newSpending, handleChange, handleSubmit, errors, setErrors, loading };
+  return { newSpending, handleChange, handleSubmit, errors, clearErrors, loading, resetNewSpending, modalIsOpen, openModal, customStyles, headerWrapperStyle, handleCloseNewModal, handleLogout };
 }
 
 export default useHeader;
