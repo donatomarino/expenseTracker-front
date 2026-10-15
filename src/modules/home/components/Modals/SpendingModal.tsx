@@ -96,7 +96,8 @@ const SpendingModal = ({
           </Button>
         </form>
 
-        {FullPageLoader(loading)}
+        <FullPageLoader loading={loading} />
+        {/* {FullPageLoader(loading)} */}
       </div>
     </Modal >
   );

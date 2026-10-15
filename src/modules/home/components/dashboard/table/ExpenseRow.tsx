@@ -3,7 +3,7 @@ import type { ExpenseRowProps } from "../../../../../types/types"
 export const ExpenseRow = ({ spending, formatDate, getPaymentBadgeClass, formatPaymentMethod, startEditing, handleDelete, openModal, openEditModal }: ExpenseRowProps) => {
 
   return (
-    <tr key={spending.id}>
+    <tr>
       <td className="px-4 text-nowrap text-muted">
         {formatDate(spending.date)}
       </td>

@@ -52,7 +52,7 @@ const DeleteSpendingModal = (props: DeleteModalProps) => {
           </Button>
         </div>
 
-        {FullPageLoader(loading)}
+        <FullPageLoader loading={loading} />
       </div>
     </Modal>
   );

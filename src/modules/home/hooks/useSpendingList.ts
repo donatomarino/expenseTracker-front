@@ -18,9 +18,14 @@ const useSpendingList = ({
   search,
   selectedSort,
   pageSize,
+  paymentMethod,
+  minAmount,
+  maxAmount,
   setSpendings,
   setPageSize,
   formatDateForRequest,
+  startLoading,
+  stopLoading
 }: UseSpendingListParams) => {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -50,6 +55,18 @@ const useSpendingList = ({
       baseParams.sort = selectedSort;
     }
 
+    if (paymentMethod) {
+      baseParams.paymentMethod = paymentMethod;
+    }
+
+    if (minAmount !== "" && Number(minAmount) >= 0) {
+      baseParams.minAmount = Number(minAmount);
+    }
+
+    if (maxAmount !== "" && Number(maxAmount) >= 0) {
+      baseParams.maxAmount = Number(maxAmount);
+    }
+
     if (dateSearchMode === "last90Days") {
       const end = new Date();
       const start = new Date();
@@ -62,14 +79,22 @@ const useSpendingList = ({
       };
     }
 
-    if (startDate && endDate) {
-      return {
-        ...baseParams,
-        startDate,
-        endDate,
-      };
+    if (dateSearchMode === "customRange") {
+      if (startDate && endDate) {
+        return {
+          ...baseParams,
+          startDate,
+          endDate,
+        };
+      }
+
+      return buildMonthYearParams(baseParams);
     }
 
+    return buildMonthYearParams(baseParams);
+  };
+
+  const buildMonthYearParams = (baseParams: SpendingRequest) => {
     const monthIndex = months.indexOf(month) + 1;
 
     return {
@@ -77,7 +102,7 @@ const useSpendingList = ({
       month: monthIndex,
       year,
     };
-  };
+  }
 
   const apiRequest = async (params: SpendingRequest): Promise<GetSpendingResponse> => {
     return await contentService.getSpending(params);
@@ -101,18 +126,23 @@ const useSpendingList = ({
 
   // Load spendings by params
   const loadSpendings = async (): Promise<void> => {
+    startLoading();
+
     try {
       const params = buildSpendingParams(0, pageSize);
       const res = await apiRequest(params);
       applySpendingResponse(res, 1);
     } catch (e: any) {
       console.error("Error loading spendings: ", e);
+    } finally {
+      stopLoading();
     }
   };
 
   const changePage = async (page: number): Promise<void> => {
     if (page < 1 || page > totalPages) return;
 
+    startLoading();
     try {
       // Backend pagination is zero-based, UI pagination is one-based.
       const params = buildSpendingParams(page - 1, pageSize);
@@ -120,12 +150,14 @@ const useSpendingList = ({
       applySpendingResponse(res, page);
     } catch (e: any) {
       console.error("Error loading spendings", e);
+    } finally {
+      stopLoading();
     }
   };
 
   useEffect(() => {
     loadSpendings();
-  }, [reload, year, month, dateSearchMode, startDate, endDate, search, selectedSort, pageSize]);
+  }, [reload, year, month, dateSearchMode, startDate, endDate, search, selectedSort, pageSize, minAmount, maxAmount, paymentMethod]);
 
   return { currentPage, totalPages, totalElements, first, last, statistics, changePage };
 };

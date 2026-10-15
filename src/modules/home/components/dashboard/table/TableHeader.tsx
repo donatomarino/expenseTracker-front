@@ -9,15 +9,17 @@ export const TableHeader = () => {
 
   return (
     <thead className="table-light">
-      {rowHeaders.map((header, index) => (
-        <th
-          key={index}
-          scope="col"
-          className={header.className}
-        >
-          {header.label}
-        </th>
-      ))}
+      <tr>
+        {rowHeaders.map((header, index) => (
+          <th
+            key={index}
+            scope="col"
+            className={header.className}
+          >
+            {header.label}
+          </th>
+        ))}
+      </tr>
     </thead>
-  )
-}
+  );
+};

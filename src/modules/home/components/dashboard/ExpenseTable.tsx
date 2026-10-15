@@ -80,6 +80,7 @@ const ExpenseTable = () => {
           <tbody>
             {spendings.map((spending) => (
               <ExpenseRow
+                key={spending.id}
                 spending={spending}
                 getPaymentBadgeClass={getPaymentBadgeClass}
                 formatPaymentMethod={formatPaymentMethod}
@@ -92,7 +93,9 @@ const ExpenseTable = () => {
             ))}
 
             {spendings.length === 0 && (
-              <EmptyState />
+              <EmptyState
+                loading={loading}
+              />
             )}
           </tbody>
         </table>

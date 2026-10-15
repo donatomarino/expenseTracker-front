@@ -71,7 +71,7 @@ const useSpendingEdit = ({
 
       toast.success('Spending updated successfully');
       closeModal();
-      triggerReload();
+      triggerReload?.();
       clearErrors();
 
     } catch (e: any) {

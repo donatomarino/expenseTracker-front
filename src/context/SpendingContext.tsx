@@ -1,10 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import type { ContextProps, DateSearchMode, Month, SortValue, Spending, SpendingContextValue } from "../types/types";
+import type { ContextProps, DateSearchMode, Month, PaymentMethod, SortValue, Spending, SpendingContextValue } from "../types/types";
 
-/* TODO:
-- Centralizar todos los filtros dentro del contexto
-- Centralizar las llamadas a la API dentro del hook useSpending y reindirizar cada vez que cambia algún parametro
-**/
 const SpendingContext = createContext<SpendingContextValue | undefined>(undefined);
 
 export const SpendingProvider = ({ children }: ContextProps) => {
@@ -38,6 +34,10 @@ export const SpendingProvider = ({ children }: ContextProps) => {
 
   const [selectedSort, setSelectedSort] = useState<SortValue>("NEWEST");
 
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | "">("");
+  const [minAmount, setMinAmount] = useState<string>("");
+  const [maxAmount, setMaxAmount] = useState<string>("");
+
   const [pageSize, setPageSize] = useState<number>(10);
 
   const [spendings, setSpendings] = useState<Spending[]>([]);
@@ -49,6 +49,12 @@ export const SpendingProvider = ({ children }: ContextProps) => {
     endDate,
     setStartDate,
     setEndDate,
+    paymentMethod,
+    setPaymentMethod,
+    minAmount,
+    setMinAmount,
+    maxAmount,
+    setMaxAmount,
     spendings,
     setSpendings,
     months,

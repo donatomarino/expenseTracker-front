@@ -22,9 +22,12 @@ export interface SpendingFormData {
 
 
 //--------- INTERFACES TABLE ----------//
-export interface FormFieldProps {
+export interface FormFieldProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "type" | "onChange" | "value"
+> {
   label: string;
-  type: string;
+  type: React.HTMLInputTypeAttribute;
   id: string;
   value?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -235,6 +238,35 @@ export type paymentMethodOption = {
 }
 export type DateSearchMode = "last90Days" | "customRange";
 
+export type UseRangeAndDateFiltersReturn = {
+  toggleLast90Days: () => void;
+  dateSearchMode: DateSearchMode;
+  handleChange: (field: string, value: string) => void;
+  applyFilters: () => void;
+  resetFilters: () => void;
+  draft: DraftFilters;
+};
+
+export type RangeProps = {
+  dateSearchMode: DateSearchMode;
+  toggleLast90Days: () => void;
+}
+
+export type DraftFilters = {
+  paymentMethod: string | PaymentMethod;
+  minAmount: string;
+  maxAmount: string;
+  startDate: string;
+  endDate: string;
+}
+
+export type FiltersProps = {
+  draft: DraftFilters;
+  handleChange: (field: string, value: string) => void;
+  applyFilters: () => void;
+  resetFilters: () => void;
+}
+
 
 
 //--------- INTERFACES HOOKS / CONTEXT ----------//
@@ -252,6 +284,9 @@ interface SpendingFiltersState {
   dateSearchMode: DateSearchMode;
   startDate: string;
   endDate: string;
+  paymentMethod: PaymentMethod | "";
+  minAmount: string;
+  maxAmount: string;
   selectedSort: SortValue;
   pageSize: number;
   setSpendings: Dispatch<SetStateAction<Spending[]>>;
@@ -260,6 +295,12 @@ interface SpendingFiltersState {
 
 export interface SpendingContextValue extends SpendingFiltersState {
   setDateSearchMode: Dispatch<SetStateAction<DateSearchMode>>;
+  paymentMethod: PaymentMethod | "";
+  setPaymentMethod: Dispatch<SetStateAction<PaymentMethod | "">>;
+  minAmount: string;
+  setMinAmount: Dispatch<SetStateAction<string>>;
+  maxAmount: string;
+  setMaxAmount: Dispatch<SetStateAction<string>>;
   spendings: Spending[];
   years: number[];
   setStartDate: Dispatch<SetStateAction<string>>;
@@ -295,11 +336,11 @@ export interface UseSpendingEditParams extends UseSpendingDeleteParams {
 
 export interface UseSpendingDeleteParams {
   startLoading: () => void;
-  triggerReload: () => void;
+  triggerReload?: () => void;
   stopLoading: () => void;
 }
 
-export interface UseSpendingListParams extends SpendingFiltersState {
+export interface UseSpendingListParams extends SpendingFiltersState, UseSpendingDeleteParams {
   reload: boolean,
   search: string;
   formatDateForRequest: (date: Date) => string;
@@ -330,7 +371,7 @@ export interface UseHeaderResult extends BaseFormState, BaseModalState {
   resetNewSpending: () => void;
   handleCloseNewModal: () => void;
   handleLogout: () => void;
-  loadButton: boolean;
+  loadButton: boolean
 }
 
 export interface UseModalResult extends BaseModalState {

@@ -3,13 +3,36 @@ import type { Month } from "../../../../../types/types";
 import Button from "../../../../common/components/Button";
 
 const MonthYearNavigator = () => {
-  const { years, months, year, month, setYear, setMonth } = useSpendingContext();
+  const {
+    years,
+    months,
+    year,
+    month,
+    setYear,
+    setMonth,
+    setDateSearchMode,
+    setStartDate,
+    setEndDate,
+    setPaymentMethod,
+    setMinAmount,
+    setMaxAmount,
+  } = useSpendingContext();
+
+  const resetFilters = () => {
+    setDateSearchMode("customRange");
+    setStartDate("");
+    setEndDate("");
+    setPaymentMethod("");
+    setMinAmount("");
+    setMaxAmount("");
+  };
 
   const formatMonth = (month: Month) => {
     return month.charAt(0).toLocaleUpperCase() + month.slice(1);
   }
 
   const previousMonth = () => {
+    resetFilters();
     setMonth((prevMonth: Month) => {
       if(prevMonth === months[0] && year > years[2]) {
         setYear((prevYear: number) => prevYear - 1);
@@ -21,6 +44,7 @@ const MonthYearNavigator = () => {
   }
 
   const nextMonth = () => {
+    resetFilters();
     setMonth((prevMonth: Month) => {
       if(prevMonth === months[months.length - 1]) {
         setYear((prevYear: number) => prevYear + 1);
@@ -82,7 +106,10 @@ const MonthYearNavigator = () => {
                 type="button"
                 className={`dropdown-item period-option ${monthOption === month ? "active" : ""
                   }`}
-                onClick={() => { setMonth(monthOption) }}
+                onClick={() => {
+                  resetFilters();
+                  setMonth(monthOption);
+                }}
               >
                 <span>{formatMonth(monthOption)}</span>
 
@@ -130,7 +157,10 @@ const MonthYearNavigator = () => {
                 type="button"
                 className={`dropdown-item period-option ${yearOption === year ? "active" : ""
                   }`}
-                onClick={() => { setYear(yearOption) }}
+                onClick={() => {
+                  resetFilters();
+                  setYear(yearOption);
+                }}
               >
                 <span>{yearOption}</span>
 

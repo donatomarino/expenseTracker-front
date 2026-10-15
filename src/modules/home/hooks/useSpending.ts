@@ -26,6 +26,9 @@ export const useSpending = (): UseSpendingResult => {
     endDate,
     selectedSort,
     pageSize,
+    paymentMethod,
+    minAmount,
+    maxAmount,
     setPageSize
   } = useSpendingContext();
 
@@ -58,9 +61,14 @@ export const useSpending = (): UseSpendingResult => {
       search,
       selectedSort,
       pageSize,
+      paymentMethod,
+      minAmount,
+      maxAmount,
       setSpendings,
       setPageSize,
       formatDateForRequest,
+      startLoading,
+      stopLoading
     });
 
   const { editSpending, selectedSpending, startEditing, handleEdit, handleChange } = useSpendingEdit({

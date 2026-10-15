@@ -81,7 +81,7 @@ const Login = () => {
                 Don't have an account? Sign up
               </Link>
 
-              {FullPageLoader(loading)}
+              <FullPageLoader loading={loading} />
             </div>
           </form>
         </div>

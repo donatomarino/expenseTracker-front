@@ -4,8 +4,6 @@ import useHeader from '../../hooks/useHeader';
 import Button from '../../../common/components/Button';
 import SpendingModal from '../modals/SpendingModal';
 import type { SpendingFormIdAndPlaceHolder, SpendingFormValues } from '../../../../types/types';
-import { useContext } from 'react';
-import { LoadingContext } from '../../../../context/LoadingContext';
 
 Modal.setAppElement('#root');
 const Header = () => {

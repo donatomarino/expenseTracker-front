@@ -32,7 +32,7 @@ const useSpendingDelete = ({
       });
 
       closeModal();
-      triggerReload();
+      triggerReload?.();
     } catch (e) {
       console.error("Server error", e);
     } finally {
