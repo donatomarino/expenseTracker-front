@@ -1,3 +1,4 @@
+import ExpenseCard from "../dashboard/ExpenseCard";
 import ExpenseControls from "../dashboard/ExpenseControls";
 import ExpenseTable from "../dashboard/ExpenseTable";
 import SummaryCards from "../dashboard/SummaryCards";
@@ -10,6 +11,7 @@ const Dashboard = () => {
       <SummaryCards />
       <ExpenseControls />
       <ExpenseTable />
+      <ExpenseCard />
     </div>
   )
 }

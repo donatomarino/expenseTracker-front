@@ -72,6 +72,87 @@ export interface SortDropdownProps {
   selectedSortLabel: string;
 }
 
+export interface UseExpenseViewReturn {
+  spendings: Spending[];
+  totalElements: number;
+  pageSize: number;
+  setPageSize: (value: number) => void;
+  totalPages: number;
+  currentPage: number;
+  getPaymentBadgeClass: ReturnType<typeof useSpending>["getPaymentBadgeClass"];
+  formatPaymentMethod: ReturnType<typeof useSpending>["formatPaymentMethod"];
+  changePage: (page: number) => void;
+  first: boolean;
+  last: boolean;
+  startEditing: ReturnType<typeof useSpending>["startEditing"];
+  errors: ReturnType<typeof useSpending>["errors"];
+  clearErrors: () => void;
+  handleChange: ReturnType<typeof useSpending>["handleChange"];
+  handleEdit: ReturnType<typeof useSpending>["handleEdit"];
+  selectedSpending: ReturnType<typeof useSpending>["selectedSpending"];
+  loading: boolean;
+  loadButton: boolean;
+  editSpending: ReturnType<typeof useSpending>["editSpending"];
+  deleteSpending: ReturnType<typeof useSpending>["deleteSpending"];
+  handleDelete: ReturnType<typeof useSpending>["handleDelete"];
+  formatDate: (date: string) => string;
+  openEditModal: () => void;
+  editModalIsOpen: boolean;
+  closeEditModal: () => void;
+  customStyles: ReturnType<typeof useModal>["customStyles"];
+  modalIsOpen: boolean;
+  closeModal: () => void;
+  openModal: () => void;
+  handlePageSizeChange: (e: ChangeEvent<HTMLSelectElement>) => void;
+  formValues: SpendingFormValues;
+  formIds: SpendingFormIdAndPlaceHolder;
+  formPlaceHolders: SpendingFormIdAndPlaceHolder;
+  handleCloseEditModal: () => void;
+};
+
+export interface CardProps {
+  spendings: Spending[];
+  formatDate: (date: string) => string;
+  getPaymentBadgeClass: (paymentMethod: PaymentMethod) => string;
+  formatPaymentMethod: (paymentMethod: PaymentMethod) => string;
+  startEditing: (spending: Spending, openEditModal: () => void) => void;
+  openEditModal: () => void;
+  handleDelete: (id: number, openModal: () => void) => void;
+  openModal: () => void;
+};
+
+export interface ExpenseTableMobileHeaderProps {
+  totalElements: number;
+  pageSize: number;
+  handlePageSizeChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
+
+export interface ExpenseTableMobileFooterProps {
+  currentPage: number;
+  totalPages: number;
+  spendings: any[];
+  totalElements: number;
+  changePage: (page: number) => void;
+  first: boolean;
+  last: boolean;
+}
+
+export interface ExpenseActionsProps {
+  spending: Spending;
+  onEdit: (spending: Spending, openEditModal: () => void) => void;
+  onDelete: (id: number, openModal: () => void) => void;
+  openEditModal: () => void;
+  openModal: () => void;
+  containerClassName?: string;
+  editButtonClassName?: string;
+  deleteButtonClassName?: string;
+};
+
+export interface EmptyStateProps {
+  loading: boolean;
+  variant?: "table" | "card";
+};
+
 
 
 //--------- MODAL PROPS  ----------//
