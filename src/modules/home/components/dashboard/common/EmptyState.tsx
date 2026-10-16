@@ -7,7 +7,7 @@ const EmptyState = ({ loading, variant = "table" }: EmptyStateProps) => {
       <div className="card border-0 shadow-sm rounded-4">
         <div className="card-body text-center py-5 px-4">
           {loading ? (
-            <FullPageLoader loading={loading} />
+            <FullPageLoader loading={loading} variant="inline" />
           ) : (
             <>
               <div className="mb-2 fs-3">💸</div>
@@ -24,7 +24,7 @@ const EmptyState = ({ loading, variant = "table" }: EmptyStateProps) => {
     <tr>
       <td colSpan={5} className="text-center py-5 text-muted position-relative">
         {loading ? (
-          <FullPageLoader loading={loading} />
+          <FullPageLoader loading={loading} variant="inline" />
         ) : (
           "No expenses found."
         )}

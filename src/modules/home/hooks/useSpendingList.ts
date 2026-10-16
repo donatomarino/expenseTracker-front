@@ -125,35 +125,24 @@ const useSpendingList = ({
   }
 
   // Load spendings by params
-  const loadSpendings = async (): Promise<void> => {
-    startLoading();
+  const loadSpendings = async (page = 1, size = pageSize): Promise<void> => {
+  startLoading();
 
-    try {
-      const params = buildSpendingParams(0, pageSize);
-      const res = await apiRequest(params);
-      applySpendingResponse(res, 1);
-    } catch (e: any) {
-      console.error("Error loading spendings: ", e);
-    } finally {
-      stopLoading();
-    }
-  };
+  try {
+    const params = buildSpendingParams(page - 1, size);
+    const res = await apiRequest(params);
+    applySpendingResponse(res, page);
+  } catch (e: any) {
+    console.error("Error loading spendings: ", e);
+  } finally {
+    stopLoading();
+  }
+};
 
-  const changePage = async (page: number): Promise<void> => {
-    if (page < 1 || page > totalPages) return;
-
-    startLoading();
-    try {
-      // Backend pagination is zero-based, UI pagination is one-based.
-      const params = buildSpendingParams(page - 1, pageSize);
-      const res = await apiRequest(params);
-      applySpendingResponse(res, page);
-    } catch (e: any) {
-      console.error("Error loading spendings", e);
-    } finally {
-      stopLoading();
-    }
-  };
+const changePage = async (page: number): Promise<void> => {
+  if (page < 1 || page > totalPages) return;
+  await loadSpendings(page, pageSize);
+};
 
   useEffect(() => {
     loadSpendings();
