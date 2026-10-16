@@ -2,8 +2,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import Modal from 'react-modal';
 import useHeader from '../../hooks/useHeader';
 import Button from '../../../common/components/Button';
-import SpendingModal from '../modals/SpendingModal';
 import type { SpendingFormIdAndPlaceHolder, SpendingFormValues } from '../../../../types/types';
+import SpendingModal from '../modals/SpendingModal';
 
 Modal.setAppElement('#root');
 const Header = () => {

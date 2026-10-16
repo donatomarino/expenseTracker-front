@@ -1,10 +1,10 @@
-import DeleteSpendingModal from "../modals/DeleteSpendingModal";
-import SpendingModal from "../modals/SpendingModal";
 import { useExpenseView } from "../../hooks/useExpenseView";
 import Card from "./mobile/Card";
 import EmptyState from "./common/EmptyState";
 import HeaderExpenseTableCard from "./mobile/ExpenseTableMobileHeader";
 import ExpenseTableMobileFooter from "./mobile/ExpenseTableMobileFooter";
+import SpendingModal from "../modals/SpendingModal";
+import DeleteSpendingModal from "../modals/DeleteSpendingModal";
 
 const ExpenseCard = () => {
   const {

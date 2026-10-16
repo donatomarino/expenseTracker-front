@@ -1,11 +1,11 @@
-import DeleteSpendingModal from "../modals/DeleteSpendingModal";
 import EmptyState from "./common/EmptyState";
 import { ExpenseRow } from "./table/ExpenseRow";
 import { Pagination } from "./table/Pagination";
 import { TableHeader } from "./table/TableHeader";
 import { PageSizeSelector } from "./table/PageSizeSelector";
-import SpendingModal from "../modals/SpendingModal";
 import { useExpenseView } from "../../hooks/useExpenseView";
+import SpendingModal from "../modals/SpendingModal";
+import DeleteSpendingModal from "../modals/DeleteSpendingModal";
 
 const ExpenseTable = () => {
   const {
