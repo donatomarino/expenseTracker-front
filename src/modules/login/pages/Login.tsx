@@ -15,7 +15,7 @@ const Login = () => {
   } = useLogin();
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light px-3 py-4">
       <div className="card shadow-sm" style={{ maxWidth: "420px", width: "100%" }}>
         <div className="card-body p-4">
           <h2 className="card-title text-center mb-3">Welcome back</h2>

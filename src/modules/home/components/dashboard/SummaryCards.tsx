@@ -11,7 +11,7 @@ const SummaryCards = () => {
     <div className="d-flex flex-wrap justify-content-center align-items-center gap-3 mb-4">
       {/* Total spent */}
       <div className="flex-grow-1">
-        <div className="card h-100 border-0 shadow-sm rounded-4">
+        <div className="card h-100 border-0 shadow-sm rounded-4 d-flex justify-content-center align-items-center justify-content-md-start align-items-md-start">
           <div className="card-body d-flex flex-column">
             <span className="text-muted text-uppercase small mb-1">Total spent</span>
             <h4 className="fw-bold mb-1">{totalSpent.toFixed(2) ?? 0} €</h4>
@@ -23,7 +23,7 @@ const SummaryCards = () => {
       {/* Transactions */}
       <div className="flex-grow-1">
         <div className="card h-100 border-0 shadow-sm rounded-4">
-          <div className="card-body d-flex flex-column">
+          <div className="card-body d-flex flex-column justify-content-center align-items-center justify-content-md-start align-items-md-start">
             <span className="text-muted text-uppercase small mb-1">Transactions</span>
             <h4 className="fw-bold mb-1">{totalTransactions}</h4>
             <span className="text-muted small">Recorded expenses</span>
@@ -33,7 +33,7 @@ const SummaryCards = () => {
 
       {/* Average */}
       <div className="flex-grow-1">
-        <div className="card h-100 border-0 shadow-sm rounded-4">
+        <div className="card h-100 border-0 shadow-sm rounded-4 d-flex justify-content-center align-items-center justify-content-md-start align-items-md-start">
           <div className="card-body d-flex flex-column">
             <span className="text-muted text-uppercase small mb-1">Average</span>
             <h4 className="fw-bold mb-1">{average.toFixed(2)} €/day</h4>

@@ -41,8 +41,8 @@ const FullPageLoader = ({ loading, variant = 'fullscreen' }: FullPageLoaderProps
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
+        bottom: 0,
+        right: 0,
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
         zIndex: 1000,
       }}

@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import './App.css'
 import Home from "./modules/home/pages/Home"
 import { LoadingProvider } from "./context/LoadingContext"
 import Login from "./modules/login/pages/Login"

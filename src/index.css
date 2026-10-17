@@ -10,5 +10,25 @@ html, body, #root {
 .app {
     display: grid;
     min-height: calc(var(--vh, 1vh) * 100);
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto 1fr auto;
+}
+
+/* Keep toasts docked to the right on small screens */
+@media (max-width: 480px) {
+    .Toastify__toast-container--bottom-right {
+        left: auto;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 100vw;
+        padding: 0 1rem 1rem;
+        box-sizing: border-box;
+    }
+
+    .Toastify__toast-container--bottom-right .Toastify__toast {
+        margin-left: auto;
+        margin-bottom: 0.5rem;
+        max-width: 100%;
+    }
 }
