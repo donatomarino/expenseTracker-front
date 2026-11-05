@@ -2,6 +2,7 @@ import FormField from "../../common/components/FormField";
 import { Link } from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 import Button from "../../common/components/Button";
+import FullPageLoader from "../../common/components/FullPageLoader";
 
 const Register = () => {
   const {
@@ -11,7 +12,8 @@ const Register = () => {
     errors,
     navigate,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    loading
   } = useRegister();
 
   return (
@@ -100,7 +102,9 @@ const Register = () => {
           </form>
         </div>
       </div>
+      <FullPageLoader loading={loading} />
     </div >
+
   )
 }
 

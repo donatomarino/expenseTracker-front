@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import registerService from "../services/registerService";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useLoad } from "../../common/hooks/useLoad";
 
 const useRegister = () => {
   const { loadButton, disabledButton } = useContext(LoadingContext);
@@ -18,9 +19,8 @@ const useRegister = () => {
   const [isRegistred, setIsRegistered] = useState<boolean>(false);
   const [errors, setErrors] = useState<RegisterErrors>({});
 
-  useEffect(() => {
-    console.log("Errores" + JSON.stringify(errors.fullName));
-  }, [errors]);
+  // Spinner loader
+  const { loading, startLoading, stopLoading } = useLoad();
 
   const navigate = useNavigate();
 
@@ -34,11 +34,13 @@ const useRegister = () => {
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     disabledButton();
+    startLoading();
     setErrors({});
 
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match");
       disabledButton();
+      stopLoading();
       return;
     }
 
@@ -60,7 +62,7 @@ const useRegister = () => {
           return;
         }
 
-        if(status === 409) {
+        if (status === 409) {
           toast.error(e.response?.data?.message);
           return;
         }
@@ -74,6 +76,7 @@ const useRegister = () => {
       toast.error("Unexpected error");
     } finally {
       disabledButton();
+      stopLoading();
     }
   }
   return {
@@ -84,7 +87,8 @@ const useRegister = () => {
     errors,
     navigate,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    loading
   }
 }
 
