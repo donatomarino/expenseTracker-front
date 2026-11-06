@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import type { RegisterErrors, RegisterPayload, RegisterResponse } from "../../../types/types";
 import { LoadingContext } from "../../../context/LoadingContext";
 import { toast } from "react-toastify";
