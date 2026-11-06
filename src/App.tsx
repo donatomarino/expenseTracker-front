@@ -5,8 +5,10 @@ import Login from "./modules/login/pages/Login"
 import { Bounce, ToastContainer } from "react-toastify"
 import Register from "./modules/register/pages/Register"
 import { SpendingProvider } from "./context/SpendingContext"
+import { ThemeProvider, useTheme } from "./context/ThemeContext"
 
-function App() {
+function AppContent() {
+  const { theme } = useTheme();
   const isAuthenticated = Boolean(localStorage.getItem('token'));
 
   return (
@@ -32,12 +34,20 @@ function App() {
           <ToastContainer
             position="bottom-right"
             autoClose={5000}
-            theme="dark"
+            theme={theme}
             transition={Bounce}
           />
         </SpendingProvider>
       </LoadingProvider>
     </div>
+  )
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }
 

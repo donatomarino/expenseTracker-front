@@ -1,5 +1,3 @@
-import loadingGif from '../../../assets/loading-gif.gif';
-
 type FullPageLoaderProps = {
   loading: boolean;
   variant?: 'fullscreen' | 'inline';
@@ -11,52 +9,36 @@ const FullPageLoader = ({ loading, variant = 'fullscreen' }: FullPageLoaderProps
   if (variant === 'inline') {
     return (
       <div
-        className="d-flex flex-column justify-content-center align-items-center"
+        className="loading-overlay loading-overlay--inline d-flex flex-column justify-content-center align-items-center"
+        role="status"
         style={{
           width: '100%',
           minHeight: '180px',
-          backgroundColor: 'rgba(255,255,255,0.72)',
           borderRadius: '12px',
           padding: '1rem',
         }}
       >
-        <img
-          src={loadingGif}
-          alt="Loading..."
-          style={{
-            width: '42px',
-            height: '42px',
-            marginBottom: '10px',
-          }}
-        />
-        <h6 className="text-dark mb-0">Cargando...</h6>
+        <span className="loading-spinner mb-2" aria-hidden="true" />
+        <h6 className="mb-0">Cargando...</h6>
       </div>
     );
   }
 
   return (
     <div
-      className="d-flex flex-column justify-content-center align-items-center"
+      className="loading-overlay loading-overlay--fullscreen d-flex flex-column justify-content-center align-items-center"
+      role="status"
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         bottom: 0,
         right: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
         zIndex: 1000,
       }}
     >
-      <img
-        src={loadingGif}
-        alt="Loading..."
-        style={{
-          width: '60px',
-          height: '60px',
-          marginBottom: '20px'
-        }}
-      />
-      <h6 className="text-dark">Cargando...</h6>
+      <span className="loading-spinner loading-spinner--large mb-3" aria-hidden="true" />
+      <h6>Cargando...</h6>
     </div>
   );
 };

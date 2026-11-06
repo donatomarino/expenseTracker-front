@@ -4,9 +4,11 @@ import useHeader from '../../hooks/useHeader';
 import Button from '../../../common/components/Button';
 import type { SpendingFormIdAndPlaceHolder, SpendingFormValues } from '../../../../types/types';
 import SpendingModal from '../modals/SpendingModal';
+import { useTheme } from '../../../../context/ThemeContext';
 
 Modal.setAppElement('#root');
 const Header = () => {
+  const { theme, toggleTheme } = useTheme();
 
   const {
     newSpending,
@@ -59,6 +61,19 @@ const Header = () => {
         </div>
 
         <div className="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center gap-2">
+          <button
+            type="button"
+            className="theme-icon-button btn btn-light rounded-circle d-flex align-items-center justify-content-center"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+          >
+            <i
+              className={`bi ${theme === 'dark' ? 'bi-sun' : 'bi-moon-stars'}`}
+              aria-hidden="true"
+            ></i>
+          </button>
+
           <Button
             className="d-flex align-items-center justify-content-center gap-2"
             onClick={openModal}

@@ -12,7 +12,7 @@
   width: 40px;
   height: 40px;
   padding: 0;
-  color: #495057;
+  color: var(--app-muted);
   transition:
     background-color 160ms ease,
     border-color 160ms ease,
@@ -22,7 +22,7 @@
 
 .navigation-button:hover {
   color: var(--bs-primary);
-  background-color: #f1f3f5;
+  background-color: var(--app-surface-raised);
   border-color: var(--bs-primary) !important;
   transform: translateY(-1px);
 }
@@ -33,8 +33,8 @@
 
 .period-button {
   min-height: 40px;
-  color: #212529;
-  border-color: #dee2e6;
+  color: var(--app-text);
+  border-color: var(--app-border);
   font-weight: 500;
   transition:
     background-color 160ms ease,
@@ -44,9 +44,9 @@
 
 .period-button:hover,
 .period-button:focus {
-  background-color: #f8f9fa;
+  background-color: var(--app-surface-raised);
   border-color: var(--bs-primary);
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
+  box-shadow: 0 0 0 0.2rem var(--app-focus-ring);
 }
 
 .period-menu {
@@ -58,7 +58,7 @@
 }
 
 .period-menu .dropdown-header {
-  color: #6c757d;
+  color: var(--app-muted);
   padding: 0.55rem 0.75rem 0.4rem;
 }
 
@@ -68,21 +68,21 @@
   justify-content: space-between;
   border-radius: 0.5rem;
   padding: 0.55rem 0.75rem;
-  color: #343a40;
+  color: var(--app-text);
 }
 
 .period-option:hover {
-  background-color: #f1f3f5;
+  background-color: var(--app-surface-raised);
 }
 
 .period-option.active {
   color: var(--bs-primary);
-  background-color: rgba(13, 110, 253, 0.1);
+  background-color: var(--app-primary-soft);
   font-weight: 600;
 }
 
 .period-option.active:hover {
-  background-color: rgba(13, 110, 253, 0.15);
+  background-color: var(--app-primary-soft-hover);
 }
 
 

@@ -8,7 +8,7 @@ export const useModal = (): UseModalResult => {
 
   const customStyles: ReactModal.Styles = {
     overlay: {
-      backgroundColor: 'rgba(15, 23, 42, 0.55)',
+      backgroundColor: 'var(--app-overlay)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -25,7 +25,7 @@ export const useModal = (): UseModalResult => {
       border: 'none',
       borderRadius: '24px',
       padding: '1.5rem',
-      backgroundColor: '#ffffff',
+      backgroundColor: 'var(--app-surface)',
       boxShadow: '0 20px 60px rgba(0, 0, 0, 0.18)',
     },
   };
